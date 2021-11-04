@@ -90,6 +90,7 @@ def create_terraform_workspaces(jsonData, easy_jsonData, org):
             tfcb_config.append({folder.split('/')[3]:templateVars["workspaceName"]})
             # templateVars["vcsBranch"] = ''
 
+
             templateVars['workspace_id'] = lib_terraform.Terraform_Cloud().tfcWorkspace(**templateVars)
             vars = [
                 'apikey.Intersight API Key',
@@ -189,7 +190,7 @@ def create_terraform_workspaces(jsonData, easy_jsonData, org):
                     templateVars["Sensitive"] = True
                     lib_terraform.Terraform_Cloud().tfcVariables(**templateVars)
 
-        tfcb_config.update({'org':org})
+        tfcb_config.append({'org':org})
         for folder in folder_list:
             name_prefix = 'dummy'
             type = 'pools'
@@ -477,12 +478,7 @@ def process_wizard(easy_jsonData, jsonData):
         policy_list = [
             # Pools
             'ip_pools',
-            'iqn_pools',
-            'mac_pools',
             'resource_pools',
-            'uuid_pools',
-            'wwnn_pools',
-            'wwpn_pools',
             # UCS Server Policies and Profiles
             'bios_policies',
             'boot_order_policies',
@@ -491,6 +487,9 @@ def process_wizard(easy_jsonData, jsonData):
             'device_connector_policies',
             'ipmi_over_lan_policies',
             'ldap_policies',
+            'local_user_policies',
+            'network_connectivity_policies',
+            'ntp_policies',
             'serial_over_lan_policies',
             'smtp_policies',
             'snmp_policies',
@@ -502,7 +501,6 @@ def process_wizard(easy_jsonData, jsonData):
             'adapter_configuration_policies',
             'ethernet_adapter_policies',
             'ethernet_network_control_policies',
-            'ethernet_network_group_policies',
             'ethernet_network_policies',
             'ethernet_qos_policies',
             'iscsi_adapter_policies',
