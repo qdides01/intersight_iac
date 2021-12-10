@@ -37,373 +37,150 @@ class config_conversion(object):
         header = 'BIOS Policy Variables'
         initial_policy = True
         template_type = 'bios_policies'
-
-        # Set the org_count to 0 for the First Organization
-        org_count = 0
-
-        # Loop through the orgs discovered by the Class
-        for org in self.orgs:
-
-            # Pull in Variables from Class
-            templateVars = self.templateVars
-            templateVars["org"] = org
-
-            # Define the Template Source
-            templateVars["header"] = header
-            templateVars["template_type"] = template_type
-            template_file = "template_open.jinja2"
-            template = self.templateEnv.get_template(template_file)
-
-            # Process the template
-            dest_dir = '%s' % (self.type)
-            dest_file = '%s.auto.tfvars' % (template_type)
-            if initial_policy == True:
-                write_method = 'w'
-            else:
-                write_method = 'a'
-            process_method(write_method, dest_dir, dest_file, template, **templateVars)
-
-            # Define the Template Source
-            template_file = '%s.jinja2' % (template_type)
-            template = self.templateEnv.get_template(template_file)
-
-            if template_type in self.json_data["config"]["orgs"][org_count]:
-                for item in self.json_data["config"]["orgs"][org_count][template_type]:
-                    # Reset TemplateVars to Default for each Loop
-                    templateVars = {}
-                    templateVars["org"] = org
-
-                    # Define the Template Source
-                    templateVars["header"] = header
-
-                    for k, v in item.items():
-                        if (k == 'name' or k == 'descr' or k == 'tags'):
-                            templateVars[k] = v
-
-                    templateVars["bios_settings"] = {}
-                    for k, v in item.items():
-                        if not (k == 'name' or k == 'descr' or k == 'tags'):
-                            templateVars["bios_settings"][k] = v
-
-                    # Process the template
-                    dest_dir = '%s' % (self.type)
-                    dest_file = '%s.auto.tfvars' % (template_type)
-                    process_method('a', dest_dir, dest_file, template, **templateVars)
-
-            # Define the Template Source
-            template_file = "template_close.jinja2"
-            template = self.templateEnv.get_template(template_file)
-
-            # Process the template
-            dest_dir = '%s' % (self.type)
-            dest_file = '%s.auto.tfvars' % (template_type)
-            process_method('a', dest_dir, dest_file, template, **templateVars)
-
-            # Increment the org_count for the next Organization Loop
-            org_count += 1
+        policy_loop_standard(self, header, initial_policy, template_type)
 
     def boot_order_policies(self):
         header = 'Boot Order Policy Variables'
         initial_policy = True
         template_type = 'boot_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ethernet_adapter_policies(self):
         header = 'Ethernet Adapter Policy Variables'
         initial_policy = True
         template_type = 'ethernet_adapter_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ethernet_network_control_policies(self):
         header = 'Ethernet Network Control Policy Variables'
         initial_policy = True
         template_type = 'ethernet_network_control_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ethernet_network_group_policies(self):
         header = 'Ethernet Network Group Policy Variables'
         initial_policy = True
         template_type = 'ethernet_network_group_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ethernet_network_policies(self):
         header = 'Ethernet Network Policy Variables'
         initial_policy = True
         template_type = 'ethernet_network_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ethernet_qos_policies(self):
         header = 'Ethernet QoS Policy Variables'
         initial_policy = True
         template_type = 'ethernet_qos_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def fibre_channel_adapter_policies(self):
         header = 'Fibre Channel Adapter Policy Variables'
         initial_policy = True
         template_type = 'fibre_channel_adapter_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def fibre_channel_network_policies(self):
         header = 'Fibre Channel Network Policy Variables'
         initial_policy = True
         template_type = 'fibre_channel_network_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def fibre_channel_qos_policies(self):
         header = 'Fibre Channel QoS Policy Variables'
         initial_policy = True
         template_type = 'fibre_channel_qos_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def flow_control_policies(self):
         header = 'Flow Control Policy Variables'
         initial_policy = True
         template_type = 'flow_control_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def imc_access_policies(self):
         header = 'IMC Access Policiy Variables'
         initial_policy = True
         template_type = 'imc_access_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ip_pools(self):
         header = 'IP Pool Variables'
         initial_policy = True
         template_type = 'ip_pools'
-
-        # Set the org_count to 0 for the First Organization
-        org_count = 0
-
-        # Loop through the orgs discovered by the Class
-        for org in self.orgs:
-
-            # Pull in Variables from Class
-            templateVars = self.templateVars
-            templateVars["org"] = org
-
-            # Define the Template Source
-            templateVars["header"] = header
-            templateVars["template_type"] = template_type
-            template_file = "template_open.jinja2"
-            template = self.templateEnv.get_template(template_file)
-
-            # Process the template
-            dest_dir = '%s' % (self.type)
-            dest_file = '%s.auto.tfvars' % (template_type)
-            if initial_policy == True:
-                write_method = 'w'
-            else:
-                write_method = 'a'
-            process_method(write_method, dest_dir, dest_file, template, **templateVars)
-
-            # Define the Template Source
-            template_file = '%s.jinja2' % (template_type)
-            template = self.templateEnv.get_template(template_file)
-
-            if template_type in self.json_data["config"]["orgs"][org_count]:
-                for item in self.json_data["config"]["orgs"][org_count][template_type]:
-                    # Reset TemplateVars to Default for each Loop
-                    templateVars = {}
-                    templateVars["org"] = org
-
-                    # Define the Template Source
-                    templateVars["header"] = header
-
-                    for k, v in item.items():
-                        templateVars[k] = v
-
-                    if 'ipv6_blocks' in templateVars:
-                        index_count = 0
-                        for i in templateVars["ipv6_blocks"]:
-                             index_count += 1
-
-                        for r in range(0,index_count):
-                            if 'to' in templateVars["ipv6_blocks"][r]:
-                                templateVars["ipv6_blocks"][r]["size"] = templateVars["ipv6_blocks"][r].pop('to')
-                                templateVars["ipv6_blocks"][r]["size"] = int(
-                                    ipaddress.IPv6Address(templateVars["ipv6_blocks"][r]["size"])
-                                    ) - int(ipaddress.IPv6Address(templateVars["ipv6_blocks"][r]["from"])) + 1
-
-                    # Process the template
-                    dest_dir = '%s' % (self.type)
-                    dest_file = '%s.auto.tfvars' % (template_type)
-                    process_method('a', dest_dir, dest_file, template, **templateVars)
-
-            # Define the Template Source
-            template_file = "template_close.jinja2"
-            template = self.templateEnv.get_template(template_file)
-
-            # Process the template
-            dest_dir = '%s' % (self.type)
-            dest_file = '%s.auto.tfvars' % (template_type)
-            process_method('a', dest_dir, dest_file, template, **templateVars)
-
-            # Increment the org_count for the next Organization Loop
-            org_count += 1
+        policy_loop_standard(self, header, initial_policy, template_type)
 
     def ipmi_over_lan_policies(self):
         header = 'IPMI over LAN Policy Variables'
         initial_policy = True
         template_type = 'ipmi_over_lan_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def iqn_pools(self):
         header = 'IQN Pool Variables'
         initial_policy = True
         template_type = 'iqn_pools'
-
-        # Set the org_count to 0 for the First Organization
-        org_count = 0
-
-        # Loop through the orgs discovered by the Class
-        for org in self.orgs:
-
-            # Pull in Variables from Class
-            templateVars = self.templateVars
-            templateVars["org"] = org
-
-            # Define the Template Source
-            templateVars["header"] = header
-            templateVars["template_type"] = template_type
-            template_file = "template_open.jinja2"
-            template = self.templateEnv.get_template(template_file)
-
-            # Process the template
-            dest_dir = '%s' % (self.type)
-            dest_file = '%s.auto.tfvars' % (template_type)
-            if initial_policy == True:
-                write_method = 'w'
-            else:
-                write_method = 'a'
-            process_method(write_method, dest_dir, dest_file, template, **templateVars)
-
-            # Define the Template Source
-            template_file = '%s.jinja2' % (template_type)
-            template = self.templateEnv.get_template(template_file)
-
-            if template_type in self.json_data["config"]["orgs"][org_count]:
-                for item in self.json_data["config"]["orgs"][org_count][template_type]:
-                    # Reset TemplateVars to Default for each Loop
-                    templateVars = {}
-                    templateVars["org"] = org
-
-                    # Define the Template Source
-                    templateVars["header"] = header
-
-                    for k, v in item.items():
-                        templateVars[k] = v
-
-                    if 'iqn_blocks' in templateVars:
-                        index_count = 0
-                        for i in templateVars["iqn_blocks"]:
-                             index_count += 1
-
-                        for r in range(0,index_count):
-                            if 'to' in templateVars["iqn_blocks"][r]:
-                                templateVars["iqn_blocks"][r]["size"] = templateVars["iqn_blocks"][r].pop('to')
-                                templateVars["iqn_blocks"][r]["size"] = int(
-                                    templateVars["iqn_blocks"][r]["size"]
-                                    ) - int(templateVars["iqn_blocks"][r]["from"]) + 1
-
-                    # Process the template
-                    dest_dir = '%s' % (self.type)
-                    dest_file = '%s.auto.tfvars' % (template_type)
-                    process_method('a', dest_dir, dest_file, template, **templateVars)
-
-            # Define the Template Source
-            template_file = "template_close.jinja2"
-            template = self.templateEnv.get_template(template_file)
-
-            # Process the template
-            dest_dir = '%s' % (self.type)
-            dest_file = '%s.auto.tfvars' % (template_type)
-            process_method('a', dest_dir, dest_file, template, **templateVars)
-
-            # Increment the org_count for the next Organization Loop
-            org_count += 1
+        policy_loop_standard(self, header, initial_policy, template_type)
 
     def iscsi_adapter_policies(self):
         header = 'iSCSI Adapter Policy Variables'
         initial_policy = True
         template_type = 'iscsi_adapter_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def iscsi_boot_policies(self):
         header = 'iSCSI Boot Policy Variables'
         initial_policy = True
         template_type = 'iscsi_boot_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def iscsi_static_target_policies(self):
         header = 'iSCSI Static Target Policy Variables'
         initial_policy = True
         template_type = 'iscsi_static_target_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def lan_connectivity_policies(self):
         header = 'LAN Connectivity Policy Variables'
         initial_policy = True
         template_type = 'lan_connectivity_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def link_aggregation_policies(self):
         header = 'Link Aggregation Policy Variables'
         initial_policy = True
         template_type = 'link_aggregation_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def link_control_policies(self):
         header = 'Link Control Policy Variables'
         initial_policy = True
         template_type = 'link_control_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def mac_pools(self):
         header = 'MAC Pool Variables'
         initial_policy = True
         template_type = 'mac_pools'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def multicast_policies(self):
         header = 'Multicast Policy Variables'
         initial_policy = True
         template_type = 'multicast_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def network_connectivity_policies(self):
         header = 'Network Connectivity (DNS) Policy Variables'
         initial_policy = True
         template_type = 'network_connectivity_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ntp_policies(self):
         header = 'NTP Policy Variables'
         initial_policy = True
         template_type = 'ntp_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def port_policies(self):
@@ -455,28 +232,12 @@ class config_conversion(object):
                             for i in v:
                                 interface_list = []
                                 for key, value in i.items():
-                                    #if key == 'interfaces':
-                                    #    for interfaces in value:
-                                    #        int_dict = {}
-                                    #        for keys, values in interfaces.items():
-                                    #            if keys == 'aggr_id':
-                                    #                int_dict.update({'breakout_port_id': values})
-                                    #            elif keys == 'port_id':
-                                    #                int_dict.update({'port_id': values})
-                                    #            elif keys == 'slot_id':
-                                    #                int_dict.update({'slot_id': values})
-                                    #        x = copy.deepcopy(int_dict)
-                                    #        interface_list.append(x)
-                                    #        int_dict = {}
-                                    # else:
-                                    #     attribute_list.update({key: value})
-                                    # attribute_list.update({'interfaces': interface_list})
                                     attribute_list.update({key: value})
 
                                 attribute_list = dict(sorted(attribute_list.items()))
                                 xdeep = copy.deepcopy(attribute_list)
                                 templateVars[k].append(xdeep)
-                                # print(k, templateVars[k])
+
                         elif re.search(r'(server_ports)', k):
                             aggr_ids = []
                             ports_count = 0
@@ -603,222 +364,120 @@ class config_conversion(object):
         header = 'Power Policy Variables'
         initial_policy = True
         template_type = 'power_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def san_connectivity_policies(self):
         header = 'SAN Connectivity Policy Variables'
         initial_policy = True
         template_type = 'san_connectivity_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def sd_card_policies(self):
         header = 'SD Card Policy Variables'
         initial_policy = True
         template_type = 'sd_card_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def serial_over_lan_policies(self):
         header = 'Serial over LAN Policy Variables'
         initial_policy = True
         template_type = 'serial_over_lan_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def snmp_policies(self):
         header = 'SNMP Policy Variables'
         initial_policy = True
         template_type = 'snmp_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def storage_policies(self):
         header = 'Storage Policy Variables'
         initial_policy = True
         template_type = 'storage_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def switch_control_policies(self):
         header = 'Switch Control Policy Variables'
         initial_policy = True
         template_type = 'switch_control_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def syslog_policies(self):
         header = 'Syslog Policy Variables'
         initial_policy = True
         template_type = 'syslog_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def system_qos_policies(self):
         header = 'System QoS Policy Variables'
         initial_policy = True
         template_type = 'system_qos_policies'
-
-        # Set the org_count to 0 for the First Organization
-        org_count = 0
-
-        # Loop through the orgs discovered by the Class
-        for org in self.orgs:
-
-            # Pull in Variables from Class
-            templateVars = self.templateVars
-            templateVars["org"] = org
-
-            # Define the Template Source
-            templateVars["header"] = header
-            templateVars["template_type"] = template_type
-            template_file = "template_open.jinja2"
-            template = self.templateEnv.get_template(template_file)
-
-            # Process the template
-            dest_dir = '%s' % (self.type)
-            dest_file = '%s.auto.tfvars' % (template_type)
-            if initial_policy == True:
-                write_method = 'w'
-            else:
-                write_method = 'a'
-            process_method(write_method, dest_dir, dest_file, template, **templateVars)
-
-            # Define the Template Source
-            template_file = '%s.jinja2' % (template_type)
-            template = self.templateEnv.get_template(template_file)
-
-            if template_type in self.json_data["config"]["orgs"][org_count]:
-                for item in self.json_data["config"]["orgs"][org_count][template_type]:
-                    # Reset TemplateVars to Default for each Loop
-                    templateVars = {}
-                    templateVars["org"] = org
-
-                    # Define the Template Source
-                    templateVars["header"] = header
-
-                    for k, v in item.items():
-                        if (k == 'name' or k == 'descr' or k == 'tags'):
-                            templateVars[k] = v
-
-                templateVars["classes"] = []
-                for r in range(0,6):
-                    xdict = {}
-                    templateVars["classes"].append(xdict)
-
-                class_count = 0
-                for item in self.json_data["config"]["orgs"][org_count][template_type][0]["classes"]:
-                    for k, v in item.items():
-                        templateVars["classes"][class_count][k] = v
-
-                    class_count += 1
-
-                total_weight = 0
-
-                for r in range(0,6):
-                    if templateVars["classes"][r]["state"] == 'Enabled':
-                        total_weight += int(templateVars["classes"][r]["weight"])
-
-                for r in range(0,6):
-                    if templateVars["classes"][r]["state"] == 'Enabled':
-                        x = ((int(templateVars["classes"][r]["weight"]) / total_weight) * 100)
-                        templateVars["classes"][r]["bandwidth_percent"] = str(x).split('.')[0]
-                    else:
-                        templateVars["classes"][r]["bandwidth_percent"] = 0
-
-                # Process the template
-                dest_dir = '%s' % (self.type)
-                dest_file = '%s.auto.tfvars' % (template_type)
-                process_method('a', dest_dir, dest_file, template, **templateVars)
-
-            # Define the Template Source
-            template_file = "template_close.jinja2"
-            template = self.templateEnv.get_template(template_file)
-
-            # Process the template
-            dest_dir = '%s' % (self.type)
-            dest_file = '%s.auto.tfvars' % (template_type)
-            process_method('a', dest_dir, dest_file, template, **templateVars)
-
-            # Increment the org_count for the next Organization Loop
-            org_count += 1
+        policy_loop_standard(self, header, initial_policy, template_type)
 
     def thermal_policies(self):
         header = 'Thermal Policy Variables'
         initial_policy = True
         template_type = 'thermal_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ucs_domain_profiles(self):
         header = 'UCS Domain Profile Variables'
         initial_policy = True
         template_type = 'ucs_domain_profiles'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ucs_server_profiles(self):
         header = 'UCS Server Profile Variables'
         initial_policy = True
         template_type = 'ucs_server_profiles'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def ucs_server_profile_templates(self):
         header = 'UCS Server Profile Template Variables'
         initial_policy = True
         template_type = 'ucs_server_profile_templates'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def virtual_kvm_policies(self):
         header = 'Virtual KVM Policy Variables'
         initial_policy = True
         template_type = 'virtual_kvm_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def virtual_media_policies(self):
         header = 'Virtual Media Policy Variables'
         initial_policy = True
         template_type = 'virtual_media_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def vlan_policies(self):
         header = 'VLAN Policy Variables'
         initial_policy = True
         template_type = 'vlan_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def vsan_policies(self):
         header = 'VSAN Policy Variables'
         initial_policy = True
         template_type = 'vsan_policies'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def uuid_pools(self):
         header = 'UUID Pool Variables'
         initial_policy = True
         template_type = 'uuid_pools'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def wwnn_pools(self):
         header = 'Fibre Channel WWNN Pool Variables'
         initial_policy = True
         template_type = 'wwnn_pools'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
     def wwpn_pools(self):
         header = 'Fibre Channel WWPN Pool Variables'
         initial_policy = True
         template_type = 'wwpn_pools'
-
         policy_loop_standard(self, header, initial_policy, template_type)
 
 class easy_imm_wizard(object):
@@ -830,9 +489,9 @@ class easy_imm_wizard(object):
         self.org = org
         self.type = type
 
-    #========================================
+    #==============================================
     # Adapter Configuration Policy Module
-    #========================================
+    #==============================================
     def adapter_configuration_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'adapter'
@@ -855,7 +514,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  An {policy_type} configures the Ethernet and Fibre-Channel settings for the ')
             print(f'  Virtual Interface Card (VIC) adapter.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -985,9 +644,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # BIOS Policy Module
-    #========================================
+    #==============================================
     def bios_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -1013,7 +672,7 @@ class easy_imm_wizard(object):
             print(f'  Templates that are pre-configured.  You can add custom {policy_x} policy')
             print(f'  configuration to the {templateVars["template_type"]}.auto.tfvars file at your descretion.')
             print(f'  That will not be covered by this wizard as the focus of the wizard is on simplicity.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -1077,9 +736,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Boot Order Policy Module
-    #========================================
+    #==============================================
     def boot_order_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'boot_order'
@@ -1103,7 +762,7 @@ class easy_imm_wizard(object):
             print(f'  A {policy_type} configures the linear ordering of devices and enables you to change ')
             print(f'  the boot order and boot mode. You can also add multiple devices under various device types,')
             print(f'  rearrange the boot order, and set parameters for each boot device type.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}.  Enter "Y" or "N" [Y]: ')
@@ -1568,9 +1227,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Device Connector Policy Module
-    #========================================
+    #==============================================
     def device_connector_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'devcon'
@@ -1603,7 +1262,7 @@ class easy_imm_wizard(object):
             print(f'  * IPMI over LAN privileges will be reset to read-only level if Configuration from ')
             print(f'    Intersight only is enabled through the Device Connector policy, or if the same ')
             print(f'    configuration is enabled in the Device Connector in Cisco IMC.\n\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -1667,9 +1326,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Ethernet Adapter Policy Module
-    #========================================
+    #==============================================
     def ethernet_adapter_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -1695,7 +1354,7 @@ class easy_imm_wizard(object):
             print(f'  Templates that are pre-configured.  You can add custom {policy_x} policy')
             print(f'  configuration to the {templateVars["template_type"]}.auto.tfvars file at your descretion.')
             print(f'  That will not be covered by this wizard as the focus of the wizard is on simplicity.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -1759,9 +1418,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Ethernet Network Control Policy Module
-    #========================================
+    #==============================================
     def ethernet_network_control_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'netwk_ctrl'
@@ -1784,7 +1443,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  An {policy_type} will allow you to control Network Discovery with ')
             print(f'  protocols like CDP and LLDP as well as MAC Address Control Features.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -1881,9 +1540,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Ethernet Network Group Policy Module
-    #========================================
+    #==============================================
     def ethernet_network_group_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = ['Management', 'Migration', 'Storage', 'VMs']
@@ -1918,7 +1577,7 @@ class easy_imm_wizard(object):
             print(f'     1,2,3,4,5,11,12,13,14,15 - List of VLANs')
             print(f'     1-10,20-30 - Ranges and Lists of VLANs')
             print(f'  If you want to Assign a Native VLAN Make sure it is in the allowed list.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             loop_count = 0
@@ -1939,54 +1598,55 @@ class easy_imm_wizard(object):
                 templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
                 templateVars["action_on_uplink_fail"] = 'linkDown'
 
+                policy_list = [
+                    'policies_vlans.vlan_policies.vlan_policy',
+                ]
+                templateVars["allow_opt_out"] = False
+                for policy in policy_list:
+                    vlan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
+                
+                vlan_list = []
+                for item in policyData['vlan_policies'][0][vlan_policy][0]['vlans']:
+                    for k, v in item.items():
+                        vlan_list.append(v[0]['vlan_list'])
+
+                vlan_convert = ''
+                for vlan in vlan_list:
+                    if vlan_convert == '':
+                        vlan_convert = str(vlan)
+                    else:
+                        vlan_convert = vlan_convert + ',' + str(vlan)
+
+                vlan_list = vlan_list_full(vlan_convert)
+
                 valid = False
                 while valid == False:
                     VlanList = input('Enter the VLAN or List of VLANs to add to this VLAN Group: ')
                     if not VlanList == '':
-                        policy_list = [
-                            'policies_vlans.vlan_policies.vlan_policy',
-                        ]
-                        templateVars["allow_opt_out"] = False
-                        for policy in policy_list:
-                            vlan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-                        vlan_list = []
-                        for item in policyData['vlan_policies']:
-                            for key, value in item.items():
-                                if key == vlan_policy:
-                                    for i in value[0]['vlans']:
-                                        for k, v in i.items():
-                                            for x in v:
-                                                for y, val in x.items():
-                                                    if y == 'vlan_list':
-                                                        vlan_list.append(val)
-
-                        vlan_convert = ''
-                        for vlan in vlan_list:
-                            vlan = str(vlan)
-                            vlan_convert = vlan_convert + ',' + str(vlan)
-                        vlan_list = vlan_list_full(vlan_convert)
                         vlanListExpanded = vlan_list_full(VlanList)
+
                         valid_vlan = True
                         vlans_not_in_domain_policy = []
                         for vlan in vlanListExpanded:
-                            valid_vlan = validating.number_in_range('VLAN ID', vlan, 1, 4094)
-                            if valid_vlan == False:
-                                break
+                            if str(vlan).isnumeric():
+                                valid_vlan = validating.number_in_range('VLAN ID', vlan, 1, 4094)
+                                if not valid_vlan == False:
+                                    vlan_count = 0
+                                    for vlans in vlan_list:
+                                        if int(vlan) == int(vlans):
+                                            vlan_count += 1
+                                            break
+                                    if vlan_count == 0:
+                                        vlans_not_in_domain_policy.append(vlan)
                             else:
-                                vlan_count = 0
-                                for vlans in vlan_list:
-                                    if int(vlan) == int(vlans):
-                                        vlan_count += 1
-                                        break
-                                if vlan_count == 0:
-                                    vlans_not_in_domain_policy.append(vlans)
-
+                                vlans_not_in_domain_policy.append(vlan)
 
                         if len(vlans_not_in_domain_policy) > 0:
                             print(f'\n-------------------------------------------------------------------------------------------\n')
                             print(f'  Error with VLAN(s) assignment!!  The following VLAN(s) are missing.')
-                            print(f'  - Domain VLAN Policy: "{vlan_policy}"')
                             print(f'  - Missing VLANs: {vlans_not_in_domain_policy}')
+                            print(f'  - VLAN Policy: "{vlan_policy}"')
+                            print(f'  - Has VLANs: "{vlan_convert}"')
                             print(f'\n-------------------------------------------------------------------------------------------\n')
                             valid_vlan = False
 
@@ -2006,7 +1666,7 @@ class easy_imm_wizard(object):
                                     if not native_count == 1:
                                         print(f'\n-------------------------------------------------------------------------------------------\n')
                                         print(f'  Error!! The Native VLAN was not in the Allowed List.')
-                                        print(f'  Allowed VLAN List is: "{vlan_list}"')
+                                        print(f'  Allowed VLAN List is: "{VlanList}"')
                                         print(f'\n-------------------------------------------------------------------------------------------\n')
                                     else:
                                         nativeValid = True
@@ -2078,9 +1738,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Ethernet Network Policy Module
-    #========================================
+    #==============================================
     def ethernet_network_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'network'
@@ -2104,7 +1764,7 @@ class easy_imm_wizard(object):
             print(f'  An {policy_type} determines if the port can carry single VLAN (Access) ')
             print(f'  or multiple VLANs (Trunk) traffic. You can specify the VLAN to be associated with an ')
             print(f'  Ethernet packet if no tag is found.\n\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -2175,9 +1835,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Ethernet QoS Policy Module
-    #========================================
+    #==============================================
     def ethernet_qos_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = ['Management', 'Migration', 'Storage', 'VMs']
@@ -2211,7 +1871,7 @@ class easy_imm_wizard(object):
             print(f'     Migration/vMotion - Bronze')
             print(f'     Storage - Platinum')
             print(f'     Virtual Machines - Gold.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
 
@@ -2378,7 +2038,7 @@ class easy_imm_wizard(object):
 
                     mtu = policyData['system_qos_policies'][0][system_qos_policy][0]['classes'][0][templateVars["priority"]][0]['mtu']
                     if mtu > 8999:
-                        templateVars["mtu"] = mtu
+                        templateVars["mtu"] = 9000
                     else:
                         templateVars["mtu"] = mtu
 
@@ -2442,9 +2102,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Fibre-Channel Adapter Policy Module
-    #========================================
+    #==============================================
     def fibre_channel_adapter_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -2472,7 +2132,7 @@ class easy_imm_wizard(object):
             print(f'  Templates that are pre-configured.  You can add custom {policy_x} policy')
             print(f'  configuration to the {templateVars["template_type"]}.auto.tfvars file at your descretion.  ')
             print(f'  That will not be covered by this wizard as the focus of the wizard is on simplicity.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -2536,9 +2196,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Fibre-Channel Network Policy Module
-    #========================================
+    #==============================================
     def fibre_channel_network_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -2561,7 +2221,7 @@ class easy_imm_wizard(object):
             print(f'  You can Skip this policy if you are not configuring Fibre-Channel.\n')
             print(f'  Fibre-Channel Network Policies Notes:')
             print(f'  - You will need one Policy per Fabric.  VSAN A and VSAN B.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -2613,19 +2273,16 @@ class easy_imm_wizard(object):
                                     vsan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
 
                                 vsan_list = []
-                                for item in policyData['vsan_policies']:
+                                for item in policyData['vsan_policies'][0][vsan_policy][0]['vsans']:
                                     for key, value in item.items():
-                                        if key == vsan_policy:
-                                            for i in value[0]['vsans']:
-                                                for k, v in i.items():
-                                                    for x in v:
-                                                        for y, val in x.items():
-                                                            if y == 'vsan_id':
-                                                                vsan_list.append(val)
+                                        vsan_list.append(value[0]['vsan_id'])
 
                                 vsan_string = ''
                                 for vsan in vsan_list:
-                                    vsan_string = vsan_string + ',' + str(vsan)
+                                    if vsan_string == '':
+                                        vsan_string = str(vsan)
+                                    else:
+                                        vsan_string = vsan_string + ',' + str(vsan)
                                 vsan_list = vlan_list_full(vsan_string)
                                 vsan_count = 0
                                 for vsan in vsan_list:
@@ -2682,9 +2339,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Fibre-Channel QoS Policy Module
-    #========================================
+    #==============================================
     def fibre_channel_qos_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'qos'
@@ -2709,7 +2366,7 @@ class easy_imm_wizard(object):
             print(f'  It is a good practice to apply a {policy_type} to the vHBAs.  This wizard')
             print(f'  creates the policy with all the default values, so you only need one')
             print(f'  {policy_type}.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -2770,9 +2427,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Firmware - UCS Domain Module
-    #========================================
+    #==============================================
     def firmware_ucs_domain(self, jsonData, easy_jsonData):
         templateVars = {}
         templateVars["header"] = 'UCS Domain Profile Variables'
@@ -2810,9 +2467,9 @@ class easy_imm_wizard(object):
                 print(f'\n-------------------------------------------------------------------------------------------\n')
             version_file.close()
 
-    #========================================
+    #==============================================
     # Flow Control Policy Module
-    #========================================
+    #==============================================
     def flow_control_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'flow_ctrl'
@@ -2837,7 +2494,7 @@ class easy_imm_wizard(object):
             print(f'  We recommend the default parameters so you will only be asked for the name and')
             print(f'  description for the Policy.  You only need one of these policies for Organization')
             print(f'  {org}.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -2890,9 +2547,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # IMC Access Policy Module
-    #========================================
+    #==============================================
     def imc_access_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'imc_access'
@@ -2915,7 +2572,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  You will need to configure an IMC Access Policy in order to Assign the VLAN and IPs to ')
             print(f'  the Servers for KVM Access.  At this time only inband access is supported in IMM mode.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             loop_count = 0
@@ -3043,9 +2700,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # IP Pools Module
-    #========================================
+    #==============================================
     def ip_pools(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'ip_pool'
@@ -3069,7 +2726,7 @@ class easy_imm_wizard(object):
             print(f'  At a minimum you will need one IP Pool for KVM Access to Servers.  Currently out-of-band')
             print(f'  management is not supported for KVM access.  This IP Pool will need to be associated to a ')
             print(f'  VLAN assigned to the VLAN Pool of the Domain.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -3085,24 +2742,14 @@ class easy_imm_wizard(object):
                     templateVars["name"] = policy_name(name, policy_type)
                     templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
 
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    print(f'  Assignment order decides the order in which the next identifier is allocated.')
-                    print(f'    1. default - (Intersight Default) Assignment order is decided by the system.')
-                    print(f'    2. sequential - (Recommended) Identifiers are assigned in a sequential order.')
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    valid = False
-                    while valid == False:
-                        templateVars["assignment_order"] = input('Specify the number for the value to select.  [2]: ')
-                        if templateVars["assignment_order"] == '' or templateVars["assignment_order"] == '2':
-                            templateVars["assignment_order"] = 'sequential'
-                            valid = True
-                        elif templateVars["assignment_order"] == '1':
-                            templateVars["assignment_order"] = 'default'
-                            valid = True
-                        else:
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'  Error!! Invalid Option.  Please Select a valid option from the List.')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['pool.AbstractPool']['allOf'][1]['properties']
+
+                    templateVars["var_description"] = jsonVars['AssignmentOrder']['description']
+                    templateVars["jsonVars"] = sorted(jsonVars['AssignmentOrder']['enum'])
+                    templateVars["defaultVar"] = jsonVars['AssignmentOrder']['default']
+                    templateVars["varType"] = 'Assignment Order'
+                    templateVars["assignment_order"] = variablesFromAPI(**templateVars)
 
                     valid = False
                     while valid == False:
@@ -3117,77 +2764,78 @@ class easy_imm_wizard(object):
                             print(f'\n-------------------------------------------------------------------------------------------\n')
 
                     if config_ipv4 == 'Y' or config_ipv4 == '':
-                        valid = False
-                        while valid == False:
-                            network_prefix = input('What is the Gateway/Mask to Assign to the Pool?  [198.18.0.1/24]: ')
-                            if network_prefix == '':
-                                network_prefix = '198.18.0.1/24'
-                            gateway_valid = validating.ip_address('Gateway Address', network_prefix)
-                            mask_valid = validating.number_in_range('Mask Length', network_prefix.split('/')[1], 1, 30)
-                            if gateway_valid == True and mask_valid == True:
-                                valid = True
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Value.  Please Verify you have entered the gateway/prefix correctly.')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                        jsonVars = jsonData['components']['schemas']['ippool.IpV4Block']['allOf'][1]['properties']
+
+                        templateVars["Description"] = 'The Gateway/Prefix to Assign to the Pool'
+                        templateVars["varDefault"] = '198.18.0.1/24'
+                        templateVars["varInput"] = 'What is the Gateway/Prefix to Assign to the Pool?  [198.18.0.1/24]:'
+                        templateVars["varName"] = 'Gateway/Prefix'
+                        templateVars["varRegex"] = '^([1-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\\.{3}([0-9]|[1-9][0-9]|1[0-9][0-9]|2[0-4][0-9]|25[0-5])\/[0-9]{1,2}$'
+                        templateVars["minLength"] = 7
+                        templateVars["maxLength"] = 20
+                        network_prefix = varStringLoop(**templateVars)
 
                         gateway = str(ipaddress.IPv4Interface(network_prefix).ip)
                         netmask = str(ipaddress.IPv4Interface(network_prefix).netmask)
                         network = str(ipaddress.IPv4Interface(network_prefix).network)
                         prefix = network_prefix.split('/')[1]
 
-                        valid = False
-                        while valid == False:
-                            starting = input('What is the Starting IP Address to Assign to the Pool?  [198.18.0.10]: ')
-                            if starting == '':
-                                starting = '198.18.0.10'
-                            valid_ip = validating.ip_address('Starting IP Address', starting)
-                            if valid_ip == True:
-                                if network == str(ipaddress.IPv4Interface('/'.join([starting, prefix])).network):
-                                    valid = True
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! Invalid Value.  Please Verify the starting IP is in the same network')
-                                    print(f'  as the Gateway')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                        templateVars["Description"] = jsonVars['From']['description']
+                        templateVars["varDefault"] = '198.18.0.2'
+                        templateVars["varInput"] = 'What is the Starting IP Address to Assign to the Pool?  [198.18.0.2]:'
+                        templateVars["varName"] = 'Starting IP Address'
+                        templateVars["varRegex"] = jsonVars['From']['pattern']
+                        templateVars["minLength"] = 7
+                        templateVars["maxLength"] = 15
+                        pool_from = varStringLoop(**templateVars)
 
-                        valid = False
-                        while valid == False:
-                            pool_size = input('How Many IP Addresses should be added to the Pool?  Range is 1-1000 [160]: ')
-                            if pool_size == '':
-                                pool_size = '160'
-                            valid = validating.number_in_range('Pool Size', pool_size, 1, 1000)
+                        jsonVars = jsonData['components']['schemas']['pool.AbstractBlockType']['allOf'][1]['properties']
 
-                        valid = False
-                        while valid == False:
-                            primary_dns = input('What is your Primary DNS Server [208.67.220.220]? ')
-                            if primary_dns == '':
-                                primary_dns = '208.67.220.220'
-                            valid = validating.ip_address('Primary DNS Server', primary_dns)
+                        templateVars["Description"] = jsonVars['Size']['description']
+                        templateVars["varInput"] = 'How Many IP Addresses should be added to the Pool?  Range is 1-1000.'
+                        templateVars["varDefault"] = 253
+                        templateVars["varName"] = 'Pool Size'
+                        templateVars["minNum"] = jsonVars['Size']['minimum']
+                        templateVars["maxNum"] = jsonVars['Size']['maximum']
+                        pool_size = varNumberLoop(**templateVars)
 
-                        valid = False
-                        while valid == False:
-                            alternate_true = input('Do you want to Configure an Alternate DNS Server?  Enter "Y" or "N" [Y]: ')
-                            if alternate_true == 'Y' or alternate_true == '':
-                                secondary_dns = input('What is your Alternate DNS Server [208.67.222.222]? ')
-                                if secondary_dns == '':
-                                    secondary_dns = '208.67.222.222'
-                                valid = validating.ip_address('Alternate DNS Server', secondary_dns)
-                            elif alternate_true == 'N':
-                                secondary_dns = ''
-                                valid = True
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                        jsonVars = jsonData['components']['schemas']['ippool.IpV4Config']['allOf'][1]['properties']
 
-                        beginx = int(ipaddress.IPv4Address(starting))
-                        add_dec = (beginx + int(pool_size))
-                        ending = str(ipaddress.IPv4Address(add_dec))
+                        templateVars["Description"] = jsonVars['PrimaryDns']['description']
+                        templateVars["varDefault"] = '208.67.220.220'
+                        templateVars["varInput"] = 'What is your Primary DNS Server?  [208.67.220.220]:'
+                        templateVars["varName"] = 'Primary Dns'
+                        templateVars["varRegex"] = jsonVars['PrimaryDns']['pattern']
+                        templateVars["minLength"] = 7
+                        templateVars["maxLength"] = 15
+                        primary_dns = varStringLoop(**templateVars)
 
-                        templateVars["ipv4_blocks"] = [{'from':starting, 'to':ending}]
-                        templateVars["ipv4_configuration"] = {'gateway':gateway, 'netmask':netmask,
-                            'primary_dns':primary_dns, 'secondary_dns':secondary_dns}
+                        templateVars["Description"] = jsonVars['SecondaryDns']['description']
+                        templateVars["varDefault"] = ''
+                        templateVars["varInput"] = 'What is your Secondary DNS Server?  [press enter to skip]:'
+                        templateVars["varName"] = 'Secondary Dns'
+                        templateVars["varRegex"] = jsonVars['SecondaryDns']['pattern']
+                        templateVars["minLength"] = 7
+                        templateVars["maxLength"] = 15
+                        secondary_dns = varStringLoop(**templateVars)
+
+                        beginx = int(ipaddress.IPv4Address(pool_from))
+                        add_dec = (beginx + int(pool_size) - 1)
+                        pool_to = str(ipaddress.IPv4Address(add_dec))
+
+                        templateVars["ipv4_blocks"] = [
+                            {
+                                'from':pool_from,
+                                'size':pool_size,
+                                'to':pool_to
+                            }
+                        ]
+                        templateVars["ipv4_configuration"] = {
+                            'gateway':gateway,
+                            'netmask':netmask,
+                            'primary_dns':primary_dns,
+                            'secondary_dns':secondary_dns
+                        }
 
                     valid = False
                     while valid == False:
@@ -3202,96 +2850,100 @@ class easy_imm_wizard(object):
                             print(f'\n-------------------------------------------------------------------------------------------\n')
 
                     if config_ipv6 == 'Y':
-                        valid = False
-                        while valid == False:
-                            network_prefix = input('What is the Gateway/Mask to Assign to the Pool?  [2001:0002::1/64]: ')
-                            if network_prefix == '':
-                                network_prefix = '2001:0002::1/64'
-                            gateway_valid = validating.ip_address('Gateway Address', network_prefix)
-                            mask_valid = validating.number_in_range('Mask Length', network_prefix.split('/')[1], 48, 127)
-                            if gateway_valid == True and mask_valid == True:
-                                valid = True
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Value.  Please Verify you have entered the gateway/prefix correctly.')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                        jsonVars = jsonData['components']['schemas']['ippool.IpV6Block']['allOf'][1]['properties']
+
+                        templateVars["Description"] = 'The Gateway/Prefix to Assign to the Pool'
+                        templateVars["varDefault"] = '2001:0002::1/64'
+                        templateVars["varInput"] = 'What is the Gateway/Prefix to Assign to the Pool?  [2001:0002::1/64]:'
+                        templateVars["varName"] = 'Gateway/Prefix'
+                        templateVars["varRegex"] = '^$|^(([0-9A-Fa-f]{1,4}:([0-9A-Fa-f]{1,4}:([0-9A-Fa-f]{1,4}:([0-9A-Fa-f]{1,4}:([0-9A-Fa-f]{1,4}:[0-9A-Fa-f]{0,4}|:[0-9A-Fa-f]{1,4})?|(:[0-9A-Fa-f]{1,4}){0,2})|(:[0-9A-Fa-f]{1,4}){0,3})|(:[0-9A-Fa-f]{1,4}){0,4})|:(:[0-9A-Fa-f]{1,4}){0,5})((:[0-9A-Fa-f]{1,4}){2}|:(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])(\\.(25[0-5]|(2[0-4]|1[0-9]|[1-9])?[0-9])){3})|(([0-9A-Fa-f]{1,4}:){1,6}|:):[0-9A-Fa-f]{0,4}|([0-9A-Fa-f]{1,4}:){7}:)\/[0-9]{1,3}$'
+                        templateVars["minLength"] = 6
+                        templateVars["maxLength"] = 164
+                        network_prefix = varStringLoop(**templateVars)
 
                         # broadcast = str(ipaddress.IPv4Interface(network_prefix).broadcast_address)
                         gateway = str(ipaddress.IPv6Interface(network_prefix).ip)
+                        if re.search('[a-z]+', gateway):
+                            gateway = gateway.upper()
                         network = str(ipaddress.IPv6Interface(network_prefix).network)
                         prefix = network_prefix.split('/')[1]
 
-                        valid = False
-                        while valid == False:
-                            starting = input('What is the Starting IP Address to Assign to the Pool?  [2001:0002::10]: ')
-                            if starting == '':
-                                starting = '2001:0002::10'
-                            valid_ip = validating.ip_address('Starting IP Address', starting)
-                            if valid_ip == True:
-                                if network == str(ipaddress.IPv6Interface('/'.join([starting, prefix])).network):
-                                    valid = True
-                                    # print('gateway and starting ip are in the same network')
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! Invalid Value.  Please Verify the starting IP is in the same network')
-                                    print(f'  as the Gateway')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                        templateVars["Description"] = jsonVars['From']['description']
+                        templateVars["varDefault"] = '2001:0002::2'
+                        templateVars["varInput"] = 'What is the Starting IP Address to Assign to the Pool?  [2001:0002::2]:'
+                        templateVars["varName"] = 'Starting IPv6 Address'
+                        templateVars["varRegex"] = jsonVars['From']['pattern']
+                        templateVars["minLength"] = 3
+                        templateVars["maxLength"] = 164
+                        starting = varStringLoop(**templateVars)
 
-                        valid = False
-                        while valid == False:
-                            pool_size = input('How Many IP Addresses should be added to the Pool?  Range is 1-1000 [160]: ')
-                            if pool_size == '':
-                                pool_size = '160'
-                            valid = validating.number_in_range('Pool Size', pool_size, 1, 1000)
+                        jsonVars = jsonData['components']['schemas']['pool.AbstractBlockType']['allOf'][1]['properties']
 
-                        valid = False
-                        while valid == False:
-                            primary_dns = input('What is your Primary DNS Server [2620:119:35::35]? ')
-                            if primary_dns == '':
-                                primary_dns = '2620:119:35::35'
-                            valid = validating.ip_address('Primary DNS Server', primary_dns)
+                        templateVars["Description"] = jsonVars['Size']['description']
+                        templateVars["varInput"] = 'How Many IPv6 Addresses should be added to the Pool?  Range is 1-1000.'
+                        templateVars["varDefault"] = 1000
+                        templateVars["varName"] = 'Pool Size'
+                        templateVars["minNum"] = jsonVars['Size']['minimum']
+                        templateVars["maxNum"] = jsonVars['Size']['maximum']
+                        pool_size = varNumberLoop(**templateVars)
 
-                        valid = False
-                        while valid == False:
-                            alternate_true = input('Do you want to Configure an Alternate DNS Server? Enter "Y" or "N" [Y]: ')
-                            if alternate_true == 'Y' or alternate_true == '':
-                                secondary_dns = input('What is your Alternate DNS Server [2620:119:53::53]? ')
-                                if secondary_dns == '':
-                                    secondary_dns = '2620:119:53::53'
-                                valid = validating.ip_address('Alternate DNS Server', secondary_dns)
-                            elif alternate_true == 'N':
-                                secondary_dns = ''
-                                valid = True
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                        jsonVars = jsonData['components']['schemas']['ippool.IpV6Config']['allOf'][1]['properties']
 
-                        # beginx = int(ipaddress.IPv6Address(starting))
-                        # add_dec = (beginx + int(pool_size))
-                        # ending = str(ipaddress.IPv6Address(add_dec))
+                        templateVars["Description"] = jsonVars['PrimaryDns']['description']
+                        templateVars["varDefault"] = '2620:119:53::53'
+                        templateVars["varInput"] = 'What is your Primary DNS Server?  [2620:119:53::53]:'
+                        templateVars["varName"] = 'Primary Dns'
+                        templateVars["varRegex"] = jsonVars['PrimaryDns']['pattern']
+                        templateVars["minLength"] = 3
+                        templateVars["maxLength"] = 164
+                        primary_dns = varStringLoop(**templateVars)
 
-                        templateVars["ipv6_blocks"] = [{'from':starting, 'size':pool_size}]
-                        templateVars["ipv6_configuration"] = {'gateway':gateway, 'prefix':prefix,
-                            'primary_dns':primary_dns, 'secondary_dns':secondary_dns}
+                        templateVars["Description"] = jsonVars['SecondaryDns']['description']
+                        templateVars["varDefault"] = ''
+                        templateVars["varInput"] = 'What is your Secondary DNS Server?  [press enter to skip]:'
+                        templateVars["varName"] = 'Secondary Dns'
+                        templateVars["varRegex"] = jsonVars['SecondaryDns']['pattern']
+                        templateVars["minLength"] = 3
+                        templateVars["maxLength"] = 164
+                        secondary_dns = varStringLoop(**templateVars)
+
+                        beginx = int(ipaddress.IPv6Address(starting))
+                        add_dec = (beginx + int(pool_size) - 1)
+                        ending = str(ipaddress.IPv6Address(add_dec))
+
+                        templateVars["ipv6_blocks"] = [
+                            {
+                                'from':starting,
+                                'size':pool_size,
+                                'to':ending
+                            }
+                        ]
+                        templateVars["ipv6_configuration"] = {
+                            'gateway':gateway,
+                            'prefix':prefix,
+                            'primary_dns':primary_dns,
+                            'secondary_dns':secondary_dns
+                        }
 
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     print(f'    assignment_order = "{templateVars["assignment_order"]}"')
                     print(f'    description      = "{templateVars["descr"]}"')
                     print(f'    name             = "{templateVars["name"]}"')
                     if config_ipv4 == 'Y' or config_ipv4 == '':
-                        print(f'    ipv4_blocks = [')
+                        print(f'    ipv4_blocks = ''{')
                         for item in templateVars["ipv4_blocks"]:
                             print('      {')
                             for k, v in item.items():
                                 if k == 'from':
                                     print(f'        from = "{v}" ')
+                                elif k == 'size':
+                                    print(f'        size = {v}')
                                 elif k == 'to':
                                     print(f'        to   = "{v}"')
                             print('      }')
-                        print(f'    ]')
+                        print(f'    ''}')
                         print('    ipv4_configuration = {')
-                        print('      {')
+                        print('      config = {')
                         for k, v in templateVars["ipv4_configuration"].items():
                             if k == 'gateway':
                                 print(f'        gateway       = "{v}"')
@@ -3304,18 +2956,20 @@ class easy_imm_wizard(object):
                         print('      }')
                         print('    }')
                     if config_ipv6 == 'Y':
-                        print(f'    ipv6_blocks = [')
+                        print(f'    ipv6_blocks = ''{')
                         for item in templateVars["ipv6_blocks"]:
                             print('      {')
                             for k, v in item.items():
                                 if k == 'from':
-                                    print(f'        from = {v}')
+                                    print(f'        from = "{v}"')
                                 elif k == 'size':
                                     print(f'        size = {v}')
+                                elif k == 'to':
+                                    print(f'        to   = "{v}"')
                             print('      }')
-                        print(f'    ]')
+                        print(f'    ''}')
                         print('    ipv6_configuration = {')
-                        print('      {')
+                        print('      config = {')
                         for k, v in templateVars["ipv6_configuration"].items():
                             if k == 'gateway':
                                 print(f'        gateway       = "{v}"')
@@ -3363,9 +3017,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # IPMI over LAN Policy Module
-    #========================================
+    #==============================================
     def ipmi_over_lan_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'ipmi'
@@ -3389,7 +3043,7 @@ class easy_imm_wizard(object):
             print(f'  An {policy_type} will configure IPMI over LAN access on a Server Profile.  This policy')
             print(f'  allows you to determine whether IPMI commands can be sent directly to the server, using ')
             print(f'  the IP address.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -3475,9 +3129,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Intersight Module
-    #========================================
+    #==============================================
     def intersight(self, easy_jsonData, tfcb_config):
         org = self.org
         policy_type = 'Intersight'
@@ -3521,9 +3175,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # IQN Pools Module
-    #========================================
+    #==============================================
     def iqn_pools(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'iqn_pool'
@@ -3557,24 +3211,14 @@ class easy_imm_wizard(object):
                     templateVars["name"] = policy_name(name, policy_type)
                     templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
 
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    print(f'  Assignment order decides the order in which the next identifier is allocated.')
-                    print(f'    1. default - (Intersight Default) Assignment order is decided by the system.')
-                    print(f'    2. sequential - (Recommended) Identifiers are assigned in a sequential order.')
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    valid = False
-                    while valid == False:
-                        templateVars["assignment_order"] = input('Specify the Index for the value to select [2]: ')
-                        if templateVars["assignment_order"] == '' or templateVars["assignment_order"] == '2':
-                            templateVars["assignment_order"] = 'sequential'
-                            valid = True
-                        elif templateVars["assignment_order"] == '1':
-                            templateVars["assignment_order"] = 'default'
-                            valid = True
-                        else:
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'  Error!! Invalid Option.  Please Select a valid option from the List.')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['pool.AbstractPool']['allOf'][1]['properties']
+
+                    templateVars["var_description"] = jsonVars['AssignmentOrder']['description']
+                    templateVars["jsonVars"] = sorted(jsonVars['AssignmentOrder']['enum'])
+                    templateVars["defaultVar"] = jsonVars['AssignmentOrder']['default']
+                    templateVars["varType"] = 'Assignment Order'
+                    templateVars["assignment_order"] = variablesFromAPI(**templateVars)
 
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     print(f'  The iSCSI Qualified Name (IQN) format is: iqn.yyyy-mm.naming-authority:unique name, where:')
@@ -3589,34 +3233,61 @@ class easy_imm_wizard(object):
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     valid = False
                     while valid == False:
-                        templateVars['prefix'] = input(f'\nWhat is the IQN Prefix you would like to assign to the Pool?  [iqn.1984-12.com.cisco]: ')
-                        if templateVars['prefix'] == '':
-                            templateVars['prefix'] = 'iqn.1984-12.com.cisco'
+                        jsonVars = jsonData['components']['schemas']['iqnpool.Pool']['allOf'][1]['properties']
 
-                        suffix = input(f'\nWhat is the IQN Suffix you would like to assign to the Pool?  [ucs-host]: ')
-                        if suffix == '':
-                            suffix = 'ucs-host'
+                        templateVars["Description"] = jsonVars['Prefix']['description']
+                        templateVars["varDefault"] = 'iqn.1984-12.com.cisco'
+                        templateVars["varInput"] = 'What is the IQN Prefix you would like to assign to the Pool?  [iqn.1984-12.com.cisco]:'
+                        templateVars["varName"] = 'IQN Prefix'
+                        templateVars["varRegex"] = '^$|^(?:iqn\\.[0-9]{4}-[0-9]{2}(?:\\.[A-Za-z](?:[A-Za-z0-9\\-]*[A-Za-z0-9])?)+?'
+                        templateVars["minLength"] = 7
+                        templateVars["maxLength"] = 64
+                        templateVars["prefix"] = varStringLoop(**templateVars)
 
-                        pool_from = input(f'\nWhat is the first Suffix Number in the Block?  [1]: ')
-                        if pool_from == '':
-                            pool_from = '1'
-                        valid_from = validating.number_in_range('IQN Pool From', pool_from, 1, 1000)
+                        jsonVars = jsonData['components']['schemas']['iqnpool.IqnSuffixBlock']['allOf'][1]['properties']
 
-                        pool_size = input(f'\nWhat is the size of the Block?  [512]: ')
-                        if pool_size == '':
-                            pool_size = '512'
-                        valid_size = validating.number_in_range('IQN Pool Size', pool_size, 1, 1000)
+                        templateVars["Description"] = jsonVars['From']['description']
+                        templateVars["varInput"] = jsonVars['From']['description'] 
+                        templateVars["varDefault"] = 0
+                        templateVars["varName"] = 'Starting Suffix'
+                        templateVars["minNum"] = 0
+                        templateVars["maxNum"] = 60000000000
+                        pool_from = varNumberLoop(**templateVars)
 
+                        templateVars["Description"] = jsonVars['Suffix']['description']
+                        templateVars["varDefault"] = 'ucs-host'
+                        templateVars["varInput"] = 'What is the IQN Suffix you would like to assign to the Pool?  [ucs-host]:'
+                        templateVars["varName"] = 'IQN Suffix'
+                        templateVars["varRegex"] = '[0-9a-zA-Z]'
+                        templateVars["minLength"] = 3
+                        templateVars["maxLength"] = 32
+                        suffix = varStringLoop(**templateVars)
+
+                        jsonVars = jsonData['components']['schemas']['pool.AbstractBlockType']['allOf'][1]['properties']
+
+                        templateVars["Description"] = jsonVars['Size']['description']
+                        templateVars["varInput"] = 'How Many IP Addresses should be added to the Pool?  Range is 1-1000.'
+                        templateVars["varDefault"] = 1000
+                        templateVars["varName"] = 'Pool Size'
+                        templateVars["minNum"] = jsonVars['Size']['minimum']
+                        templateVars["maxNum"] = jsonVars['Size']['maximum']
+                        pool_size = varNumberLoop(**templateVars)
+
+                        pool_to = pool_from + pool_size - 1
                         from_iqn = '%s:%s%s' % (templateVars['prefix'], suffix, pool_from)
-                        valid_iqn = validating.iqn_address('IQN Staring Address', from_iqn)
-
-                        if valid_from == True and valid_size == True and valid_iqn == True:
+                        to_iqn = '%s:%s%s' % (templateVars['prefix'], suffix, pool_to)
+                        valid_starting_iqn = validating.iqn_address('IQN Staring Address', from_iqn)
+                        valid_ending_iqn = validating.iqn_address('IQN Ending Address', to_iqn)
+                        if valid_starting_iqn == True and valid_ending_iqn == True:
                             valid = True
+
+
                     templateVars["iqn_blocks"] = [
                         {
                             'from':pool_from,
                             'size':pool_size,
-                            'suffix':suffix
+                            'suffix':suffix,
+                            'to':pool_to
                         }
                     ]
                     print(f'\n-------------------------------------------------------------------------------------------\n')
@@ -3624,9 +3295,9 @@ class easy_imm_wizard(object):
                     print(f'    description      = "{templateVars["descr"]}"')
                     print(f'    name             = "{templateVars["name"]}"')
                     print(f'    prefix           = "{templateVars["prefix"]}"')
-                    print(f'    iqn_blocks = [')
+                    print(f'    iqn_blocks = ''{')
                     for i in templateVars["iqn_blocks"]:
-                        print(f'      ''{')
+                        print(f'      ''"0" = {')
                         for k, v in i.items():
                             if k == 'from':
                                 print(f'        from   = {v}')
@@ -3634,8 +3305,10 @@ class easy_imm_wizard(object):
                                 print(f'        size   = {v}')
                             elif k == 'suffix':
                                 print(f'        suffix = "{v}"')
+                            elif k == 'to':
+                                print(f'        to     = {v}')
                         print(f'      ''}')
-                    print(f'    ]')
+                    print(f'    ''}')
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     valid_confirm = False
                     while valid_confirm == False:
@@ -3672,9 +3345,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # iSCSI Adapter Policy Module
-    #========================================
+    #==============================================
     def iscsi_adapter_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'adapter'
@@ -3697,7 +3370,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  The {policy_type} allows you to configure values for TCP Connection Timeout, ')
             print(f'  DHCP Timeout, and the Retry Count if the specified LUN ID is busy.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -3785,9 +3458,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # iSCSI Boot Policy Module
-    #========================================
+    #==============================================
     def iscsi_boot_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'boot'
@@ -3811,7 +3484,7 @@ class easy_imm_wizard(object):
             print(f'  The {policy_type} allows you to initialize the Operating System on FI-attached ')
             print(f'  blade and rack servers from a remote disk across a Storage Area Network. The remote disk, ')
             print(f'  known as the target, is accessed using TCP/IP and iSCSI boot firmware.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -4064,9 +3737,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # iSCSI Static Target Policy Module
-    #========================================
+    #==============================================
     def iscsi_static_target_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'target'
@@ -4090,7 +3763,7 @@ class easy_imm_wizard(object):
             print(f'  The {policy_type} allows you to specify the name, IP address, port, and ')
             print(f'  logical unit number of the primary target for iSCSI boot. You can optionally specify these ')
             print(f'  details for a secondary target as well.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -4207,9 +3880,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # LAN Connectivity Policy Module
-    #========================================
+    #==============================================
     def lan_connectivity_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = ['Management', 'Migration', 'Storage', 'Virtual_Machines']
@@ -4238,7 +3911,7 @@ class easy_imm_wizard(object):
             print(f'     2. Migration/vMotion')
             print(f'     3. Storage')
             print(f'     4. Virtual Machines\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -4589,6 +4262,8 @@ class easy_imm_wizard(object):
                                     print(f'    ethernet_network_group_policy   = "{v}"')
                                 elif k == 'ethernet_network_policy':
                                     print(f'    ethernet_network_policy         = "{v}"')
+                                elif k == 'ethernet_qos_policy':
+                                    print(f'    ethernet_qos_policy             = "{v}"')
                                 elif k == 'iscsi_boot_policy':
                                     print(f'    iscsi_boot_policy               = "{v}"')
                                 elif k == 'mac_address_allocation_type':
@@ -4680,6 +4355,8 @@ class easy_imm_wizard(object):
                                     print(f'        ethernet_network_group_policy   = "{v}"')
                                 elif k == 'ethernet_network_policy':
                                     print(f'        ethernet_network_policy         = "{v}"')
+                                elif k == 'ethernet_qos_policy':
+                                    print(f'    ethernet_qos_policy             = "{v}"')
                                 elif k == 'iscsi_boot_policy':
                                     print(f'        iscsi_boot_policy               = "{v}"')
                                 elif k == 'mac_address_allocation_type':
@@ -4741,9 +4418,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # LDAP Policy Module
-    #========================================
+    #==============================================
     def ldap_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'ldap'
@@ -4768,7 +4445,7 @@ class easy_imm_wizard(object):
             print(f'  enabled in the Cisco IMC, user authentication and role authorization is performed by the ')
             print(f'  LDAP server for user accounts not found in the local user database. You can enable and ')
             print(f'  configure LDAP, and configure LDAP servers and LDAP groups.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -5295,9 +4972,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Link Aggregation Policy Module
-    #========================================
+    #==============================================
     def link_aggregation_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'link_agg'
@@ -5322,7 +4999,7 @@ class easy_imm_wizard(object):
             print(f'  uplinks.  We recommend the default wizard settings so you will only be asked for the ')
             print(f'  name and description for the Policy.  You only need one of these policies for ')
             print(f'  Organization {org}.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -5373,9 +5050,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Link Control Policy Module
-    #========================================
+    #==============================================
     def link_control_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'link_ctrl'
@@ -5401,7 +5078,7 @@ class easy_imm_wizard(object):
             print(f'  We recommend the wizards default parameters so you will only be asked for the name')
             print(f'  and description for the Policy.  You only need one of these policies for')
             print(f'  Organization {org}.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -5452,9 +5129,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Local User Policy Module
-    #========================================
+    #==============================================
     def local_user_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'local_users'
@@ -5477,7 +5154,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  A {policy_type} will configure servers with Local Users for KVM Access.  This Policy ')
             print(f'  is not required to standup a server but is a good practice for day 2 support.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -5686,8 +5363,6 @@ class easy_imm_wizard(object):
                                     'username':username
                                 }
 
-                                # for k, v in os.environ.items():
-                                #     print(f'key is {k}, and value is {v}')
                                 print(f'\n-------------------------------------------------------------------------------------------\n')
                                 print(f'   enabled  = True')
                                 print(f'   password = "Sensitive"')
@@ -5794,9 +5469,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # MAC Pools Module
-    #========================================
+    #==============================================
     def mac_pools(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -5821,7 +5496,7 @@ class easy_imm_wizard(object):
             print(f'  - For MAC Pools; create a pool for each Fabric.')
             print(f'  - Pool Size can be between 1 and 1000 addresses.')
             print(f'  - Refer to "UCS Naming Conventions 0.5.ppsx" in the Repository for further guidance.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             loop_count = 0
@@ -5833,68 +5508,72 @@ class easy_imm_wizard(object):
                 templateVars["name"] = policy_name(name, policy_type)
                 templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
 
-                print(f'\n-------------------------------------------------------------------------------------------\n')
-                print(f'  Assignment order decides the order in which the next identifier is allocated.')
-                print(f'    1. default - (Intersight Default) Assignment order is decided by the system.')
-                print(f'    2. sequential - (Recommended) Identifiers are assigned in a sequential order.')
-                print(f'\n-------------------------------------------------------------------------------------------\n')
-                valid = False
-                while valid == False:
-                    templateVars["assignment_order"] = input('Specify the number for the value to select.  [2]: ')
-                    if templateVars["assignment_order"] == '' or templateVars["assignment_order"] == '2':
-                        templateVars["assignment_order"] = 'sequential'
-                        valid = True
-                    elif templateVars["assignment_order"] == '1':
-                        templateVars["assignment_order"] = 'default'
-                        valid = True
-                    else:
-                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Option.  Please Select a valid option from the List.')
-                        print(f'\n-------------------------------------------------------------------------------------------\n')
+                templateVars["multi_select"] = False
+                jsonVars = jsonData['components']['schemas']['pool.AbstractPool']['allOf'][1]['properties']
 
-                valid = False
-                while valid == False:
-                    if loop_count % 2 == 0:
-                        begin = input('What is the Beginning MAC Address to Assign to the Pool?  [00:25:B5:0A:00:00]: ')
-                    else:
-                        begin = input('What is the Beginning MAC Address to Assign to the Pool?  [00:25:B5:0B:00:00]: ')
-                    if begin == '':
-                        if loop_count % 2 == 0:
-                            begin = '00:25:B5:0A:00:00'
-                        else:
-                            begin = '00:25:B5:0B:00:00'
-                    valid = validating.mac_address('MAC Pool Address', begin)
+                templateVars["var_description"] = jsonVars['AssignmentOrder']['description']
+                templateVars["jsonVars"] = sorted(jsonVars['AssignmentOrder']['enum'])
+                templateVars["defaultVar"] = jsonVars['AssignmentOrder']['default']
+                templateVars["varType"] = 'Assignment Order'
+                templateVars["assignment_order"] = variablesFromAPI(**templateVars)
 
-                valid = False
-                while valid == False:
-                    pool_size = input('How Many Mac Addresses should be added to the Pool?  Range is 1-1000 [512]: ')
-                    if pool_size == '':
-                        pool_size = '512'
-                    valid = validating.number_in_range('Pool Size', pool_size, 1, 1000)
+                jsonVars = jsonData['components']['schemas']['macpool.Block']['allOf'][1]['properties']
 
-                begin = begin.upper()
-                beginx = int(begin.replace(':', ''), 16)
-                add_dec = (beginx + int(pool_size))
-                ending = ':'.join(['{}{}'.format(a, b)
+                templateVars["Description"] = jsonVars['From']['description']
+                if loop_count % 2 == 0: 
+                    templateVars["varDefault"] = '00:25:B5:0A:00:00'
+                    templateVars["varInput"] = 'What is the Starting MAC Address to Assign to the Pool?  [00:25:B5:0A:00:00]:'
+                else:
+                    templateVars["varDefault"] = '00:25:B5:0B:00:00'
+                    templateVars["varInput"] = 'What is the Starting MAC Address to Assign to the Pool?  [00:25:B5:0B:00:00]:'
+                templateVars["varName"] = 'Starting MAC Address'
+                templateVars["varRegex"] = '^([0-9a-zA-Z]{2}:){5}[0-9a-zA-Z]{2}$'
+                templateVars["minLength"] = 17
+                templateVars["maxLength"] = 17
+                pool_from = varStringLoop(**templateVars)
+
+                jsonVars = jsonData['components']['schemas']['pool.AbstractBlockType']['allOf'][1]['properties']
+
+                templateVars["Description"] = jsonVars['Size']['description']
+                templateVars["varInput"] = 'How Many IP Addresses should be added to the Pool?  Range is 1-1000.'
+                templateVars["varDefault"] = 1000
+                templateVars["varName"] = 'Pool Size'
+                templateVars["minNum"] = jsonVars['Size']['minimum']
+                templateVars["maxNum"] = jsonVars['Size']['maximum']
+                pool_size = varNumberLoop(**templateVars)
+
+                if re.search('[a-z]', pool_from):
+                    pool_from = pool_from.upper()
+                beginx = int(pool_from.replace(':', ''), 16)
+                add_dec = (beginx + int(pool_size) - 1)
+                pool_to = ':'.join(['{}{}'.format(a, b)
                     for a, b
                     in zip(*[iter('{:012x}'.format(add_dec))]*2)])
-                ending = ending.upper()
-                templateVars["mac_blocks"] = [{'from':begin, 'to':ending}]
+                pool_to = pool_to.upper()
+                templateVars["mac_blocks"] = [
+                    {
+                        'from':pool_from,
+                        'size':pool_size,
+                        'to':pool_to
+                    }
+                ]
 
                 print(f'\n-------------------------------------------------------------------------------------------\n')
                 print(f'    assignment_order = "{templateVars["assignment_order"]}"')
                 print(f'    description      = "{templateVars["descr"]}"')
                 print(f'    name             = "{templateVars["name"]}"')
-                print(f'    mac_blocks = [')
+                print(f'    mac_blocks = ''{')
                 for item in templateVars["mac_blocks"]:
-                    print('      {')
+                    print('      "0" = {')
                     for k, v in item.items():
                         if k == 'from':
                             print(f'        from = "{v}" ')
+                        elif k == 'size':
+                            print(f'        size = {v}')
                         elif k == 'to':
                             print(f'        to   = "{v}"')
                     print('      }')
-                print(f'    ]')
+                print(f'    ''}')
                 print(f'\n-------------------------------------------------------------------------------------------\n')
                 valid_confirm = False
                 while valid_confirm == False:
@@ -5925,9 +5604,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Multicast Policy Module
-    #========================================
+    #==============================================
     def multicast_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'multicast'
@@ -5953,7 +5632,7 @@ class easy_imm_wizard(object):
             print(f'  and you need the Fabric Interconnects to act as IGMP Queriers for the network.')
             print(f'  If you configure IGMP Queriers for a Multicast Policy that Policy should only be')
             print(f'  Assigned to the VLAN for which those Queriers will service.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -6028,9 +5707,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Network Connectivity Policy Module
-    #========================================
+    #==============================================
     def network_connectivity_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'dns'
@@ -6053,7 +5732,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  It is strongly recommended to have a Network Connectivity (DNS) Policy for the')
             print(f'  UCS Domain Profile.  Without it, DNS resolution will fail.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -6168,9 +5847,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # NTP Policy Module
-    #========================================
+    #==============================================
     def ntp_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'ntp'
@@ -6195,7 +5874,7 @@ class easy_imm_wizard(object):
             print(f'  Without an NTP Policy Events can be incorrectly timestamped and Intersight ')
             print(f'  Communication, as an example, could be interrupted with Certificate Validation\n')
             print(f'  checks, as an example.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -6209,39 +5888,13 @@ class easy_imm_wizard(object):
                 templateVars["name"] = policy_name(name, policy_type)
                 templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
 
-                valid = False
-                while valid == False:
-                    primary_ntp = input('What is your Primary NTP Server [0.north-america.pool.ntp.org]: ')
-                    if primary_ntp == "":
-                        primary_ntp = '0.north-america.pool.ntp.org'
-                    if re.search(r'[a-zA-Z]+', primary_ntp):
-                        valid = validating.dns_name('Primary NTP Server', primary_ntp)
-                    else:
-                        valid = validating.ip_address('Primary NTP Server', primary_ntp)
-
-                valid = False
-                while valid == False:
-                    alternate_true = input('Do you want to Configure an Alternate NTP Server?  Enter "Y" or "N" [Y]: ')
-                    if alternate_true == 'Y' or alternate_true == '':
-                        alternate_ntp = input('What is your Alternate NTP Server? [1.north-america.pool.ntp.org]: ')
-                        if alternate_ntp == '':
-                            alternate_ntp = '1.north-america.pool.ntp.org'
-                        if re.search(r'[a-zA-Z]+', alternate_ntp):
-                            valid = validating.dns_name('Alternate NTP Server', alternate_ntp)
-                        else:
-                            valid = validating.ip_address('Alternate NTP Server', alternate_ntp)
-                    elif alternate_true == 'N':
-                        alternate_ntp = ''
-                        valid = True
-                    else:
-                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n-------------------------------------------------------------------------------------------\n')
+                primary_ntp = ntp_primary()
+                alternate_ntp = ntp_alternate()
 
                 templateVars["enabled"] = True
                 templateVars["ntp_servers"] = []
                 templateVars["ntp_servers"].append(primary_ntp)
-                if alternate_true == 'Y' or alternate_true == '':
+                if not alternate_ntp == '':
                     templateVars["ntp_servers"].append(alternate_ntp)
 
                 templateVars["multi_select"] = False
@@ -6263,10 +5916,10 @@ class easy_imm_wizard(object):
                     if time_region in item:
                         region_tzs.append(item)
 
-                templateVars["var_description"] = 'Timezone Regions...'
+                templateVars["var_description"] = 'Region Timezones...'
                 templateVars["jsonVars"] = sorted(region_tzs)
                 templateVars["defaultVar"] = ''
-                templateVars["varType"] = 'Time Region'
+                templateVars["varType"] = 'Region Timezones'
                 templateVars["timezone"] = variablesFromAPI(**templateVars)
 
                 print(f'\n-------------------------------------------------------------------------------------------\n')
@@ -6307,9 +5960,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Persistent Memory Policy Module
-    #========================================
+    #==============================================
     def persistent_memory_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'persistent_memory'
@@ -6349,7 +6002,7 @@ class easy_imm_wizard(object):
             print(f'    * Dual CPU for UCS S3260 M5 servers')
             print(f'    * Quad CPU for UCS C480 M5 and B480 M5 servers')
             print(f'  - Security - Used to configure the secure passphrase for all the persistent memory modules.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -6617,9 +6270,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Port Policy Module
-    #========================================
+    #==============================================
     def port_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -6651,7 +6304,7 @@ class easy_imm_wizard(object):
             print(f'   - Fibre-Channel Uplinks')
             print(f'   - Fibre-Channel Uplink Port-Channels')
             print(f'   - Server Ports\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -6678,1370 +6331,55 @@ class easy_imm_wizard(object):
                 templateVars["defaultVar"] = jsonVars['DeviceModel']['default']
                 templateVars["varType"] = 'Device Model'
                 templateVars["device_model"] = variablesFromAPI(**templateVars)
-
-                fc_mode = ''
-                ports_in_use = []
-                fc_converted_ports = []
-                valid = False
-                while valid == False:
-                    fc_mode = input('Do you want to convert ports to Fibre Channel Mode?  Enter "Y" or "N" [Y]: ')
-                    if fc_mode == '' or fc_mode == 'Y':
-                        jsonVars = easy_jsonData['policies']['fabric.PortPolicy']
-                        templateVars["var_description"] = jsonVars['unifiedPorts']['description']
-                        templateVars["jsonVars"] = sorted(jsonVars['unifiedPorts']['enum'])
-                        templateVars["defaultVar"] = jsonVars['unifiedPorts']['default']
-                        templateVars["varType"] = 'Unified Port Ranges'
-                        fc_ports = variablesFromAPI(**templateVars)
-                        x = fc_ports.split('-')
-                        fc_ports = [int(x[0]),int(x[1])]
-                        for i in range(int(x[0]), int(x[1]) + 1):
-                            ports_in_use.append(i)
-                            fc_converted_ports.append(i)
-                        templateVars["port_modes"] = {'custom_mode':'FibreChannel','port_list':fc_ports,'slot_id':1}
-                        valid = True
-                    elif fc_mode == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                port_channel_appliances = []
-                port_type = 'Appliance Port-Channel'
-                port_count = 1
-                valid = False
-                while valid == False:
-                    configure_port = input(f'Do you want to configure an {port_type}?  Enter "Y" or "N" [N]: ')
-                    if configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            print(f'\n------------------------------------------------------\n')
-                            print(f'  The Port List can be in the format of:')
-                            print(f'     5 - Single Port')
-                            print(f'     5,11,12,13,14,15 - List of Ports')
-                            print(f'\n------------------------------------------------------\n')
-                            if templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [95,96]: ')
-                            else:
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [47,48]: ')
-                            if port_list == '' and templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = '95,96'
-                            elif port_list == '':
-                                port_list = '47,48'
-                            port_group = []
-                            if re.search(r'(^[0-9]+$)', port_list):
-                                port_group.append(port_list)
-                            elif re.search(r'(^[0-9]+,{1,16}[0-9]+$)', port_list):
-                                x = port_list.split(',')
-                                port_group = []
-                                for i in x:
-                                    port_group.append(i)
-                            if re.search(r'(^[0-9]+$|^[0-9]+,{1,16}[0-9]+$)', port_list):
-                                port_list = port_group
-                                port_overlap_count = 0
-                                port_overlap = []
-                                for x in ports_in_use:
-                                    for y in port_list:
-                                        if int(x) == int(y):
-                                            port_overlap_count += 1
-                                            port_overlap.append(x)
-                                if port_overlap_count == 0:
-                                    if templateVars["device_model"] == 'UCS-FI-64108':
-                                        max_port = 108
-                                    else:
-                                        max_port = 54
-                                    if fc_mode == 'Y':
-                                        min_port = int(fc_ports[1])
-                                    else:
-                                        min_port = 1
-                                    for port in port_list:
-                                        valid_ports = validating.number_in_range('Port Range', port, min_port, max_port)
-                                        if valid_ports == False:
-                                            break
-                                    if valid_ports == True:
-                                        # Prompt User for the Admin Speed of the Port
-                                        templateVars["multi_select"] = False
-                                        jsonVars = jsonData['components']['schemas']['fabric.TransceiverRole']['allOf'][1]['properties']
-                                        templateVars["var_description"] = jsonVars['AdminSpeed']['description']
-                                        templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
-                                        templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
-                                        templateVars["varType"] = 'Admin Speed'
-                                        templateVars["admin_speed"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the Admin Speed of the Port
-                                        jsonVars = jsonData['components']['schemas']['fabric.AppliancePcRole']['allOf'][1]['properties']
-                                        templateVars["var_description"] = jsonVars['Mode']['description']
-                                        templateVars["jsonVars"] = sorted(jsonVars['Mode']['enum'])
-                                        templateVars["defaultVar"] = jsonVars['Mode']['default']
-                                        templateVars["varType"] = 'Mode'
-                                        templateVars["mode"] = variablesFromAPI(**templateVars)
-
-                                        templateVars["var_description"] = jsonVars['Priority']['description']
-                                        templateVars["jsonVars"] = sorted(jsonVars['Priority']['enum'])
-                                        templateVars["defaultVar"] = jsonVars['Priority']['default']
-                                        templateVars["varType"] = 'Priority'
-                                        templateVars["priority"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the
-                                        policy_list = [
-                                            'policies.ethernet_network_control_policies.ethernet_network_control_policy',
-                                            'policies.ethernet_network_group_policies.ethernet_network_group_policy',
-                                        ]
-                                        templateVars["allow_opt_out"] = False
-                                        for policy in policy_list:
-                                            policy_short = policy.split('.')[2]
-                                            templateVars[policy_short],policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-                                            templateVars.update(policyData)
-
-                                        interfaces = []
-                                        for i in port_list:
-                                            interfaces.append({'port_id':i,'slot_id':1})
-
-                                        pc_id = port_list[0]
-                                        port_channel = {
-                                            'admin_speed':templateVars["admin_speed"],
-                                            'ethernet_network_control_policy':templateVars["ethernet_network_control_policy"],
-                                            'ethernet_network_group_policy':templateVars["ethernet_network_group_policy"],
-                                            'interfaces':interfaces,
-                                            'mode':templateVars["mode"],
-                                            'pc_id':pc_id,
-                                            'priority':templateVars["priority"],
-                                            'slot_id':1
-                                        }
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'    admin_speed                     = "{templateVars["admin_speed"]}"')
-                                        print(f'    ethernet_network_control_policy = "{templateVars["ethernet_network_control_policy"]}"')
-                                        print(f'    ethernet_network_group_policy   = "{templateVars["ethernet_network_group_policy"]}"')
-                                        print(f'    interfaces = [')
-                                        for item in interfaces:
-                                            print('      {')
-                                            for k, v in item.items():
-                                                print(f'        {k}          = {v}')
-                                            print('      }')
-                                        print(f'    ]')
-                                        print(f'    mode         = "{templateVars["mode"]}"')
-                                        print(f'    priority     = "{templateVars["priority"]}"')
-                                        print(f'    pc_id        = {pc_id}')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = False
-                                        while valid_confirm == False:
-                                            confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                                            if confirm_port == 'Y' or confirm_port == '':
-                                                port_channel_appliances.append(port_channel)
-                                                for i in port_list:
-                                                    ports_in_use.append(i)
-
-                                                valid_exit = False
-                                                while valid_exit == False:
-                                                    port_exit = input(f'Would You like to Configure another {port_type}?  Enter "Y" or "N" [N]: ')
-                                                    if port_exit == 'Y':
-                                                        port_count += 1
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    elif port_exit == 'N' or port_exit == '':
-                                                        configure_valid = True
-                                                        valid = True
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    else:
-                                                        print(f'\n------------------------------------------------------\n')
-                                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                        print(f'\n------------------------------------------------------\n')
-
-                                            elif confirm_port == 'N':
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                print(f'  Starting {port_type} Configuration Over.')
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                valid_confirm = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! The following Ports are already in use: {port_overlap}.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Port Range.  A port Range should be in the format 49-50 for example.')
-                                print(f'  The following port range is invalid: "{port_list}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                    elif configure_port == '' or configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                port_channel_ethernet_uplinks = []
-                port_type = 'Ethernet Uplink Port-Channel'
-                port_count = 1
-                valid = False
-                while valid == False:
-                    configure_port = input(f'Do you want to configure an {port_type}?  Enter "Y" or "N" [Y]: ')
-                    if configure_port == '' or configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            print(f'\n------------------------------------------------------\n')
-                            print(f'  The Port List can be in the format of:')
-                            print(f'     5 - Single Port')
-                            print(f'     5,11,12,13,14,15 - List of Ports')
-                            print(f'\n------------------------------------------------------\n')
-                            if templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [97,98]: ')
-                            else:
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [49,50]: ')
-                            if port_list == '' and templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = '97,98'
-                            elif port_list == '':
-                                port_list = '49,50'
-                            port_group = []
-                            if re.search(r'(^[0-9]+$)', port_list):
-                                port_group.append(port_list)
-                            elif re.search(r'(^[0-9]+,{1,16}[0-9]+$)', port_list):
-                                x = port_list.split(',')
-                                port_group = []
-                                for i in x:
-                                    port_group.append(i)
-                            if re.search(r'(^[0-9]+$|^[0-9]+,{1,16}[0-9]+$)', port_list):
-                                port_list = port_group
-                                port_overlap_count = 0
-                                port_overlap = []
-                                for x in ports_in_use:
-                                    for y in port_list:
-                                        if int(x) == int(y):
-                                            port_overlap_count += 1
-                                            port_overlap.append(x)
-                                if port_overlap_count == 0:
-                                    if templateVars["device_model"] == 'UCS-FI-64108':
-                                        max_port = 108
-                                    else:
-                                        max_port = 54
-                                    if fc_mode == 'Y':
-                                        min_port = int(fc_ports[1])
-                                    else:
-                                        min_port = 1
-                                    for port in port_list:
-                                        valid_ports = validating.number_in_range('Port Range', port, min_port, max_port)
-                                        if valid_ports == False:
-                                            break
-                                    if valid_ports == True:
-                                        # Prompt User for the Admin Speed of the Port
-                                        templateVars["multi_select"] = False
-                                        jsonVars = jsonData['components']['schemas']['fabric.TransceiverRole']['allOf'][1]['properties']
-                                        templateVars["var_description"] = jsonVars['AdminSpeed']['description']
-                                        templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
-                                        templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
-                                        templateVars["varType"] = 'Admin Speed'
-                                        templateVars["admin_speed"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the
-                                        policy_list = [
-                                            'policies.flow_control_policies.flow_control_policy',
-                                            'policies.link_aggregation_policies.link_aggregation_policy',
-                                            'policies.link_control_policies.link_control_policy',
-                                        ]
-                                        templateVars["allow_opt_out"] = True
-                                        for policy in policy_list:
-                                            policy_short = policy.split('.')[2]
-                                            templateVars[policy_short],policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-                                            templateVars.update(policyData)
-
-                                        interfaces = []
-                                        for i in port_list:
-                                            interfaces.append({'port_id':i,'slot_id':1})
-
-                                        pc_id = port_list[0]
-                                        port_channel = {
-                                            'admin_speed':templateVars["admin_speed"],
-                                            'flow_control_policy':templateVars["flow_control_policy"],
-                                            'interfaces':interfaces,
-                                            'link_aggregation_policy':templateVars["link_aggregation_policy"],
-                                            'link_control_policy':templateVars["link_control_policy"],
-                                            'pc_id':pc_id,
-                                            'slot_id':1
-                                        }
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'    admin_speed             = "{templateVars["admin_speed"]}"')
-                                        print(f'    flow_control_policy     = "{templateVars["flow_control_policy"]}"')
-                                        print(f'    interfaces = [')
-                                        for item in interfaces:
-                                            print('      {')
-                                            for k, v in item.items():
-                                                print(f'        {k}          = {v}')
-                                            print('      }')
-                                        print(f'    ]')
-                                        print(f'    link_aggregation_policy = "{templateVars["link_aggregation_policy"]}"')
-                                        print(f'    link_control_policy     = "{templateVars["link_control_policy"]}"')
-                                        print(f'    pc_id                   = {pc_id}')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = False
-                                        while valid_confirm == False:
-                                            confirm_port = input('Do you want to accept the Configuration Above?  Enter "Y" or "N" [Y]: ')
-                                            if confirm_port == 'Y' or confirm_port == '':
-                                                port_channel_ethernet_uplinks.append(port_channel)
-                                                for i in port_list:
-                                                    ports_in_use.append(i)
-
-                                                valid_exit = False
-                                                while valid_exit == False:
-                                                    port_exit = input(f'Would You like to Configure another {port_type}?  Enter "Y" or "N" [N]: ')
-                                                    if port_exit == 'Y':
-                                                        port_count += 1
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    elif port_exit == 'N' or port_exit == '':
-                                                        configure_valid = True
-                                                        valid = True
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    else:
-                                                        print(f'\n------------------------------------------------------\n')
-                                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                        print(f'\n------------------------------------------------------\n')
-
-                                            elif confirm_port == 'N':
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                print(f'  Starting {port_type} Configuration Over.')
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                valid_confirm = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! The following Ports are already in use: {port_overlap}.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Port Range.  A port Range should be in the format 49-50 for example.')
-                                print(f'  The following port range is invalid: "{port_list}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                    elif configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                fill_pattern_descr = 'For Cisco UCS 6400 Series fabric interconnect, if the FC uplink speed is 8 Gbps, set the '\
-                    'fill pattern as IDLE on the uplink switch. If the fill pattern is not set as IDLE, FC '\
-                    'uplinks operating at 8 Gbps might go to an errDisabled state, lose SYNC intermittently, or '\
-                    'notice errors or bad packets.  For speeds greater than 8 Gbps we recommend Arbff.  Below'\
-                    'is a configuration example on MDS to match this setting:\n\n'\
-                    'mds-a(config-if)# switchport fill-pattern IDLE speed 8000\n'\
-                    'mds-a(config-if)# show port internal inf interface fc1/1 | grep FILL\n'\
-                    '  FC_PORT_CAP_FILL_PATTERN_8G_CHANGE_CAPABLE (1)\n'\
-                    'mds-a(config-if)# show run int fc1/16 | incl fill\n\n'\
-                    'interface fc1/16\n'\
-                    '  switchport fill-pattern IDLE speed 8000\n\n'\
-                    'mds-a(config-if)#\n'
-
-                fc_ports_in_use = []
-                Fabric_A_fc_port_channels = []
-                Fabric_B_fc_port_channels = []
-                port_type = 'Fibre Channel Port-Channel'
-                valid = False
-                while valid == False:
-                    if len(fc_converted_ports) > 0:
-                        configure_port = input(f'Do you want to configure a {port_type}?  Enter "Y" or "N" [Y]: ')
-                    else:
-                        configure_port = 'N'
-                        valid = True
-                    if configure_port == '' or configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            templateVars["multi_select"] = True
-                            templateVars["port_type"] = port_type
-                            templateVars["var_description"] = '    Please Select a Port for the Port-Channel:\n'
-                            templateVars["var_type"] = 'Unified Port'
-                            port_list = vars_from_list(fc_converted_ports, **templateVars)
-
-                            # Prompt User for the Admin Speed of the Port
-                            templateVars["multi_select"] = False
-                            jsonVars = jsonData['components']['schemas']['fabric.FcUplinkPcRole']['allOf'][1]['properties']
-                            templateVars["var_description"] = jsonVars['AdminSpeed']['description']
-                            templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
-                            templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
-                            templateVars["varType"] = 'Admin Speed'
-                            templateVars["admin_speed"] = variablesFromAPI(**templateVars)
-
-                            # Prompt User for the Fill Pattern of the Port
-                            templateVars["var_description"] = jsonVars['FillPattern']['description']
-                            templateVars["var_description"] = '%s\n%s' % (templateVars["var_description"], fill_pattern_descr)
-                            templateVars["jsonVars"] = sorted(jsonVars['FillPattern']['enum'])
-                            templateVars["defaultVar"] = jsonVars['FillPattern']['default']
-                            templateVars["varType"] = 'Fill Pattern'
-                            templateVars["fill_pattern"] = variablesFromAPI(**templateVars)
-
-                            vsans = {}
-                            fabrics = ['Fabric_A', 'Fabric_B']
-                            for fabric in fabrics:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Please Select the VSAN Policy for {fabric}')
-                                policy_list = [
-                                    'policies.vsan_policies.vsan_policy',
-                                ]
-                                templateVars["allow_opt_out"] = False
-                                for policy in policy_list:
-                                    vsan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-
-                                vsan_list = []
-                                for item in policyData['vsan_policies']:
-                                    for key, value in item.items():
-                                        if key == vsan_policy:
-                                            for i in value[0]['vsans']:
-                                                for k, v in i.items():
-                                                    for x in v:
-                                                        for y, val in x.items():
-                                                            if y == 'vsan_id':
-                                                                vsan_list.append(val)
-
-                                print(vsan_list)
-                                if len(vsan_list) > 1:
-                                    vsan_list = ','.join(str(vsan_list))
-                                else:
-                                    vsan_list = vsan_list[0]
-                                vsan_list = vlan_list_full(vsan_list)
-
-                                templateVars["multi_select"] = False
-                                templateVars["port_type"] = port_type
-                                templateVars["var_description"] = '    Please Select a VSAN for the Port-Channel:\n'
-                                templateVars["var_type"] = 'VSAN'
-                                vsan_x = vars_from_list(vsan_list, **templateVars)
-                                for vs in vsan_x:
-                                    vsan = vs
-                                vsans.update({fabric:vsan})
-
-
-                            interfaces = []
-                            for i in port_list:
-                                interfaces.append({'port_id':i,'slot_id':1})
-
-                            pc_id = port_list[0]
-                            port_channel_a = {
-                                'admin_speed':templateVars["admin_speed"],
-                                'fill_pattern':templateVars["fill_pattern"],
-                                'interfaces':interfaces,
-                                'pc_id':pc_id,
-                                'slot_id':1,
-                                'vsan_id':vsans.get("Fabric_A")
-                            }
-                            port_channel_b = {
-                                'admin_speed':templateVars["admin_speed"],
-                                'fill_pattern':templateVars["fill_pattern"],
-                                'interfaces':interfaces,
-                                'pc_id':pc_id,
-                                'slot_id':1,
-                                'vsan_id':vsans.get("Fabric_B")
-                            }
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'    admin_speed  = "{templateVars["admin_speed"]}"')
-                            print(f'    fill_pattern = "{templateVars["fill_pattern"]}"')
-                            print(f'    interfaces = [')
-                            for item in interfaces:
-                                print('      {')
-                                for k, v in item.items():
-                                    print(f'        {k}          = {v}')
-                                print('      }')
-                            print(f'    ]')
-                            print(f'    vsan_id_fabric_a = {vsans.get("Fabric_A")}')
-                            print(f'    vsan_id_fabric_b = {vsans.get("Fabric_B")}')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            valid_confirm = False
-                            while valid_confirm == False:
-                                confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                                if confirm_port == 'Y' or confirm_port == '':
-                                    Fabric_A_fc_port_channels.append(port_channel_a)
-                                    Fabric_B_fc_port_channels.append(port_channel_b)
-                                    for i in port_list:
-                                        fc_ports_in_use.append(i)
-
-                                    valid_exit = False
-                                    while valid_exit == False:
-                                        port_exit = input(f'Would You like to Configure another {port_type}?  Enter "Y" or "N" [N]: ')
-                                        if port_exit == 'Y':
-                                            port_count += 1
-                                            valid_confirm = True
-                                            valid_exit = True
-                                        elif port_exit == 'N' or port_exit == '':
-                                            configure_valid = True
-                                            valid = True
-                                            valid_confirm = True
-                                            valid_exit = True
-                                        else:
-                                            print(f'\n------------------------------------------------------\n')
-                                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                            print(f'\n------------------------------------------------------\n')
-
-                                elif confirm_port == 'N':
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Starting {port_type} Configuration Over.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    valid_confirm = True
-                                else:
-                                    print(f'\n------------------------------------------------------\n')
-                                    print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                    print(f'\n------------------------------------------------------\n')
-
-                    elif configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                port_channel_fcoe_uplinks = []
-                port_type = 'FCoE Uplink Port-Channel'
-                port_count = 1
-                valid = False
-                while valid == False:
-                    configure_port = input(f'Do you want to configure an {port_type}?  Enter "Y" or "N" [N]: ')
-                    if configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            print(f'\n------------------------------------------------------\n')
-                            print(f'  The Port List can be in the format of:')
-                            print(f'     5 - Single Port')
-                            print(f'     5,11,12,13,14,15 - List of Ports')
-                            print(f'\n------------------------------------------------------\n')
-                            if templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [97,98]: ')
-                            else:
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [49,50]: ')
-                            if port_list == '' and templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = '97,98'
-                            elif port_list == '':
-                                port_list = '49,50'
-                            port_group = []
-                            if re.search(r'(^[0-9]+$)', port_list):
-                                port_group.append(port_list)
-                            elif re.search(r'(^[0-9]+,{1,16}[0-9]+$)', port_list):
-                                x = port_list.split(',')
-                                port_group = []
-                                for i in x:
-                                    port_group.append(i)
-                            if re.search(r'(^[0-9]+$|^[0-9]+,{1,16}[0-9]+$)', port_list):
-                                port_list = port_group
-                                port_overlap_count = 0
-                                port_overlap = []
-                                for x in ports_in_use:
-                                    for y in port_list:
-                                        if int(x) == int(y):
-                                            port_overlap_count += 1
-                                            port_overlap.append(x)
-                                if port_overlap_count == 0:
-                                    if templateVars["device_model"] == 'UCS-FI-64108':
-                                        max_port = 108
-                                    else:
-                                        max_port = 54
-                                    if fc_mode == 'Y':
-                                        min_port = int(fc_ports[1])
-                                    else:
-                                        min_port = 1
-                                    for port in port_list:
-                                        valid_ports = validating.number_in_range('Port Range', port, min_port, max_port)
-                                        if valid_ports == False:
-                                            break
-                                    if valid_ports == True:
-                                        # Prompt User for the Admin Speed of the Port
-                                        templateVars["multi_select"] = False
-                                        jsonVars = jsonData['components']['schemas']['fabric.TransceiverRole']['allOf'][1]['properties']
-                                        templateVars["var_description"] = jsonVars['AdminSpeed']['description']
-                                        templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
-                                        templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
-                                        templateVars["varType"] = 'Admin Speed'
-                                        templateVars["admin_speed"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the
-                                        policy_list = [
-                                            'policies.link_aggregation_policies.link_aggregation_policy',
-                                            'policies.link_control_policies.link_control_policy',
-                                        ]
-                                        templateVars["allow_opt_out"] = True
-                                        for policy in policy_list:
-                                            policy_short = policy.split('.')[2]
-                                            templateVars[policy_short],policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-                                            templateVars.update(policyData)
-
-                                        interfaces = []
-                                        for i in port_list:
-                                            interfaces.append({'port_id':i,'slot_id':1})
-
-                                        pc_id = port_list[0]
-                                        port_channel = {
-                                            'admin_speed':templateVars["admin_speed"],
-                                            'interfaces':interfaces,
-                                            'link_aggregation_policy':templateVars["link_aggregation_policy"],
-                                            'link_control_policy':templateVars["link_control_policy"],
-                                            'pc_id':pc_id,
-                                            'slot_id':1
-                                        }
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'    admin_speed             = "{templateVars["admin_speed"]}"')
-                                        print(f'    interfaces = [')
-                                        for item in interfaces:
-                                            print('      {')
-                                            for k, v in item.items():
-                                                print(f'        {k}          = {v}')
-                                            print('      }')
-                                        print(f'    ]')
-                                        print(f'    link_aggregation_policy = "{templateVars["link_aggregation_policy"]}"')
-                                        print(f'    link_control_policy     = "{templateVars["link_control_policy"]}"')
-                                        print(f'    pc_id                   = {pc_id}')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = False
-                                        while valid_confirm == False:
-                                            confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                                            if confirm_port == 'Y' or confirm_port == '':
-                                                port_channel_fcoe_uplinks.append(port_channel)
-                                                for i in port_list:
-                                                    ports_in_use.append(i)
-
-                                                valid_exit = False
-                                                while valid_exit == False:
-                                                    port_exit = input(f'Would You like to Configure another {port_type}?  Enter "Y" or "N" [N]: ')
-                                                    if port_exit == 'Y':
-                                                        port_count += 1
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    elif port_exit == 'N' or port_exit == '':
-                                                        configure_valid = True
-                                                        valid = True
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    else:
-                                                        print(f'\n------------------------------------------------------\n')
-                                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                        print(f'\n------------------------------------------------------\n')
-
-                                            elif confirm_port == 'N':
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                print(f'  Starting {port_type} Configuration Over.')
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                valid_confirm = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! The following Ports are already in use: {port_overlap}.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Port Range.  A port Range should be in the format 49-50 for example.')
-                                print(f'  The following port range is invalid: "{port_list}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                    elif configure_port == '' or configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                port_role_appliances = []
-                port_type = 'Appliance Ports'
-                port_count = 1
-                valid = False
-                while valid == False:
-                    configure_port = input(f'Do you want to configure an {port_type}?  Enter "Y" or "N" [N]: ')
-                    if configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            print(f'\n------------------------------------------------------\n')
-                            print(f'  The Port List can be in the format of:')
-                            print(f'     5 - Single Port')
-                            print(f'     5-10 - Range of Ports')
-                            print(f'     5,11,12,13,14,15 - List of Ports')
-                            print(f'     5-10,20-30 - Ranges and Lists of Ports')
-                            print(f'\n------------------------------------------------------\n')
-                            if templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = input(f'Please enter the ports you want to add to the {port_type}?  [94]: ')
-                            else:
-                                port_list = input(f'Please enter the ports you want to add to the {port_type}?  [46]: ')
-                            if port_list == '' and templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = '94'
-                            elif port_list == '':
-                                port_list = '46'
-                            if re.search(r'(^\d+$|^\d+,{1,48}\d+$|^(\d+\-\d+|\d,){1,48}\d+$)', port_list):
-                                original_port_list = port_list
-                                ports_expanded = vlan_list_full(port_list)
-                                port_list = ports_expanded
-                                port_overlap_count = 0
-                                port_overlap = []
-                                for x in ports_in_use:
-                                    for y in port_list:
-                                        if int(x) == int(y):
-                                            port_overlap_count += 1
-                                            port_overlap.append(x)
-                                if port_overlap_count == 0:
-                                    if templateVars["device_model"] == 'UCS-FI-64108':
-                                        max_port = 108
-                                    else:
-                                        max_port = 54
-                                    if fc_mode == 'Y':
-                                        min_port = int(fc_ports[1])
-                                    else:
-                                        min_port = 1
-                                    for port in port_list:
-                                        valid_ports = validating.number_in_range('Port Range', port, min_port, max_port)
-                                        if valid_ports == False:
-                                            break
-                                    if valid_ports == True:
-                                        # Prompt User for the Admin Speed of the Port
-                                        templateVars["multi_select"] = False
-                                        jsonVars = jsonData['components']['schemas']['fabric.TransceiverRole']['allOf'][1]['properties']
-                                        templateVars["var_description"] = jsonVars['AdminSpeed']['description']
-                                        templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
-                                        templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
-                                        templateVars["varType"] = 'Admin Speed'
-                                        templateVars["admin_speed"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the FEC Mode of the Port
-                                        templateVars["var_description"] = jsonVars['Fec']['description']
-                                        templateVars["jsonVars"] = sorted(jsonVars['Fec']['enum'])
-                                        templateVars["defaultVar"] = jsonVars['Fec']['default']
-                                        templateVars["varType"] = 'Fec Mode'
-                                        templateVars["fec"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the Port Mode and Priority
-                                        jsonVars = jsonData['components']['schemas']['fabric.AppliancePcRole']['allOf'][1]['properties']
-                                        templateVars["var_description"] = jsonVars['Mode']['description']
-                                        templateVars["jsonVars"] = sorted(jsonVars['Mode']['enum'])
-                                        templateVars["defaultVar"] = jsonVars['Mode']['default']
-                                        templateVars["varType"] = 'Mode'
-                                        templateVars["mode"] = variablesFromAPI(**templateVars)
-
-                                        templateVars["var_description"] = jsonVars['Priority']['description']
-                                        templateVars["jsonVars"] = sorted(jsonVars['Priority']['enum'])
-                                        templateVars["defaultVar"] = jsonVars['Priority']['default']
-                                        templateVars["varType"] = 'Priority'
-                                        templateVars["priority"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the Ethernet Network Control and Group Policies
-                                        policy_list = [
-                                            'policies.ethernet_network_control_policies.ethernet_network_control_policy',
-                                            'policies.ethernet_network_group_policies.ethernet_network_group_policy',
-                                        ]
-                                        templateVars["allow_opt_out"] = False
-                                        for policy in policy_list:
-                                            policy_short = policy.split('.')[2]
-                                            templateVars[policy_short],
-                                            policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-                                            templateVars.update(policyData)
-
-                                        port_role = {
-                                            'admin_speed':templateVars["admin_speed"],
-                                            'ethernet_network_control_policy':templateVars["ethernet_network_control_policy"],
-                                            'ethernet_network_group_policy':templateVars["ethernet_network_group_policy"],
-                                            'fec':templateVars["fec"],
-                                            'mode':templateVars["mode"],
-                                            'port_id':original_port_list,
-                                            'priority':templateVars["priority"],
-                                            'slot_id':1
-                                        }
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'    admin_speed                     = "{templateVars["admin_speed"]}"')
-                                        print(f'    ethernet_network_control_policy = "{templateVars["ethernet_network_control_policy"]}"')
-                                        print(f'    ethernet_network_group_policy   = "{templateVars["ethernet_network_group_policy"]}"')
-                                        print(f'    fec                             = "{templateVars["fec"]}"')
-                                        print(f'    mode                            = "{templateVars["mode"]}"')
-                                        print(f'    port_list                       = "{original_port_list}"')
-                                        print(f'    priority                        = "{templateVars["priority"]}"')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = False
-                                        while valid_confirm == False:
-                                            confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                                            if confirm_port == 'Y' or confirm_port == '':
-                                                port_role_appliances.append(port_role)
-                                                for i in port_list:
-                                                    ports_in_use.append(i)
-
-                                                valid_exit = False
-                                                while valid_exit == False:
-                                                    port_exit = input(f'Would You like to Configure another {port_type}?  Enter "Y" or "N" [N]: ')
-                                                    if port_exit == 'Y':
-                                                        port_count += 1
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    elif port_exit == 'N' or port_exit == '':
-                                                        configure_valid = True
-                                                        valid = True
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    else:
-                                                        print(f'\n------------------------------------------------------\n')
-                                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                        print(f'\n------------------------------------------------------\n')
-
-                                            elif confirm_port == 'N':
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                print(f'  Starting {port_type} Configuration Over.')
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                valid_confirm = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! The following Ports are already in use: {port_overlap}.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Port Range.  A port Range should be in the format 49-50 for example.')
-                                print(f'  The following port range is invalid: "{port_list}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                    elif configure_port == '' or configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                port_role_ethernet_uplinks = []
-                port_type = 'Ethernet Uplink'
-                port_count = 1
-                valid = False
-                while valid == False:
-                    configure_port = input(f'Do you want to configure an {port_type}?  Enter "Y" or "N" [N]: ')
-                    if configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            print(f'\n------------------------------------------------------\n')
-                            print(f'  The Port List can be in the format of:')
-                            print(f'     5 - Single Port')
-                            print(f'     5-10 - Range of Ports')
-                            print(f'     5,11,12,13,14,15 - List of Ports')
-                            print(f'     5-10,20-30 - Ranges and Lists of Ports')
-                            print(f'\n------------------------------------------------------\n')
-                            if templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [97]: ')
-                            else:
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [49]: ')
-                            if port_list == '' and templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = '97'
-                            elif port_list == '':
-                                port_list = '49'
-                            if re.search(r'(^\d+$|^\d+,{1,48}\d+$|^(\d+\-\d+|\d,){1,48}\d+$)', port_list):
-                                original_port_list = port_list
-                                ports_expanded = vlan_list_full(port_list)
-                                port_list = ports_expanded
-                                port_overlap_count = 0
-                                port_overlap = []
-                                for x in ports_in_use:
-                                    for y in port_list:
-                                        if int(x) == int(y):
-                                            port_overlap_count += 1
-                                            port_overlap.append(x)
-                                if port_overlap_count == 0:
-                                    if templateVars["device_model"] == 'UCS-FI-64108':
-                                        max_port = 108
-                                    else:
-                                        max_port = 54
-                                    if fc_mode == 'Y':
-                                        min_port = int(fc_ports[1])
-                                    else:
-                                        min_port = 1
-                                    for port in port_list:
-                                        valid_ports = validating.number_in_range('Port Range', port, min_port, max_port)
-                                        if valid_ports == False:
-                                            break
-                                    if valid_ports == True:
-                                        # Prompt User for the Admin Speed of the Port
-                                        templateVars["multi_select"] = False
-                                        jsonVars = jsonData['components']['schemas']['fabric.TransceiverRole']['allOf'][1]['properties']
-                                        templateVars["var_description"] = jsonVars['AdminSpeed']['description']
-                                        templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
-                                        templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
-                                        templateVars["varType"] = 'Admin Speed'
-                                        templateVars["admin_speed"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the FEC Mode of the Port
-                                        templateVars["var_description"] = jsonVars['Fec']['description']
-                                        templateVars["jsonVars"] = sorted(jsonVars['Fec']['enum'])
-                                        templateVars["defaultVar"] = jsonVars['Fec']['default']
-                                        templateVars["varType"] = 'Fec Mode'
-                                        templateVars["fec"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the
-                                        policy_list = [
-                                            'policies.flow_control_policies.flow_control_policy',
-                                            'policies.link_control_policies.link_control_policy',
-                                        ]
-                                        templateVars["allow_opt_out"] = True
-                                        for policy in policy_list:
-                                            policy_short = policy.split('.')[2]
-                                            templateVars[policy_short],
-                                            policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-                                            templateVars.update(policyData)
-
-                                        port_role = {
-                                            'admin_speed':templateVars["admin_speed"],
-                                            'fec':templateVars["fec"],
-                                            'flow_control_policy':templateVars["flow_control_policy"],
-                                            'link_control_policy':templateVars["link_control_policy"],
-                                            'port_id':original_port_list,
-                                            'slot_id':1
-                                        }
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'    admin_speed         = "{templateVars["admin_speed"]}"')
-                                        print(f'    fec                 = "{templateVars["fec"]}"')
-                                        print(f'    flow_control_policy = "{templateVars["flow_control_policy"]}"')
-                                        print(f'    link_control_policy = "{templateVars["link_control_policy"]}"')
-                                        print(f'    port_list           = "{original_port_list}"')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = False
-                                        while valid_confirm == False:
-                                            confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                                            if confirm_port == 'Y' or confirm_port == '':
-                                                port_role_ethernet_uplinks.append(port_role)
-                                                for i in port_list:
-                                                    ports_in_use.append(i)
-
-                                                valid_exit = False
-                                                while valid_exit == False:
-                                                    port_exit = input(f'Would You like to Configure another {port_type}?  Enter "Y" or "N" [N]: ')
-                                                    if port_exit == 'Y':
-                                                        port_count += 1
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    elif port_exit == 'N' or port_exit == '':
-                                                        configure_valid = True
-                                                        valid = True
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    else:
-                                                        print(f'\n------------------------------------------------------\n')
-                                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                        print(f'\n------------------------------------------------------\n')
-
-                                            elif confirm_port == 'N':
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                print(f'  Starting {port_type} Configuration Over.')
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                valid_confirm = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! The following Ports are already in use: {port_overlap}.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Port Range.  A port Range should be in the format 49-50 for example.')
-                                print(f'  The following port range is invalid: "{port_list}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                    elif configure_port == '' or configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                Fabric_A_port_role_fc = []
-                Fabric_B_port_role_fc = []
-                port_type = 'Fibre-Channel Uplink'
-                valid = False
-                while valid == False:
-                    if len(fc_converted_ports) > 0:
-                        configure_port = input(f'Do you want to configure a {port_type}?  Enter "Y" or "N" [N]: ')
-                    else:
-                        configure_port = 'N'
-                        valid = True
-                    if configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            templateVars["multi_select"] = False
-                            templateVars["port_type"] = port_type
-                            templateVars["var_description"] = '    Please Select a Port for the Uplink:\n'
-                            templateVars["var_type"] = 'Unified Port'
-                            port_list = vars_from_list(fc_converted_ports, **templateVars)
-
-                            # Prompt User for the Admin Speed of the Port
-                            jsonVars = jsonData['components']['schemas']['fabric.FcUplinkPcRole']['allOf'][1]['properties']
-                            templateVars["var_description"] = jsonVars['AdminSpeed']['description']
-                            templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
-                            templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
-                            templateVars["varType"] = 'Admin Speed'
-                            templateVars["admin_speed"] = variablesFromAPI(**templateVars)
-
-                            # Prompt User for the Fill Pattern of the Port
-                            templateVars["var_description"] = jsonVars['FillPattern']['description']
-                            templateVars["var_description"] = '%s\n%s' % (templateVars["var_description"], fill_pattern_descr)
-                            templateVars["jsonVars"] = sorted(jsonVars['FillPattern']['enum'])
-                            templateVars["defaultVar"] = jsonVars['FillPattern']['default']
-                            templateVars["varType"] = 'Fill Pattern'
-                            templateVars["fill_pattern"] = variablesFromAPI(**templateVars)
-
-                            vsans = {}
-                            fabrics = ['Fabric_A', 'Fabric_B']
-                            for fabric in fabrics:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Please Select the VSAN Policy for {fabric}')
-                                policy_list = [
-                                    'policies.vsan_policies.vsan_policy',
-                                ]
-                                templateVars["allow_opt_out"] = False
-                                for policy in policy_list:
-                                    vsan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-
-                                vsan_list = []
-                                for item in policyData['vsan_policies']:
-                                    for key, value in item.items():
-                                        if key == vsan_policy:
-                                            for i in value[0]['vsans']:
-                                                for k, v in i.items():
-                                                    for x in v:
-                                                        for y, val in x.items():
-                                                            if y == 'vsan_id':
-                                                                vsan_list.append(val)
-
-                                vsan_list = ','.join(vsan_list)
-                                vsan_list = vlan_list_full(vsan_list)
-
-                                templateVars["multi_select"] = False
-                                templateVars["port_type"] = port_type
-                                templateVars["var_description"] = '    Please Select a VSAN for the Port-Channel:\n'
-                                templateVars["var_type"] = 'VSAN'
-                                vsan_x = vars_from_list(vsan_list, **templateVars)
-                                for vs in vsan_x:
-                                    vsan = vs
-                                vsans.update({fabric:vsan})
-
-                            port_list = '%s' % (port_list[0])
-                            fc_port_role_a = {
-                                'admin_speed':templateVars["admin_speed"],
-                                'fill_pattern':templateVars["fill_pattern"],
-                                'port_id':port_list,
-                                'slot_id':1,
-                                'vsan_id':vsans.get("Fabric_A")
-                            }
-                            fc_port_role_b = {
-                                'admin_speed':templateVars["admin_speed"],
-                                'fill_pattern':templateVars["fill_pattern"],
-                                'port_id':port_list,
-                                'slot_id':1,
-                                'vsan_id':vsans.get("Fabric_B")
-                            }
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'    admin_speed      = "{templateVars["admin_speed"]}"')
-                            print(f'    fill_pattern     = "{templateVars["fill_pattern"]}"')
-                            print(f'    port_list        = "{port_list}"')
-                            print(f'    vsan_id_fabric_a = {vsans.get("Fabric_A")}')
-                            print(f'    vsan_id_fabric_b = {vsans.get("Fabric_B")}')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            valid_confirm = False
-                            while valid_confirm == False:
-                                confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                                if confirm_port == 'Y' or confirm_port == '':
-                                    Fabric_A_port_role_fc.append(fc_port_role_a)
-                                    Fabric_B_port_role_fc.append(fc_port_role_b)
-                                    for i in port_list:
-                                        fc_ports_in_use.append(i)
-
-                                    valid_exit = False
-                                    while valid_exit == False:
-                                        port_exit = input(f'Would You like to Configure another {port_type}?  Enter "Y" or "N" [N]: ')
-                                        if port_exit == 'Y':
-                                            port_count += 1
-                                            valid_confirm = True
-                                            valid_exit = True
-                                        elif port_exit == 'N' or port_exit == '':
-                                            configure_valid = True
-                                            valid = True
-                                            valid_confirm = True
-                                            valid_exit = True
-                                        else:
-                                            print(f'\n------------------------------------------------------\n')
-                                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                            print(f'\n------------------------------------------------------\n')
-
-                                elif confirm_port == 'N':
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Starting {port_type} Configuration Over.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    valid_confirm = True
-                                else:
-                                    print(f'\n------------------------------------------------------\n')
-                                    print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                    print(f'\n------------------------------------------------------\n')
-
-                    elif configure_port == '' or configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                port_role_fcoe_uplinks = []
-                port_type = 'FCoE Uplink'
-                port_count = 1
-                valid = False
-                while valid == False:
-                    configure_port = input(f'Do you want to configure an {port_type}?  Enter "Y" or "N" [N]: ')
-                    if configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            print(f'\n------------------------------------------------------\n')
-                            print(f'  The Port List can be in the format of:')
-                            print(f'     5 - Single Port')
-                            print(f'     5-10 - Range of Ports')
-                            print(f'     5,11,12,13,14,15 - List of Ports')
-                            print(f'     5-10,20-30 - Ranges and Lists of Ports')
-                            print(f'\n------------------------------------------------------\n')
-                            if templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [97]: ')
-                            else:
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [49]: ')
-                            if port_list == '' and templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = '97'
-                            elif port_list == '':
-                                port_list = '49'
-                            if re.search(r'(^\d+$|^\d+,{1,48}\d+$|^(\d+\-\d+|\d,){1,48}\d+$)', port_list):
-                                original_port_list = port_list
-                                ports_expanded = vlan_list_full(port_list)
-                                port_list = ports_expanded
-                                port_overlap_count = 0
-                                port_overlap = []
-                                for x in ports_in_use:
-                                    for y in port_list:
-                                        if int(x) == int(y):
-                                            port_overlap_count += 1
-                                            port_overlap.append(x)
-                                if port_overlap_count == 0:
-                                    if templateVars["device_model"] == 'UCS-FI-64108':
-                                        max_port = 108
-                                    else:
-                                        max_port = 54
-                                    if fc_mode == 'Y':
-                                        min_port = int(fc_ports[1])
-                                    else:
-                                        min_port = 1
-                                    for port in port_list:
-                                        valid_ports = validating.number_in_range('Port Range', port, min_port, max_port)
-                                        if valid_ports == False:
-                                            break
-                                    if valid_ports == True:
-                                        # Prompt User for the Admin Speed of the Port
-                                        # Prompt User for the Admin Speed of the Port
-                                        templateVars["multi_select"] = False
-                                        jsonVars = jsonData['components']['schemas']['fabric.TransceiverRole']['allOf'][1]['properties']
-                                        templateVars["var_description"] = jsonVars['AdminSpeed']['description']
-                                        templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
-                                        templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
-                                        templateVars["varType"] = 'Admin Speed'
-                                        templateVars["admin_speed"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the FEC Mode of the Port
-                                        templateVars["var_description"] = jsonVars['Fec']['description']
-                                        templateVars["jsonVars"] = sorted(jsonVars['Fec']['enum'])
-                                        templateVars["defaultVar"] = jsonVars['Fec']['default']
-                                        templateVars["varType"] = 'Fec Mode'
-                                        templateVars["fec"] = variablesFromAPI(**templateVars)
-
-                                        # Prompt User for the
-                                        policy_list = [
-                                            'policies.link_control_policies.link_control_policy'
-                                        ]
-                                        templateVars["allow_opt_out"] = True
-                                        for policy in policy_list:
-                                            policy_short = policy.split('.')[2]
-                                            templateVars[policy_short],
-                                            policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
-                                            templateVars.update(policyData)
-
-                                        port_role = {
-                                            'admin_speed':templateVars["admin_speed"],
-                                            'fec':templateVars["fec"],
-                                            'link_control_policy':templateVars["link_control_policy"],
-                                            'port_id':original_port_list,
-                                            'slot_id':1
-                                        }
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'    admin_speed         = "{templateVars["admin_speed"]}"')
-                                        print(f'    fec                 = "{templateVars["fec"]}"')
-                                        print(f'    link_control_policy = "{templateVars["link_control_policy"]}"')
-                                        print(f'    port_list           = "{original_port_list}"')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = False
-                                        while valid_confirm == False:
-                                            confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                                            if confirm_port == 'Y' or confirm_port == '':
-                                                port_role_fcoe_uplinks.append(port_role)
-                                                for i in port_list:
-                                                    ports_in_use.append(i)
-
-                                                valid_exit = False
-                                                while valid_exit == False:
-                                                    port_exit = input(f'Would You like to Configure another {port_type}?  Enter "Y" or "N" [N]: ')
-                                                    if port_exit == 'Y':
-                                                        port_count += 1
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    elif port_exit == 'N' or port_exit == '':
-                                                        configure_valid = True
-                                                        valid = True
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    else:
-                                                        print(f'\n------------------------------------------------------\n')
-                                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                        print(f'\n------------------------------------------------------\n')
-
-                                            elif confirm_port == 'N':
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                print(f'  Starting {port_type} Configuration Over.')
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                valid_confirm = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! The following Ports are already in use: {port_overlap}.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Port Range.  A port Range should be in the format 49-50 for example.')
-                                print(f'  The following port range is invalid: "{port_list}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                    elif configure_port == '' or configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
-
-                port_role_servers = []
-                port_type = 'Server Ports'
-                port_count = 1
-                valid = False
-                while valid == False:
-                    configure_port = input(f'Do you want to configure {port_type}?  Enter "Y" or "N" [Y]: ')
-                    if configure_port == '' or configure_port == 'Y':
-                        configure_valid = False
-                        while configure_valid == False:
-                            print(f'\n------------------------------------------------------\n')
-                            print(f'  The Port List can be in the format of:')
-                            print(f'     5 - Single Port')
-                            print(f'     5-10 - Range of Ports')
-                            print(f'     5,11,12,13,14,15 - List of Ports')
-                            print(f'     5-10,20-30 - Ranges and Lists of Ports')
-                            print(f'\n------------------------------------------------------\n')
-                            if templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [5-36]: ')
-                            else:
-                                port_list = input(f'Please enter the list of ports you want to add to the {port_type}?  [5-18]: ')
-                            if port_list == '' and templateVars["device_model"] == 'UCS-FI-64108':
-                                port_list = '5-36'
-                            elif port_list == '':
-                                port_list = '5-18'
-                            if re.search(r'(^\d+$|^\d+,{1,48}\d+$|^(\d+\-\d+|\d,){1,48}\d+$)', port_list):
-                                original_port_list = port_list
-                                ports_expanded = vlan_list_full(port_list)
-                                port_list = ports_expanded
-                                port_overlap_count = 0
-                                port_overlap = []
-                                for x in ports_in_use:
-                                    for y in port_list:
-                                        if int(x) == int(y):
-                                            port_overlap_count += 1
-                                            port_overlap.append(x)
-                                if port_overlap_count == 0:
-                                    if templateVars["device_model"] == 'UCS-FI-64108':
-                                        max_port = 108
-                                    else:
-                                        max_port = 54
-                                    if fc_mode == 'Y':
-                                        min_port = int(fc_ports[1])
-                                    else:
-                                        min_port = 1
-                                    for port in port_list:
-                                        valid_ports = validating.number_in_range('Port Range', port, min_port, max_port)
-                                        if valid_ports == False:
-                                            break
-                                    if valid_ports == True:
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'  Do you want to accept the following Server Port configuration?')
-                                        print(f'    port_list           = "{original_port_list}"')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = False
-                                        while valid_confirm == False:
-                                            confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                                            if confirm_port == 'Y' or confirm_port == '':
-                                                server_ports = {'port_list':original_port_list,'slot_id':1}
-                                                port_role_servers.append(server_ports)
-                                                for i in port_list:
-                                                    ports_in_use.append(i)
-
-                                                valid_exit = False
-                                                while valid_exit == False:
-                                                    port_exit = input(f'Would You like to Configure more {port_type}?  Enter "Y" or "N" [N]: ')
-                                                    if port_exit == 'Y':
-                                                        port_count += 1
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    elif port_exit == 'N' or port_exit == '':
-                                                        configure_valid = True
-                                                        valid = True
-                                                        valid_confirm = True
-                                                        valid_exit = True
-                                                    else:
-                                                        print(f'\n------------------------------------------------------\n')
-                                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                        print(f'\n------------------------------------------------------\n')
-
-                                            elif confirm_port == 'N':
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                print(f'  Starting {port_type} Configuration Over.')
-                                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                                valid_confirm = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                else:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  Error!! The following Ports are already in use: {port_overlap}.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Port Range.  A port Range should be in the format 49-50 for example.')
-                                print(f'  The following port range is invalid: "{port_list}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                    elif configure_port == 'N':
-                        valid = True
-                    else:
-                        print(f'\n------------------------------------------------------\n')
-                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                        print(f'\n------------------------------------------------------\n')
+                
+                fc_mode,ports_in_use,fc_converted_ports,port_modes = port_modes_fc(jsonData, easy_jsonData, name_prefix, **templateVars)
+                templateVars["fc_mode"] = fc_mode
+                templateVars["ports_in_use"] = ports_in_use
+                templateVars["fc_converted_ports"] = fc_converted_ports
+                templateVars["port_modes"] = port_modes
+
+                # Appliance Port-Channel
+                templateVars['port_type'] = 'Appliance Port-Channel'
+                port_channel_appliances,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
+
+                # Ethernet Uplink Port-Channel
+                templateVars['port_type'] = 'Ethernet Uplink Port-Channel'
+                port_channel_ethernet_uplinks,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
+
+                # Fibre Channel Port-Channel
+                templateVars["fc_ports_in_use"] = []
+                templateVars["port_type"] == 'Fibre Channel Port-Channel'
+                Fab_A,Fab_B,fc_ports_in_use = port_list_fc(jsonData, easy_jsonData, name_prefix, **templateVars)
+                Fabric_A_fc_port_channels = Fab_A
+                Fabric_B_fc_port_channels = Fab_B
+                templateVars["fc_ports_in_use"] = fc_ports_in_use
+
+                # FCoE Uplink Port-Channel
+                templateVars['port_type'] = 'FCoE Uplink Port-Channel'
+                port_channel_fcoe_uplinks,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
+
+                # Appliance Ports
+                templateVars['port_type'] = 'Appliance Ports'
+                port_role_appliances,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
+
+                # Ethernet Uplink
+                templateVars['port_type'] = 'Ethernet Uplink'
+                port_role_ethernet_uplinks,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
+
+                # Fibre-Channel Uplink
+                templateVars["port_type"] == 'Fibre-Channel Uplink'
+                Fab_A,Fab_B,fc_ports_in_use = port_list_fc(jsonData, easy_jsonData, name_prefix, **templateVars)
+                Fabric_A_port_role_fc = Fab_A
+                Fabric_B_port_role_fc = Fab_B
+                templateVars["fc_ports_in_use"] = fc_ports_in_use
+
+                # FCoE Uplink
+                templateVars['port_type'] = 'FCoE Uplink'
+                port_role_fcoe_uplinks,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
+
+                # Server Ports
+                templateVars['port_type'] = 'Server Ports'
+                port_role_servers,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
 
                 print(f'\n-------------------------------------------------------------------------------------------\n')
                 print(f'    description  = "{templateVars["descr"]}"')
@@ -8306,9 +6644,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Power Policy Module
-    #========================================
+    #==============================================
     def power_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -8330,7 +6668,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  A {policy_type} will configure the Power Redundancy Policies for Chassis and Servers.')
             print(f'  For Servers it will configure the Power Restore State.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             loop_count = 1
@@ -8425,9 +6763,2962 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
+    # Quick Start Module - Shared Policies
+    #==============================================
+    def quick_start_boot_m2_policies(self):
+        name_prefix = self.name_prefix
+        org = self.org
+        templateVars = {}
+        templateVars["org"] = org
+
+        configure_loop = False
+        while configure_loop == False:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  The Quick Deployment Module - Boot/Storage, will configure policies for a UCS Server ')
+            print(f'  Profile connected to an IMM Domain.\n')
+            print(f'  This wizard will save the output for these pools in the following files:\n')
+            print(f'  - Intersight/{org}/{self.type}/boot_order_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/storage_policies.auto.tfvars')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            configure = input(f'Do You Want to run the Quick Deployment Module - Boot/Storage Configuration?  Enter "Y" or "N" [Y]: ')
+            if configure == 'Y' or configure == '':
+                #_______________________________________________________________________
+                #
+                # Configure Boot Order Policy
+                #_______________________________________________________________________
+
+                templateVars["initial_write"] = True
+                templateVars["policy_type"] = 'Boot Order Policy'
+                templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                templateVars["template_file"] = 'template_open.jinja2'
+                templateVars["template_type"] = 'boot_order_policies'
+
+                # Open the Template file
+                write_to_template(self, **templateVars)
+                templateVars["initial_write"] = False
+
+                # Configure Boot Order Policy
+                name = 'VMware_M2'
+                templateVars["name"] = name
+                templateVars["descr"] = f'{name} Boot Order Policy'
+                templateVars["boot_mode"] = 'Uefi'
+                templateVars["enable_secure_boot"] = True
+                templateVars["boot_mode"] = 'Uefi'
+                templateVars["boot_devices"] = [
+                    {
+                        'enabled':True,
+                        'device_name':'KVM-DVD',
+                        'device_type':'virtual_media',
+                        'object_type':'boot.VirtualMedia',
+                        'subtype':'kvm-mapped-dvd'
+                    },
+                    {
+                        'device_name':'M2',
+                        'device_type':'local_disk',
+                        'enabled':True,
+                        'object_type':'boot.LocalDisk',
+                        'slot':'MSTOR-RAID'
+                    },
+                    {
+                        'device_name':'PXE',
+                        'device_type':'pxe_boot',
+                        'enabled':True,
+                        'interface_name':'MGMT-A',
+                        'interface_source':'name',
+                        'ip_type':'IPv4',
+                        'object_type':'boot.Pxe',
+                        'slot':'MLOM'
+                    }
+                ]
+
+                # Write Policies to Template File
+                templateVars["template_file"] = '%s.jinja2' % ('boot_policies')
+                write_to_template(self, **templateVars)
+
+                # Close the Template file
+                templateVars["template_file"] = 'template_close.jinja2'
+                write_to_template(self, **templateVars)
+
+                #_______________________________________________________________________
+                #
+                # Configure Storage Policy
+                #_______________________________________________________________________
+
+                templateVars["initial_write"] = True
+                templateVars["policy_type"] = 'Storage Policy'
+                templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                templateVars["template_file"] = 'template_open.jinja2'
+                templateVars["template_type"] = 'storage_policies'
+
+                # Open the Template file
+                write_to_template(self, **templateVars)
+                templateVars["initial_write"] = False
+
+                name = 'M2_Raid'
+                templateVars["name"] = name
+                templateVars["descr"] = f'{name} Storage Policy'
+                templateVars["drive_group"] = {}
+                templateVars["global_hot_spares"] = ''
+                templateVars["m2_configuration"] = [ { 'controller_slot':'MSTOR-RAID-1,MSTOR-RAID-2' } ]
+                templateVars["single_drive_raid_configuration"] = {}
+                templateVars["unused_disks_state"] = 'No Change'
+                templateVars["use_jbod_for_vd_creation"] = True
+
+                # Write Policies to Template File
+                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                write_to_template(self, **templateVars)
+
+                # Close the Template file
+                templateVars["template_file"] = 'template_close.jinja2'
+                write_to_template(self, **templateVars)
+
+                configure_loop = True
+
+            elif configure == 'N':
+                configure_loop = True
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+    #==============================================
+    # Quick Start Module - Shared Policies
+    #==============================================
+    def quick_start_boot_raid1_policies(self):
+        name_prefix = self.name_prefix
+        org = self.org
+        templateVars = {}
+        templateVars["org"] = org
+
+        configure_loop = False
+        while configure_loop == False:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  The Quick Deployment Module - Boot/Storage, will configure policies for a UCS Server ')
+            print(f'  Profile connected to an IMM Domain.\n')
+            print(f'  This wizard will save the output for these pools in the following files:\n')
+            print(f'  - Intersight/{org}/{self.type}/boot_order_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/storage_policies.auto.tfvars')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            configure = input(f'Do You Want to run the Quick Deployment Module - Boot/Storage Configuration?  Enter "Y" or "N" [Y]: ')
+            if configure == 'Y' or configure == '':
+                #_______________________________________________________________________
+                #
+                # Configure Boot Order Policy
+                #_______________________________________________________________________
+
+                templateVars["initial_write"] = True
+                templateVars["policy_type"] = 'Boot Order Policy'
+                templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                templateVars["template_file"] = 'template_open.jinja2'
+                templateVars["template_type"] = 'boot_order_policies'
+
+                # Open the Template file
+                write_to_template(self, **templateVars)
+                templateVars["initial_write"] = False
+
+                # Configure Boot Order Policy
+                name = 'VMware_Raid1'
+                templateVars["name"] = name
+                templateVars["descr"] = f'{name} Boot Order Policy'
+                templateVars["boot_mode"] = 'Uefi'
+                templateVars["enable_secure_boot"] = True
+                templateVars["boot_mode"] = 'Uefi'
+                templateVars["boot_devices"] = [
+                    {
+                        'enabled':True,
+                        'device_name':'KVM-DVD',
+                        'device_type':'virtual_media',
+                        'object_type':'boot.VirtualMedia',
+                        'subtype':'kvm-mapped-dvd'
+                    },
+                    {
+                        'device_name':'MRAID',
+                        'device_type':'local_disk',
+                        'enabled':True,
+                        'object_type':'boot.LocalDisk',
+                        'slot':'MRAID'
+                    },
+                    {
+                        'device_name':'PXE',
+                        'device_type':'pxe_boot',
+                        'enabled':True,
+                        'interface_name':'MGMT-A',
+                        'interface_source':'name',
+                        'ip_type':'IPv4',
+                        'object_type':'boot.Pxe',
+                        'slot':'MLOM'
+                    }
+                ]
+
+                # Write Policies to Template File
+                templateVars["template_file"] = '%s.jinja2' % ('boot_policies')
+                write_to_template(self, **templateVars)
+
+                # Close the Template file
+                templateVars["template_file"] = 'template_close.jinja2'
+                write_to_template(self, **templateVars)
+
+                #_______________________________________________________________________
+                #
+                # Configure Storage Policy
+                #_______________________________________________________________________
+
+                templateVars["initial_write"] = True
+                templateVars["policy_type"] = 'Storage Policy'
+                templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                templateVars["template_file"] = 'template_open.jinja2'
+                templateVars["template_type"] = 'storage_policies'
+
+                # Open the Template file
+                write_to_template(self, **templateVars)
+                templateVars["initial_write"] = False
+
+                name = 'MRAID'
+                templateVars["name"] = name
+                templateVars["descr"] = f'{name} Storage Policy'
+                templateVars["drive_group"] = [
+                    {
+                        'drive_group_name':'DG1',
+                        'manual_drive_selection':{
+                            'drive_array_spans':[
+                                {
+                                    'slots':'1,2'
+                                }
+                            ]
+                        },
+                        'raid_level':'Raid1',
+                        'virtual_drives':[
+                            {
+                                'access_policy':'Default',
+                                'boot_drive':True,
+                                'disk_cache':'Default',
+                                'expand_to_available':True,
+                                'read_policy':'Always Read Ahead',
+                                'size':10,
+                                'stripe_size':'64KiB',
+                                'vd_name':'VD1',
+                                'write_policy':'Write Back Good BBU'
+                            }
+                        ]
+                    }
+                ]
+                templateVars["global_hot_spares"] = ''
+                templateVars["m2_configuration"] = []
+                templateVars["single_drive_raid_configuration"] = {}
+                templateVars["unused_disks_state"] = 'No Change'
+                templateVars["use_jbod_for_vd_creation"] = True
+
+                # Write Policies to Template File
+                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                write_to_template(self, **templateVars)
+
+                # Close the Template file
+                templateVars["template_file"] = 'template_close.jinja2'
+                write_to_template(self, **templateVars)
+
+                configure_loop = True
+
+            elif configure == 'N':
+                configure_loop = True
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+    #==============================================
+    # Quick Start Module - Shared Policies
+    #==============================================
+    def quick_start_domain_policies(self, jsonData, easy_jsonData, **kwargs):
+        primary_dns = kwargs['primary_dns']
+        secondary_dns = kwargs['secondary_dns']
+        name_prefix = self.name_prefix
+        org = self.org
+        templateVars = {}
+        templateVars["org"] = org
+        vlan_type = 'policies_vlan'
+        domain_type = 'ucs_domain_profiles'
+
+        configure_loop = False
+        while configure_loop == False:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  The Quick Deployment Module - Domain Policies, will configure pools for a UCS Domain ')
+            print(f'  Profile.\n')
+            print(f'  This wizard will save the output for these pools in the following files:\n')
+            print(f'  - Intersight/{org}/{self.type}/flow_control_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/link_aggregation_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/link_control_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/network_connectivity_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/ntp_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/port_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/system_qos_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/switch_control_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/vsan_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{vlan_type}/multicast_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{vlan_type}/vlan_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{domain_type}/ucs_domain_profiles.auto.tfvars')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            configure = input(f'Do You Want to run the Quick Deployment Module - Domain Policy Configuration?  \nEnter "Y" or "N" [Y]: ')
+            if configure == 'Y' or configure == '':
+                loop_count = 1
+                policy_loop = False
+                while policy_loop == False:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Below are the Questions that will be asked by the Domain Policies Portion of the wizard.')
+                    print(f'   - UCS Domain Name.')
+                    print(f'   - UCS Domain Model.')
+                    print(f'   - UCS Serial Number for both Fabrics.')
+                    print(f'   - NTP Configuration:')
+                    print(f'     * Timezone')
+                    print(f'     * NTP Servers')
+                    print(f'   - Port Configuration.')
+                    print(f'     * Ethernet Uplink Ports.')
+                    print(f'     * Fibre-Channel Uplink Ports.')
+                    print(f'     * Server Ports.')
+                    print(f'   - System MTU for the Domain.')
+                    print(f'   - VLAN Pool for the Domain.')
+                    print(f'   - VSAN ID for Fabric A.')
+                    print(f'   - VSAN ID for Fabric B.')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+
+                    templateVars["name"] = 'Quick Deployment Module'
+
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['policy.AbstractProfile']['allOf'][1]['properties']
+
+                    # Domain Name
+                    templateVars["Description"] = jsonVars['Name']['description']
+                    templateVars["varInput"] = 'What is the name for this UCS Domain?'
+                    templateVars["varDefault"] = ''
+                    templateVars["varName"] = 'UCS Domain Name'
+                    templateVars["varRegex"] = jsonVars['Name']['pattern']
+                    templateVars["minLength"] = 1
+                    templateVars["maxLength"] = 64
+                    templateVars["name"] = varStringLoop(**templateVars)
+                    domain_name = templateVars["name"]
+
+                    # Domain Model
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['fabric.PortPolicy']['allOf'][1]['properties']
+                    templateVars["var_description"] = jsonVars['DeviceModel']['description']
+                    templateVars["jsonVars"] = sorted(jsonVars['DeviceModel']['enum'])
+                    templateVars["defaultVar"] = jsonVars['DeviceModel']['default']
+                    templateVars["varType"] = 'Device Model'
+                    templateVars["device_model"] = variablesFromAPI(**templateVars)
+
+                    # Serial Numbers
+                    serial_a,serial_b = ucs_domain_serials()
+                    templateVars["serial_number_fabric_a"] = serial_a
+                    templateVars["serial_number_fabric_b"] = serial_b
+
+                    fc_mode,ports_in_use,fc_converted_ports,port_modes = port_modes_fc(jsonData, easy_jsonData, name_prefix, **templateVars)
+                    templateVars["fc_mode"] = fc_mode
+                    templateVars["ports_in_use"] = ports_in_use
+                    templateVars["fc_converted_ports"] = fc_converted_ports
+                    templateVars["port_modes"] = port_modes
+
+                    # Ethernet Uplink Port-Channel
+                    templateVars['port_type'] = 'Ethernet Uplink Port-Channel'
+                    port_channel_ethernet_uplinks,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
+
+                    # Fibre-Channel Port-Channel
+                    templateVars["fc_ports_in_use"] = []
+                    templateVars["port_type"] == 'Fibre Channel Port-Channel'
+                    Fab_A,Fab_B,fc_ports_in_use = port_list_fc(jsonData, easy_jsonData, name_prefix, **templateVars)
+                    Fabric_A_fc_port_channels = Fab_A
+                    Fabric_B_fc_port_channels = Fab_B
+                    templateVars["fc_ports_in_use"] = fc_ports_in_use
+
+                    # Server Ports
+                    templateVars['port_type'] = 'Server Ports'
+                    port_role_servers,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
+
+                    # NTP Servers
+                    primary_ntp = ntp_primary()
+                    alternate_ntp = ntp_alternate()
+
+                    templateVars["enabled"] = True
+                    templateVars["ntp_servers"] = []
+                    templateVars["ntp_servers"].append(primary_ntp)
+                    if not alternate_ntp == '':
+                        templateVars["ntp_servers"].append(alternate_ntp)
+
+                    # Timezone
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['appliance.SystemInfo']['allOf'][1]['properties']['TimeZone']['enum']
+                    tz_regions = []
+                    for i in jsonVars:
+                        tz_region = i.split('/')[0]
+                        if not tz_region in tz_regions:
+                            tz_regions.append(tz_region)
+                    tz_regions = sorted(tz_regions)
+                    templateVars["var_description"] = 'Timezone Regions...'
+                    templateVars["jsonVars"] = tz_regions
+                    templateVars["defaultVar"] = 'America'
+                    templateVars["varType"] = 'Time Region'
+                    time_region = variablesFromAPI(**templateVars)
+
+                    region_tzs = []
+                    for item in jsonVars:
+                        if time_region in item:
+                            region_tzs.append(item)
+
+                    templateVars["var_description"] = 'Region Timezones...'
+                    templateVars["jsonVars"] = sorted(region_tzs)
+                    templateVars["defaultVar"] = ''
+                    templateVars["varType"] = 'Region Timezones'
+                    templateVars["timezone"] = variablesFromAPI(**templateVars)
+
+                    # System MTU for System QoS Policy
+                    templateVars["Description"] = 'This option will set the MTU to 9000 if answer is "Y"; 1500 if answer is "N".'
+                    templateVars["varInput"] = f'Do you want to enable Jumbo MTU?  Enter "Y" or "N"'
+                    templateVars["varDefault"] = 'Y'
+                    templateVars["varName"] = 'MTU'
+                    answer = varBoolLoop(**templateVars)
+                    if answer == True:
+                        mtu = 9000
+                    else:
+                        mtu = 1500
+
+                    valid = False
+                    while valid == False:
+                        print(f'\n-------------------------------------------------------------------------------------------\n')
+                        print(f'  The allowed vlan list can be in the format of:')
+                        print(f'     5 - Single VLAN')
+                        print(f'     1-10 - Range of VLANs')
+                        print(f'     1,2,3,4,5,11,12,13,14,15 - List of VLANs')
+                        print(f'     1-10,20-30 - Ranges and Lists of VLANs')
+                        print(f'\n-------------------------------------------------------------------------------------------\n')
+                        VlanList = input('Enter the VLAN or List of VLANs to add to the Domain: ')
+                        if not VlanList == '':
+                            vlanListExpanded = vlan_list_full(VlanList)
+                            valid_vlan = True
+                            for vlan in vlanListExpanded:
+                                valid_vlan = validating.number_in_range('VLAN ID', vlan, 1, 4094)
+                                if valid_vlan == False:
+                                    continue
+                            if valid_vlan == False:
+                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                                print(f'  Error with VLAN(s) assignment!!! VLAN List: "{VlanList}" is not Valid.')
+                                print(f'  The allowed vlan list can be in the format of:')
+                                print(f'     5 - Single VLAN')
+                                print(f'     1-10 - Range of VLANs')
+                                print(f'     1,2,3,4,5,11,12,13,14,15 - List of VLANs')
+                                print(f'     1-10,20-30 - Ranges and Lists of VLANs')
+                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                            else:
+                                valid = True
+                        else:
+                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                            print(f'  The allowed vlan list can be in the format of:')
+                            print(f'     5 - Single VLAN')
+                            print(f'     1-10 - Range of VLANs')
+                            print(f'     1,2,3,4,5,11,12,13,14,15 - List of VLANs')
+                            print(f'     1-10,20-30 - Ranges and Lists of VLANs')
+                            print(f'\n-------------------------------------------------------------------------------------------\n')
+
+                    valid = False
+                    while valid == False:
+                        nativeVlan = input('What is the Native VLAN for the Ethernet Port-Channel?  [press enter to skip]: ')
+                        if nativeVlan == '':
+                            valid = True
+                        else:
+                            for vlan in vlanListExpanded:
+                                if int(nativeVlan) == int(vlan):
+                                    native_count = 1
+                            if not native_count == 1:
+                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                                print(f'  Error!! The Native VLAN was not in the VLAN Policy List.')
+                                print(f'  VLAN Policy List is: "{VlanList}"')
+                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                            else:
+                                valid = True
+
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  UCS Domain Name        = "{domain_name}"')
+                    print(f'  Device Model           = "{templateVars["device_model"]}"')
+                    print(f'  Serial Number Fabric A = "{templateVars["serial_number_fabric_a"]}"')
+                    print(f'  Serial Number Fabric B = "{templateVars["serial_number_fabric_b"]}"')
+                    print(f'  Port Policy Variables:')
+                    print(f'    Ethernet Port-Channel Ports      = "{templateVars["timezone"]}"')
+                    print(f'    Fibre-Channel Port-Channel Ports = "{templateVars["timezone"]}"')
+                    print(f'    Server Ports                     = "{templateVars["timezone"]}"')
+                    print(f'  System MTU: {mtu}')
+                    print(f'  NTP Variables:')
+                    print(f'    timezone: "{templateVars["timezone"]}"')
+                    if len(templateVars["ntp_servers"]) > 0:
+                        print(f'    ntp_servers = [')
+                        for server in templateVars["ntp_servers"]:
+                            print(f'      "{server}",')
+                        print(f'    ]')
+                    print(f'  VLAN Pool: "{VlanList}"')
+                    print(f'  VSAN Fabric A: "{templateVars["vsan_a"]}"')
+                    print(f'  VSAN Fabric B: "{templateVars["vsan_b"]}"')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    valid_confirm = False
+                    while valid_confirm == False:
+                        confirm_policy = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
+                        if confirm_policy == 'Y' or confirm_policy == '':
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure BIOS Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'BIOS Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'bios_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Configure BIOS Policy
+                            name = 'VMware'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} BIOS Policy'
+                            templateVars["bios_template"] = 'VMware'
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure IMC Access Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'IMC Access Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'imc_access_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Configure IMC Access Policy
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} IMC Access Policy'
+                            templateVars["inband_ip_pool"] = 'VMWare_KVM'
+                            templateVars["inband_vlan_id"] = name
+                            templateVars["ipv4_address_configuration"] = True
+                            templateVars["ipv6_address_configuration"] = False
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure IPMI over LAN Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'IPMI over LAN Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'ipmi_over_lan_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # IPMI over LAN Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} IPMI over LAN Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Local User Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Local User Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'local_user_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Local User Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Local User Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Power Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Power Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'power_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Power Settings
+                            names = ['5108', '9508', 'Server']
+                            for name in names:
+                                templateVars["allocated_budget"] = 0
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Power Policy'
+                                if name == 'Server': templateVars["power_restore_state"] = 'LastState'
+                                elif name == '9508': templateVars["allocated_budget"] = 5600
+
+                                templateVars["power_redundancy"] = 'Grid'
+                                templateVars["ipmi_key"] = 1
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Serial over LAN Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Serial over LAN Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'serial_over_lan_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Serial over LAN Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Serial over LAN Policy'
+                            templateVars["enabled"] = True
+                            templateVars["baud_rate"] = 115200
+                            templateVars["com_port"] = 'com0'
+                            templateVars["ssh_port"] = 2400
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure SNMP Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'SNMP Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'snmp_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # SNMP Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} SNMP Policy'
+                            templateVars["access_community_string"] = ''
+                            templateVars["enabled"] = True
+                            templateVars["engine_input_id"] = ''
+                            templateVars["port"] = 161
+                            templateVars["snmp_community_access"] = 'Disabled'
+                            templateVars["trap_community_string"] = ''
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Syslog Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Syslog Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'syslog_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Syslog Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Syslog Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Thermal Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Thermal Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'thermal_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Thermal Settings
+                            names = ['5108', '9508']
+                            for name in names:
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Thermal Policy'
+                                templateVars["fan_control_mode"] = 'Balanced'
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            configure_loop = True
+                            policy_loop = True
+                            valid_confirm = True
+
+                        elif confirm_policy == 'N':
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Starting Section over.')
+                            print(f'\n------------------------------------------------------\n')
+                            valid_confirm = True
+
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+
+
+            elif configure == 'N':
+                configure_loop = True
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+    #==============================================
+    # Quick Start Module - Network Policies
+    #==============================================
+    def quick_start_network_policies(self, jsonData, easy_jsonData, **kwargs):
+        mtu = kwargs['mtu']
+        name_prefix = self.name_prefix
+        org = self.org
+        templateVars = {}
+        templateVars["org"] = org
+
+        configure_loop = False
+        while configure_loop == False:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  The Quick Deployment Module - Network Configuration, will configure policies for the')
+            print(f'  Network Configuration of a UCS Server Profile connected to an IMM Domain.\n')
+            print(f'  This wizard will save the output for these pools in the following files:\n')
+            print(f'  - Intersight/{org}/{self.type}/ethernet_adapter_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/ethernet_network_control_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/ethernet_network_group_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/ethernet_qos_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/fibre_channel_adapter_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/fibre_channel_network_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/fibre_channel_qos_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/lan_connectivity_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/san_connectivity_policies.auto.tfvars')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            configure = input(f'Do You Want to run the Quick Deployment Module - Network Configuration?  Enter "Y" or "N" [Y]: ')
+            if configure == 'Y' or configure == '':
+                loop_count = 1
+                policy_loop = False
+                while policy_loop == False:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Below are the Questions that will be asked by the Policies Portion of the wizard.')
+                    print(f'   - Choice to use CDP or LDP for Device Discovery.')
+                    print(f'   - Choice to enable Jumbo MTU (9000 MB) or Run standard 1500 MB MTU for vNICs.')
+                    print(f'   - LAN Connectivity Policy (vNICs):')
+                    print(f'     * VLAN ID for ESXi MGMT')
+                    print(f'     * VLAN ID for ESXi vMotion')
+                    print(f'     * VLAN ID for ESXi Storage')
+                    print(f'     * VLAN List for DATA (Virtual Machines)')
+                    print(f'   - SAN Connectivity Policy (vHBAs):')
+                    print(f'     * VSAN ID for Fabric A')
+                    print(f'     * VSAN ID for Fabric B')
+                    print(f'     ** Note: This should not overlap with any of the VLANs assigned to the')
+                    print(f'              LAN Connectivity Policies.')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+
+                    # Get List of VLAN's from the Domain Policies
+                    templateVars["name"] = 'Quick Start Deployment'
+                    policy_list = [
+                        'policies_vlans.vlan_policies.vlan_policy',
+                    ]
+                    templateVars["allow_opt_out"] = False
+                    for policy in policy_list:
+                        vlan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
+
+                    vlan_list = []
+                    for item in policyData['vlan_policies'][0][vlan_policy][0]['vlans']:
+                        for k, v in item.items():
+                            vlan_list.append(v[0]['vlan_list'])
+
+                    vlan_convert = ''
+                    for vlan in vlan_list:
+                        if vlan_convert == '':
+                            vlan_convert = str(vlan)
+                        else:
+                            vlan_convert = vlan_convert + ',' + str(vlan)
+
+                    vlan_policy_list = vlan_list_full(vlan_convert)
+
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonVars = easy_jsonData['policies']['fabric.EthNetworkControlPolicy']
+
+                    # Neighbor Discovery Protocol
+                    templateVars["var_description"] = jsonVars['discoveryProtocol']['description']
+                    templateVars["jsonVars"] = sorted(jsonVars['discoveryProtocol']['enum'])
+                    templateVars["defaultVar"] = jsonVars['discoveryProtocol']['default']
+                    templateVars["varType"] = 'Neighbor Discovery Protocol'
+                    neighbor_discovery = variablesFromAPI(**templateVars)
+
+                    # Management VLAN
+                    valid = False
+                    while valid == False:
+                        templateVars["Description"] = 'LAN Connectivity Policy vNICs - MGMT VLAN Identifier'
+                        templateVars["varInput"] = 'Enter the VLAN ID for MGMT:'
+                        templateVars["varDefault"] = 1
+                        templateVars["varName"] = 'Management VLAN ID'
+                        templateVars["minNum"] = 1
+                        templateVars["maxNum"] = 4094
+                        mgmt_vlan = varNumberLoop(**templateVars)
+                        valid = validate_vlan_in_policy(vlan_policy_list, mgmt_vlan)
+
+                    # vMotion VLAN
+                    valid = False
+                    while valid == False:
+                        templateVars["Description"] = 'LAN Connectivity Policy vNICs - vMotion VLAN Identifier'
+                        templateVars["varInput"] = 'Enter the VLAN ID for vMotion:'
+                        templateVars["varDefault"] = 2
+                        templateVars["varName"] = 'Management VLAN ID'
+                        templateVars["minNum"] = 1
+                        templateVars["maxNum"] = 4094
+                        vmotion_vlan = varNumberLoop(**templateVars)
+                        valid = validate_vlan_in_policy(vlan_policy_list, vmotion_vlan)
+
+                    # Storage VLAN
+                    valid = False
+                    while valid == False:
+                        templateVars["Description"] = 'LAN Connectivity Policy vNICs - Storage VLAN Identifier'
+                        templateVars["varInput"] = 'Enter the VLAN ID for Storage:'
+                        templateVars["varDefault"] = 3
+                        templateVars["varName"] = 'Storage VLAN ID'
+                        templateVars["minNum"] = 1
+                        templateVars["maxNum"] = 4094
+                        storage_vlan = varNumberLoop(**templateVars)
+                        valid = validate_vlan_in_policy(vlan_policy_list, storage_vlan)
+
+                    valid = False
+                    while valid == False:
+                        VlanList = input('Enter the VLAN or List of VLANs to add to the DATA (Virtual Machine) vNICs: ')
+                        if not VlanList == '':
+                            vlanListExpanded = vlan_list_full(VlanList)
+                            valid_vlan = True
+                            vlans_not_in_domain_policy = []
+                            for vlan in vlanListExpanded:
+                                valid_vlan = validating.number_in_range('VLAN ID', vlan, 1, 4094)
+                                if valid_vlan == False:
+                                    continue
+                                else:
+                                    vlan_count = 0
+                                    for vlans in vlan_policy_list:
+                                        if int(vlan) == int(vlans):
+                                            vlan_count += 1
+                                            break
+                                    if vlan_count == 0:
+                                        vlans_not_in_domain_policy.append(vlan)
+
+
+                            if len(vlans_not_in_domain_policy) > 0:
+                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                                print(f'  Error with VLAN(s) assignment!!  The following VLAN(s) are missing.')
+                                print(f'  - Domain VLAN Policy: "{vlan_policy}"')
+                                print(f'  - VLANs in Policy: "{vlan_list}"')
+                                print(f'  - Missing VLANs: {vlans_not_in_domain_policy}')
+                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                                valid_vlan = False
+
+                            native_count = 0
+                            nativeVlan = ''
+                            if valid_vlan == True:
+                                nativeValid = False
+                                while nativeValid == False:
+                                    nativeVlan = input('Do you want to Configure one of the VLANs as a Native VLAN?  [press enter to skip]:')
+                                    if nativeVlan == '':
+                                        nativeValid = True
+                                        valid = True
+                                    else:
+                                        for vlan in vlanListExpanded:
+                                            if int(nativeVlan) == int(vlan):
+                                                native_count = 1
+                                        if not native_count == 1:
+                                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                                            print(f'  Error!! The Native VLAN was not in the Allowed List.')
+                                            print(f'  Allowed VLAN List is: "{vlan_list}"')
+                                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                                        else:
+                                            nativeValid = True
+                                            valid = True
+
+                        else:
+                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                            print(f'  The allowed vlan list can be in the format of:')
+                            print(f'     5 - Single VLAN')
+                            print(f'     1-10 - Range of VLANs')
+                            print(f'     1,2,3,4,5,11,12,13,14,15 - List of VLANs')
+                            print(f'     1-10,20-30 - Ranges and Lists of VLANs')
+                            print(f'\n-------------------------------------------------------------------------------------------\n')
+
+                    fabrics = ['A', 'B']
+                    for x in fabrics:
+                        valid = False
+                        while valid == False:
+                            templateVars["Description"] = f'VSAN Identifier for Fabric {x}'
+                            templateVars["varInput"] = f'What VSAN Identifier do you want to Assign to Fabric {x}?'
+                            if x == 'A':
+                                templateVars["varDefault"] = 100
+                            else:
+                                templateVars["varDefault"] = 200
+                            templateVars["varName"] = 'VSAN'
+                            templateVars["minNum"] = 1
+                            templateVars["maxNum"] = 4094
+                            vsan_id = varNumberLoop(**templateVars)
+                        
+                            policy_list = [
+                                'policies.vsan_policies.vsan_policy'
+                            ]
+                            templateVars["allow_opt_out"] = False
+                            for policy in policy_list:
+                                vsan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
+
+                            vsan_list = []
+                            for item in policyData['vsan_policies'][0][vsan_policy][0]['vsans']:
+                                for key, value in item.items():
+                                    vsan_list.append(value[0]['vsan_id'])
+
+                            vsan_string = ''
+                            for vsan in vsan_list:
+                                if vsan_string == '':
+                                    vsan_string = str(vsan)
+                                else:
+                                    vsan_string = vsan_string + ',' + str(vsan)
+                            vsan_list = vlan_list_full(vsan_string)
+                            vsan_count = 0
+                            for vsan in vsan_list:
+                                if int(vsan_id) == int(vsan):
+                                    vsan_count = 1
+                                    break
+                            if vsan_count == 0:
+                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                                print(f'  Error with VSAN!!  The VSAN {vsan_id} is not in the VSAN Policy')
+                                print(f'  {vsan_policy}.  Options are {vsan_list}.')
+                                print(f'\n-------------------------------------------------------------------------------------------\n')
+                            else:
+                                templateVars[f"vsan_{x}"] = vsan_id
+                                valid = True
+                    
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Network Configuration Variables:')
+                    print(f'    MGMT VLAN     = {mgmt_vlan}')
+                    print(f'    vMotion VLAN  = {vmotion_vlan}')
+                    print(f'    Storage VLAN  = {storage_vlan}')
+                    print(f'    Data VLANs    = "{VlanList}"')
+                    print(f'    VSAN Fabric A = {templateVars["vsan_A"]}')
+                    print(f'    VSAN Fabric B = {templateVars["vsan_B"]}')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    valid_confirm = False
+                    while valid_confirm == False:
+                        confirm_policy = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
+                        if confirm_policy == 'Y' or confirm_policy == '':
+                            confirm_policy = 'Y'
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Ethernet Adapter Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Ethernet Adapter Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'ethernet_adapter_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'VMware'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Ethernet Adapter Policy'
+                            templateVars["adapter_template"] = 'VMware'
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % ('ethernet_adapter_templates')
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Ethernet Network Control Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Ethernet Network Control Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'ethernet_network_control_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = neighbor_discovery
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Ethernet Network Control Policy'
+                            templateVars["action_on_uplink_fail"] = "linkDown"
+                            if neighbor_discovery == 'CDP':
+                                templateVars["cdp_enable"] = True
+                            else:
+                                templateVars["cdp_enable"] = False
+                            if neighbor_discovery == 'LLDP':
+                                templateVars["lldp_receive_enable"] = True
+                                templateVars["lldp_transmit_enable"] = True
+                            else:
+                                templateVars["lldp_receive_enable"] = False
+                                templateVars["lldp_transmit_enable"] = False
+                            templateVars["mac_register_mode"] = "nativeVlanOnly"
+                            templateVars["mac_security_forge"] = "allow"
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Ethernet Network Group Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Ethernet Network Group Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'ethernet_network_group_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            names = ['MGMT', 'VMOTION', 'STORAGE', 'DATA']
+                            for x in names:
+                                if x == 'MGMT':
+                                    allowed_vlans = mgmt_vlan
+                                    native_vlan = mgmt_vlan
+                                elif x == 'MGMT':
+                                    allowed_vlans = vmotion_vlan
+                                    native_vlan = vmotion_vlan
+                                elif x == 'MGMT':
+                                    allowed_vlans = storage_vlan
+                                    native_vlan = storage_vlan
+                                elif x == 'DATA':
+                                    allowed_vlans = VlanList
+                                    native_vlan = nativeVlan
+                                name = x
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Ethernet Network Group Policy'
+                                templateVars["allowed_vlans"] = allowed_vlans
+                                if not native_vlan == '':
+                                    templateVars["native_vlan"] = native_vlan
+                                else:
+                                    templateVars["native_vlan"] = ''
+                                    templateVars.pop('native_vlan')
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Ethernet QoS Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Ethernet QoS Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'ethernet_qos_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            names = ['Bronze', 'Gold', 'Platinum', 'Silver']
+                            for x in names:
+                                name = x
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Ethernet QoS Policy'
+                                templateVars["allowed_vlans"] = mgmt_vlan
+                                templateVars["native_vlan"] = mgmt_vlan
+                                templateVars["burst"] = 1024
+                                templateVars["enable_trust_host_cos"] = False
+                                templateVars["priority"] = x
+                                templateVars["mtu"] = mtu
+                                templateVars["rate_limit"] = 0
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Fibre Channel Adapter Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Fibre-Channel Adapter Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'fibre_channel_adapter_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'VMware'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Fibre-Channel Adapter Policy'
+                            templateVars["adapter_template"] = 'VMware'
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % ('ethernet_adapter_templates')
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Fibre Channel Network Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Fibre-Channel Network Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'fibre_channel_network_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            fabrics = ['A', 'B']
+                            for fab in fabrics:
+                                name = f'Fabric-{fab}'
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Fibre-Channel Network Policy'
+                                templateVars["default_vlan"] = 0
+                                templateVars["vsan_id"] = templateVars[f"vsan_{fab}"]
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Fibre Channel QoS Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Fibre-Channel QoS Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'fibre_channel_qos_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'FC_QoS'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Fibre-Channel QoS Policy'
+                            templateVars["burst"] = 1024
+                            templateVars["max_data_field_size"] = 2112
+                            templateVars["rate_limit"] = 0
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # LAN Connectivity Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'LAN Connectivity Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'lan_connectivity_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'VMware_LAN'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} LAN Connectivity Policy'
+                            templateVars["enable_azure_stack_host_qos"] = False
+                            templateVars["iqn_allocation_type"] = "None"
+                            templateVars["vnic_placement_mode"] = "custom"
+                            templateVars["target_platform"] = "FIAttached"
+                            templateVars["vnics"] = []
+
+                            names = ['MGMT_Silver', 'VMOTION_Bronze', 'STORAGE_Platinum', 'DATA_Gold']
+                            Order = 0
+                            for nam in names:
+                                vname = nam.split('_')[0]
+                                qos = nam.split('_')[1]
+                                for fab in fabrics:
+                                    vnic = {
+                                        'cdn_source':'vnic',
+                                        'enable_failover':False,
+                                        'ethernet_adapter_policy':'VMware',
+                                        'ethernet_network_control_policy':neighbor_discovery,
+                                        'ethernet_network_group_policy':vname,
+                                        'ethernet_qos_policy':qos,
+                                        'mac_address_allocation_type':'POOL',
+                                        'mac_address_pool':f'{vname}-{fab}',
+                                        'name':f'{vname}-{fab}',
+                                        'placement_pci_link':0,
+                                        'placement_pci_order':Order,
+                                        'placement_slot_id':'MLOM',
+                                        'placement_switch_id':fab
+                                    }
+                                    templateVars["vnics"].append(vnic)
+                                    Order += 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # SAN Connectivity Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'SAN Connectivity Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'san_connectivity_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'VMware_SAN'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} SAN Connectivity Policy'
+                            templateVars["target_platform"] = "FIAttached"
+                            templateVars["vhba_placement_mode"] = "custom"
+                            templateVars["vhbas"] = []
+                            templateVars["wwnn_allocation_type"] = "POOL"
+                            templateVars["wwnn_pool"] = "VMware"
+
+                            for fab in fabrics:
+                                vhba = {
+                                    'fibre_channel_adapter_policy':'VMware',
+                                    'fibre_channel_network_policy':f'Fabric-{fab}',
+                                    'fibre_channel_qos_policy':'FC_QoS',
+                                    'name':f'HBA-{fab}',
+                                    'persistent_lun_bindings':False,
+                                    'placement_pci_link':0,
+                                    'placement_pci_order':Order,
+                                    'placement_slot_id':'MLOM',
+                                    'placement_switch_id':fab,
+                                    'wwpn_allocation_type':'POOL',
+                                    'wwpn_pool':f'VMware-{fab}',
+                                }
+                                templateVars["vhbas"].append(vhba)
+                                Order += 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            configure_loop = True
+                            policy_loop = True
+                            valid_confirm = True
+
+                        elif confirm_policy == 'N':
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Starting Section over.')
+                            print(f'\n------------------------------------------------------\n')
+                            valid_confirm = True
+
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+
+
+            elif configure == 'N':
+                configure_loop = True
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+    #==============================================
+    # Quick Start Module - Pools
+    #==============================================
+    def quick_start_pools(self, jsonData, easy_jsonData):
+        name_prefix = self.name_prefix
+        org = self.org
+        templateVars = {}
+        templateVars["org"] = org
+
+        configure_loop = False
+        while configure_loop == False:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  The Quick Deployment Module - Pools, will configure pools for a UCS Server Profile')
+            print(f'  connected to an IMM Domain.\n')
+            print(f'  This wizard will save the output for these pools in the following files:\n')
+            print(f'  - Intersight/{org}/{self.type}/ip_pools.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/mac_pools.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/uuid_pools.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/wwnn_pools.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/wwpn_pools.auto.tfvars')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            configure = input(f'Do You Want to run the Quick Deployment Module - Pools?  Enter "Y" or "N" [Y]: ')
+            if configure == 'Y' or configure == '':
+                loop_count = 1
+                policy_loop = False
+                while policy_loop == False:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Below are the Questions that will be asked by the Pools Portion of the wizard.')
+                    print(f'   - IP Pool for IMC/KVM Access')
+                    print(f'     * Gateway')
+                    print(f'     * Netmask')
+                    print(f'     * Starting IP Address for the Pool')
+                    print(f'     * Ending IP Address for the Pool')
+                    print(f'     * Primary DNS Server')
+                    print(f'     * Secondary DNS Server (optional)')
+                    print(f'   - Inband VLAN ID for IMC Policy (KVM Access)')
+                    print(f'   - MAC/UUID/WWNN/WWPN Pools')
+                    print(f'     * Prefix Value')
+                    print(f'       The following pools will be configured with the prefix value:')
+                    print(f'        (Policy maximum 1000 addresses per pool in Intersight):')
+                    print(f'        - MGMT Pool A: 00:25:B5:[prefix]:A0:00 to 00:25:B5:[prefix]:A3:E7')
+                    print(f'        - MGMT Pool B: 00:25:B5:[prefix]:B0:00 to 00:25:B5:[prefix]:B3:E7')
+                    print(f'        - VMOTION Pool A: 00:25:B5:[prefix]:C0:00 to 00:25:B5:[prefix]:C3:E7')
+                    print(f'        - VMOTION Pool B: 00:25:B5:[prefix]:D0:00 to 00:25:B5:[prefix]:D3:E7')
+                    print(f'        - STORAGE Pool A: 00:25:B5:[prefix]:E0:00 to 00:25:B5:[prefix]:E3:E7')
+                    print(f'        - STORAGE Pool B: 00:25:B5:[prefix]:F0:00 to 00:25:B5:[prefix]:F3:E7')
+                    print(f'        - DATA Pool A: 00:25:B5:[prefix]:G0:00 to 00:25:B5:[prefix]:G3:E7')
+                    print(f'        - DATA Pool B: 00:25:B5:[prefix]:H0:00 to 00:25:B5:[prefix]:H3:E7')
+                    print(f'        - UUID Pool: 000025B5-[prefix]00-0000 to 000025B5-[prefix]00-03E7')
+                    print(f'        - WWNN Pool A: 20:00:00:25:B5:[prefix]:00:00 to 20:00:00:25:B5:[prefix]:03:E7')
+                    print(f'        - WWPN Pool A: 20:00:00:25:B5:[prefix]:A0:00 to 20:00:00:25:B5:[prefix]:A3:E7')
+                    print(f'        - WWPN Pool B: 20:00:00:25:B5:[prefix]:B0:00 to 20:00:00:25:B5:[prefix]:B3:E7')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['ippool.IpV4Config']['allOf'][1]['properties']
+
+                    templateVars["Description"] = jsonVars['Gateway']['description']
+                    templateVars["varInput"] = 'What is the Gateway for the KVM IP Pool? [198.18.0.1]:'
+                    templateVars["varDefault"] = '198.18.0.1'
+                    templateVars["varName"] = 'Gateway'
+                    templateVars["varRegex"] = jsonVars['Gateway']['pattern']
+                    templateVars["minLength"] = 7
+                    templateVars["maxLength"] = 15
+                    gateway = varStringLoop(**templateVars)
+
+                    templateVars["Description"] = jsonVars['Netmask']['description']
+                    templateVars["varInput"] = 'What is the Netmask for the KVM IP Pool? [255.255.255.0]:'
+                    templateVars["varDefault"] = '255.255.255.0'
+                    templateVars["varName"] = 'Netmask'
+                    templateVars["varRegex"] = jsonVars['Netmask']['pattern']
+                    templateVars["minLength"] = 7
+                    templateVars["maxLength"] = 15
+                    netmask = varStringLoop(**templateVars)
+
+                    templateVars["Description"] = jsonVars['PrimaryDns']['description']
+                    templateVars["varInput"] = 'What is the Primary Dns for the KVM IP Pool? [208.67.220.220]:'
+                    templateVars["varDefault"] = '208.67.220.220'
+                    templateVars["varName"] = 'Primary Dns'
+                    templateVars["varRegex"] = jsonVars['PrimaryDns']['pattern']
+                    templateVars["minLength"] = 7
+                    templateVars["maxLength"] = 15
+                    primary_dns = varStringLoop(**templateVars)
+
+                    templateVars["Description"] = jsonVars['SecondaryDns']['description']
+                    templateVars["varInput"] = 'What is the Secondary Dns for the KVM IP Pool? [press enter to skip]:'
+                    templateVars["varDefault"] = ''
+                    templateVars["varName"] = 'Secondary Dns'
+                    templateVars["varRegex"] = jsonVars['SecondaryDns']['pattern']
+                    templateVars["minLength"] = 7
+                    templateVars["maxLength"] = 15
+                    secondary_dns = varStringLoop(**templateVars)
+
+                    jsonVars = jsonData['components']['schemas']['ippool.IpV4Block']['allOf'][1]['properties']
+
+                    templateVars["Description"] = jsonVars['From']['description']
+                    templateVars["varInput"] = 'What is the First IP Address for the KVM IP Pool? [198.18.0.10]:'
+                    templateVars["varDefault"] = '198.18.0.10'
+                    templateVars["varName"] = 'Beginning IP Address'
+                    templateVars["varRegex"] = jsonVars['From']['pattern']
+                    templateVars["minLength"] = 7
+                    templateVars["maxLength"] = 15
+                    pool_from = varStringLoop(**templateVars)
+
+                    templateVars["Description"] = jsonVars['To']['description']
+                    templateVars["varInput"] = 'What is the Last IP Address for the KVM IP Pool? [198.18.0.254]:'
+                    templateVars["varDefault"] = '198.18.0.254'
+                    templateVars["varName"] = 'Ending IP Address'
+                    templateVars["varRegex"] = jsonVars['To']['pattern']
+                    templateVars["minLength"] = 7
+                    templateVars["maxLength"] = 15
+                    pool_to = varStringLoop(**templateVars)
+
+                    templateVars["Description"] = 'Prefix to assign to Pools'
+                    templateVars["varInput"] = 'What is the 2 Digit (Hex) Prefix to assign to the MAC, UUID, WWNN, and WWPN Pools? [00]:'
+                    templateVars["varDefault"] = '00'
+                    templateVars["varName"] = 'Pool Prefix'
+                    templateVars["varRegex"] = '^[0-9a-zA-Z][0-9a-zA-Z]$'
+                    templateVars["minLength"] = 2
+                    templateVars["maxLength"] = 2
+                    pool_prefix = varStringLoop(**templateVars)
+                    pool_prefix = pool_prefix.upper()
+
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  KVM IP Pool Variables:"')
+                    print(f'    Gateway       = "{gateway}"')
+                    print(f'    Netmask       = "{netmask}"')
+                    print(f'    Primary DNS   = "{primary_dns}"')
+                    print(f'    Secondary DNS = "{secondary_dns}"')
+                    print(f'    Starting IP   = "{pool_from}"')
+                    print(f'    Ending IP     = "{pool_to}"')
+                    print(f'  Pool Prefix for the rest of the Pools = "{pool_prefix}"')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    valid_confirm = False
+                    while valid_confirm == False:
+                        confirm_policy = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
+                        if confirm_policy == 'Y' or confirm_policy == '':
+                            confirm_policy = 'Y'
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure IP Pool
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'IP Pool'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'ip_pools'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'VMWare_KVM'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} KVM IP Pool'
+                            templateVars["assignment_order"] = 'sequential'
+                            pool_size = int(ipaddress.IPv4Address(pool_to)) - int(ipaddress.IPv4Address(pool_from)) + 1
+                            templateVars["ipv4_blocks"] = [
+                                {
+                                    'from':pool_from,
+                                    'size':pool_size,
+                                    'to':pool_to
+                                }
+                            ]
+                            templateVars["ipv4_configuration"] = {
+                                'gateway':gateway,
+                                'prefix':netmask,
+                                'primary_dns':primary_dns,
+                                'secondary_dns':secondary_dns
+                            }
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure MAC Pools
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'MAC Pool'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'mac_pools'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            names = ['DATA', 'MGMT', 'MIGRATION', 'STORAGE']
+                            fabrics = ['A', 'B']
+                            for nam in names:
+                                for fab in fabrics:
+                                    if nam == 'MGMT' and fab == 'A': key_id = 'A'
+                                    elif nam == 'MGMT' and fab == 'B': key_id = 'B'
+                                    elif nam == 'MIGRATION' and fab == 'A': key_id = 'C'
+                                    elif nam == 'MIGRATION' and fab == 'B': key_id = 'D'
+                                    elif nam == 'STORAGE' and fab == 'A': key_id = 'E'
+                                    elif nam == 'STORAGE' and fab == 'B': key_id = 'F'
+                                    elif nam == 'DATA' and fab == 'A': key_id = 'G'
+                                    elif nam == 'DATA' and fab == 'B': key_id = 'H'
+
+                                    name = f'{nam}-{fab}'
+                                    templateVars["name"] = name
+                                    templateVars["descr"] = f'{name} MAC Pool'
+                                    templateVars["assignment_order"] = 'sequential'
+                                    pool_from = f'00:25:B5:{pool_prefix}:{key_id}0:00'
+                                    pool_to = f'00:25:B5:{pool_prefix}:{key_id}3:E7'
+                                    templateVars["mac_blocks"] = [
+                                        {
+                                            'from':pool_from,
+                                            'size':1000,
+                                            'to':pool_to
+                                        }
+                                    ]
+                                    # Write Policies to Template File
+                                    templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                    write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure UUID Pool
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'UUID Pool'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'uuid_pools'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'VMware'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} UUID Pool'
+                            templateVars["assignment_order"] = 'sequential'
+                            templateVars["prefix"] = f'000025B5-{pool_prefix}00-0000'
+                            templateVars["uuid_blocks"] = [
+                                {
+                                    'from':'0000-000000000000',
+                                    'size':1000,
+                                    'to':'0000-0000000003E7'
+                                }
+                            ]
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure WWNN Pool
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'WWNN Pool'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'wwnn_pools'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'VMware'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} WWNN Pool'
+                            templateVars["assignment_order"] = 'sequential'
+                            pool_from = f'20:00:00:25:B5:{pool_prefix}:00:00'
+                            pool_to = f'20:00:00:25:B5:{pool_prefix}:03:E7'
+                            templateVars["wwnn_blocks"] = [
+                                {
+                                    'from':pool_from,
+                                    'size':1000,
+                                    'to':pool_to
+                                }
+                            ]
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure WWPN Pools
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'WWPN Pool'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'wwpn_pools'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            for fab in fabrics:
+                                name = f'VMware-{fab}'
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} WWPN Pool Fabric {fab}'
+                                templateVars["assignment_order"] = 'sequential'
+                                pool_from = f'20:00:00:25:B5:{pool_prefix}:{fab}0:00'
+                                pool_to = f'20:00:00:25:B5:{pool_prefix}:{fab}3:E7'
+                                templateVars["wwpn_blocks"] = [
+                                    {
+                                        'from':pool_from,
+                                        'size':1000,
+                                        'to':pool_to
+                                    }
+                                ]
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            configure_loop = True
+                            policy_loop = True
+                            valid_confirm = True
+
+                        elif confirm_policy == 'N':
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Starting Section over.')
+                            print(f'\n------------------------------------------------------\n')
+                            valid_confirm = True
+
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+
+
+            elif configure == 'N':
+                configure_loop = True
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+        return primary_dns,secondary_dns
+
+    #==============================================
+    # Quick Start Module - Standalone Policies
+    #==============================================
+    def quick_start_rack_policies(self, jsonData, easy_jsonData, server_type):
+        name_prefix = self.name_prefix
+        org = self.org
+        templateVars = {}
+        templateVars["org"] = org
+
+        configure_loop = False
+        while configure_loop == False:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  The Quick Deployment Module - Pools, will configure pools for a UCS Server Profile')
+            print(f'  connected to an IMM Domain.\n')
+            print(f'  This wizard will save the output for these pools in the following files:\n')
+            print(f'  - Intersight/{org}/{self.type}/bios_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/boot_order_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/imc_access_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/ipmi_over_lan_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/local_user_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/power_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/serial_over_lan_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/snmp_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/storage_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/syslog_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/thermal_policies.auto.tfvars')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            configure = input(f'Do You Want to run the Quick Deployment Module - Policy Configuration?  Enter "Y" or "N" [Y]: ')
+            if configure == 'Y' or configure == '':
+                loop_count = 1
+                policy_loop = False
+                while policy_loop == False:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Below are the Questions that will be asked by the Policies Portion of the wizard.')
+                    print(f'   - VLAN ID for IMC Access Policy.')
+                    print(f'   - Local User Policy (Required for direct KVM Access).')
+                    print(f'     * user and role')
+                    print(f'     * user password (strong passwords enforced)')
+                    print(f'   - SNMP Policy')
+                    print(f'     * Contact')
+                    print(f'     * Location')
+                    print(f'     * SNMPv3 Users (optional)')
+                    print(f'     * SNMPv3 Trap Servers (optional)')
+                    print(f'   - Syslog Policy - (Optional)')
+                    print(f'     * Remote Syslog Server(s)')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+
+                    # Get List of VLAN's from the Domain Policies
+                    policy_list = [
+                        'policies_vlans.vlan_policies.vlan_policy',
+                    ]
+                    templateVars["allow_opt_out"] = False
+                    for policy in policy_list:
+                        vlan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
+
+                    vlan_list = []
+                    for item in policyData['vlan_policies'][0][vlan_policy][0]['vlans']:
+                        for k, v in item.items():
+                            vlan_list.append(v[0]['vlan_list'])
+
+                    vlan_convert = ''
+                    for vlan in vlan_list:
+                        if vlan_convert == '':
+                            vlan_convert = str(vlan)
+                        else:
+                            vlan_convert = vlan_convert + ',' + str(vlan)
+
+                    vlan_policy_list = vlan_list_full(vlan_convert)
+
+                    templateVars["multi_select"] = False
+
+                    # IMC Access VLAN
+                    valid = False
+                    while valid == False:
+                        templateVars["Description"] = 'IMC Access VLAN Identifier'
+                        templateVars["varInput"] = 'Enter the VLAN ID for the IMC Access Policy.'
+                        templateVars["varDefault"] = 1
+                        templateVars["varName"] = 'IMC Access Policy VLAN ID'
+                        templateVars["minNum"] = 1
+                        templateVars["maxNum"] = 4094
+                        imc_vlan = varNumberLoop(**templateVars)
+                        if server_type == 'FIAttached':
+                            valid = validate_vlan_in_policy(vlan_policy_list, imc_vlan)
+                        else:
+                            valid = True
+
+                    # Pull in the Policies for SNMP Policies
+                    jsonVars = jsonData['components']['schemas']['snmp.Policy']['allOf'][1]['properties']
+
+                    # SNMP Contact
+                    templateVars["Description"] = jsonVars['SysContact']['description'] + \
+                        'Note: Enter a string up to 64 characters, such as an email address or a name and telephone number.'
+                    templateVars["varDefault"] = ''
+                    templateVars["varInput"] = 'SNMP System Contact:'
+                    templateVars["varName"] = 'SNMP System Contact'
+                    templateVars["varRegex"] = '.*'
+                    templateVars["minLength"] = 1
+                    templateVars["maxLength"] = jsonVars['SysContact']['maxLength']
+                    templateVars["system_contact"] = varStringLoop(**templateVars)
+
+                    # SNMP Location
+                    templateVars["Description"] = jsonVars['SysLocation']['description']
+                    templateVars["varDefault"] = ''
+                    templateVars["varInput"] = 'What is the Location of the host on which the SNMP agent (server) runs?'
+                    templateVars["varName"] = 'SNMP System Location'
+                    templateVars["varRegex"] = '.*'
+                    templateVars["minLength"] = 1
+                    templateVars["maxLength"] = jsonVars['SysLocation']['maxLength']
+                    templateVars["system_location"] = varStringLoop(**templateVars)
+
+                    # SNMP Users
+                    snmp_user_list = []
+                    inner_loop_count = 1
+                    snmp_loop = False
+                    while snmp_loop == False:
+                        question = input(f'Would you like to configure an SNMPv3 User?  Enter "Y" or "N" [Y]: ')
+                        if question == '' or question == 'Y':
+                            snmp_user_list,snmp_loop = snmp_users(jsonData, inner_loop_count, **templateVars)
+                        elif question == 'N':
+                            snmp_loop = True
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+                    templateVars["users"] = snmp_user_list
+
+                    # SNMP Trap Destinations
+                    snmp_dests = []
+                    inner_loop_count = 1
+                    snmp_loop = False
+                    if len(snmp_user_list) > 0:
+                        while snmp_loop == False:
+                            question = input(f'Would you like to configure SNMP Trap Destionations?  Enter "Y" or "N" [Y]: ')
+                            if question == '' or question == 'Y':
+                                snmp_dests,snmp_loop = snmp_trap_servers(jsonData, inner_loop_count, snmp_user_list, **templateVars)
+                            elif question == 'N':
+                                snmp_loop = True
+                            else:
+                                print(f'\n------------------------------------------------------\n')
+                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                                print(f'\n------------------------------------------------------\n')
+                    templateVars["trap_destinations"] = snmp_dests
+
+                    # Syslog Local Logging
+                    jsonVars = jsonData['components']['schemas']['syslog.LocalClientBase']['allOf'][1]['properties']
+                    templateVars["var_description"] = jsonVars['MinSeverity']['description']
+                    templateVars["jsonVars"] = sorted(jsonVars['MinSeverity']['enum'])
+                    templateVars["defaultVar"] = jsonVars['MinSeverity']['default']
+                    templateVars["varType"] = 'Syslog Local Minimum Severity'
+                    templateVars["min_severity"] = variablesFromAPI(**templateVars)
+
+                    templateVars["local_logging"] = {'file':{'min_severity':templateVars["min_severity"]}}
+                    remote_logging = syslog_servers(jsonData, **templateVars)
+                    templateVars['remote_logging'] = remote_logging
+
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Network Configuration Variables:"')
+                    print(f'    IMC Access VLAN  = {imc_vlan}')
+                    print(f'    System Contact   = "{templateVars["system_contact"]}"')
+                    print(f'    System Locaction = "{templateVars["system_location"]}"')
+                    if len(templateVars["trap_destinations"]) > 0:
+                        print(f'    snmp_trap_destinations = ''{')
+                        for item in templateVars["trap_destinations"]:
+                            for k, v in item.items():
+                                if k == 'destination_address':
+                                    print(f'      "{v}" = ''{')
+                            for k, v in item.items():
+                                if k == 'community':
+                                    print(f'        community_string    = "Sensitive"')
+                                elif k == 'destination_address':
+                                    print(f'        destination_address = "{v}"')
+                                elif k == 'enabled':
+                                    print(f'        enable              = {v}')
+                                elif k == 'port':
+                                    print(f'        port                = {v}')
+                                elif k == 'trap_type':
+                                    print(f'        trap_type           = "{v}"')
+                                elif k == 'user':
+                                    print(f'        user                = "{v}"')
+                            print(f'      ''}')
+                        print(f'    ''}')
+                    if len(templateVars["users"]) > 0:
+                        print(f'    snmp_users = ''{')
+                        for item in templateVars["users"]:
+                            for k, v in item.items():
+                                if k == 'name':
+                                    print(f'      "{v}" = ''{')
+                            for k, v in item.items():
+                                if k == 'auth_password':
+                                    print(f'        auth_password    = "Sensitive"')
+                                elif k == 'auth_type':
+                                    print(f'        auth_type        = "{v}"')
+                                elif k == 'privacy_password':
+                                    print(f'        privacy_password = "Sensitive"')
+                                elif k == 'privacy_type':
+                                    print(f'        privacy_type     = "{v}"')
+                                elif k == 'security_level':
+                                    print(f'        security_level   = "{v}"')
+                            print(f'      ''}')
+                        print(f'    ''}')
+                    print(f'    remote_clients = [')
+                    item_count = 1
+                    for key, value in templateVars["remote_logging"].items():
+                        print(f'      ''{')
+                        for k, v in value.items():
+                            if k == 'enable':
+                                print(f'        enabled      = {"%s".lower() % (v)}')
+                            elif k == 'hostname':
+                                print(f'        hostname     = "{v}"')
+                            elif k == 'min_severity':
+                                print(f'        min_severity = "{v}"')
+                            elif k == 'port':
+                                print(f'        port         = {v}')
+                            elif k == 'protocol':
+                                print(f'        protocol     = "{v}"')
+                        print(f'      ''}')
+                        item_count += 1
+                    print(f'    ]')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    valid_confirm = False
+                    while valid_confirm == False:
+                        confirm_policy = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
+                        if confirm_policy == 'Y' or confirm_policy == '':
+                            confirm_policy = 'Y'
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure BIOS Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'BIOS Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'bios_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Configure BIOS Policy
+                            name = 'VMware'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} BIOS Policy'
+                            templateVars["bios_template"] = 'VMware'
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Boot Order Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Boot Order Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'boot_order_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Configure Boot Order Policy
+                            name = 'VMware_M2'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Boot Order Policy'
+                            templateVars["boot_mode"] = 'Uefi'
+                            templateVars["enable_secure_boot"] = True
+                            templateVars["boot_mode"] = 'Uefi'
+                            templateVars["boot_devices"] = [
+                                {
+                                    'enabled':True,
+                                    'device_name':'kvm-dvd',
+                                    'object_type':'boot.VirtualMedia',
+                                    'Subtype':'cimc-mapped-dvd'
+                                },
+                                {
+                                    'device_name':'m2',
+                                    'enabled':True,
+                                    'object_type':'boot.LocalDisk',
+                                    'Slot':'MSTOR-RAID'
+                                },
+                                {
+                                    'device_name':'pxe',
+                                    'enabled':True,
+                                    'InterfaceName':'MGMT-A',
+                                    'InterfaceSource':'name',
+                                    'IpType':'IPv4',
+                                    'MacAddress':'',
+                                    'object_type':'boot.Pxe',
+                                    'Port':-1,
+                                    'Slot':'MLOM'
+                                }
+                            ]
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % ('boot_policies')
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure IMC Access Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'IMC Access Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'imc_access_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Configure IMC Access Policy
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} IMC Access Policy'
+                            templateVars["inband_ip_pool"] = 'VMWare_KVM'
+                            templateVars["inband_vlan_id"] = imc_vlan
+                            templateVars["ipv4_address_configuration"] = True
+                            templateVars["ipv6_address_configuration"] = False
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure IPMI over LAN Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'IPMI over LAN Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'ipmi_over_lan_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # IPMI over LAN Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} IPMI over LAN Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Local User Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Local User Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'local_user_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Local User Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Local User Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Power Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Power Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'power_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Power Settings
+                            names = ['5108', '9508', 'Server']
+                            for name in names:
+                                templateVars["allocated_budget"] = 0
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Power Policy'
+                                if name == 'Server': templateVars["power_restore_state"] = 'LastState'
+                                elif name == '9508': templateVars["allocated_budget"] = 5600
+
+                                templateVars["power_redundancy"] = 'Grid'
+                                templateVars["ipmi_key"] = 1
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Serial over LAN Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Serial over LAN Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'serial_over_lan_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Serial over LAN Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Serial over LAN Policy'
+                            templateVars["enabled"] = True
+                            templateVars["baud_rate"] = 115200
+                            templateVars["com_port"] = 'com0'
+                            templateVars["ssh_port"] = 2400
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure SNMP Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'SNMP Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'snmp_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # SNMP Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} SNMP Policy'
+                            templateVars["access_community_string"] = ''
+                            templateVars["enabled"] = True
+                            templateVars["engine_input_id"] = ''
+                            templateVars["port"] = 161
+                            templateVars["snmp_community_access"] = 'Disabled'
+                            templateVars["trap_community_string"] = ''
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Storage Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Storage Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'storage_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            name = 'M2_Raid'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Storage Policy'
+                            templateVars["drive_group"] = {}
+                            templateVars["global_hot_spares"] = ''
+                            templateVars["m2_configuration"] = [ { 'controller_slot':'MSTOR-RAID-1,MSTOR-RAID-2' } ]
+                            templateVars["single_drive_raid_configuration"] = {}
+                            templateVars["unused_disks_state"] = 'No Change'
+                            templateVars["use_jbod_for_vd_creation"] = True
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Syslog Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Syslog Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'syslog_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Syslog Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Syslog Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Thermal Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Thermal Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'thermal_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Thermal Settings
+                            names = ['5108', '9508']
+                            for name in names:
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Thermal Policy'
+                                templateVars["fan_control_mode"] = 'Balanced'
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                        elif confirm_policy == 'N':
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Starting Section over.')
+                            print(f'\n------------------------------------------------------\n')
+                            valid_confirm = True
+
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+
+
+            elif configure == 'N':
+                configure_loop = True
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+    #==============================================
+    # Quick Start Module - Shared Policies
+    #==============================================
+    def quick_start_shared_policies(self, jsonData, easy_jsonData, **kwargs):
+        server_type = kwargs['server_type']
+        vlan_policy = kwargs['vlan_policy']
+        vsan_policies = kwargs['vsan_policies']
+        name_prefix = self.name_prefix
+        org = self.org
+        templateVars = {}
+        templateVars["org"] = org
+
+        configure_loop = False
+        while configure_loop == False:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  The Quick Deployment Module - Pools, will configure pools for a UCS Server Profile')
+            print(f'  connected to an IMM Domain.\n')
+            print(f'  This wizard will save the output for these pools in the following files:\n')
+            print(f'  - Intersight/{org}/{self.type}/bios_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/imc_access_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/ipmi_over_lan_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/local_user_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/power_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/serial_over_lan_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/snmp_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/syslog_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/thermal_policies.auto.tfvars')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            configure = input(f'Do You Want to run the Quick Deployment Module - Policy Configuration?  Enter "Y" or "N" [Y]: ')
+            if configure == 'Y' or configure == '':
+                loop_count = 1
+                policy_loop = False
+                while policy_loop == False:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Below are the Questions that will be asked by the Policies Portion of the wizard.')
+                    print(f'   - VLAN ID for IMC Access Policy.')
+                    print(f'   - Local User Policy (Required for direct KVM Access).')
+                    print(f'     * user and role')
+                    print(f'     * user password (strong passwords enforced)')
+                    print(f'   - SNMP Policy')
+                    print(f'     * Contact')
+                    print(f'     * Location')
+                    print(f'     * SNMPv3 Users (optional)')
+                    print(f'     * SNMPv3 Trap Servers (optional)')
+                    print(f'   - Syslog Policy - (Optional)')
+                    print(f'     * Remote Syslog Server(s)')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+
+                    templateVars["name"] = 'Quick Deployment Module'
+
+                    # Get List of VLAN's from the Domain Policies
+                    policy_list = [
+                        'policies_vlans.vlan_policies.vlan_policy',
+                    ]
+                    templateVars["allow_opt_out"] = False
+                    for policy in policy_list:
+                        vlan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
+
+                    vlan_list = []
+                    for item in policyData['vlan_policies'][0][vlan_policy][0]['vlans']:
+                        for k, v in item.items():
+                            vlan_list.append(v[0]['vlan_list'])
+
+                    vlan_convert = ''
+                    for vlan in vlan_list:
+                        if vlan_convert == '':
+                            vlan_convert = str(vlan)
+                        else:
+                            vlan_convert = vlan_convert + ',' + str(vlan)
+
+                    vlan_policy_list = vlan_list_full(vlan_convert)
+
+                    templateVars["multi_select"] = False
+
+                    # IMC Access VLAN
+                    valid = False
+                    while valid == False:
+                        templateVars["Description"] = 'IMC Access VLAN Identifier'
+                        templateVars["varInput"] = 'Enter the VLAN ID for the IMC Access Policy.'
+                        templateVars["varDefault"] = 1
+                        templateVars["varName"] = 'IMC Access Policy VLAN ID'
+                        templateVars["minNum"] = 1
+                        templateVars["maxNum"] = 4094
+                        imc_vlan = varNumberLoop(**templateVars)
+                        if server_type == 'FIAttached':
+                            valid = validate_vlan_in_policy(vlan_policy_list, imc_vlan)
+                        else:
+                            valid = True
+
+                    # Pull in the Policies for SNMP Policies
+                    jsonVars = jsonData['components']['schemas']['snmp.Policy']['allOf'][1]['properties']
+
+                    # SNMP Contact
+                    templateVars["Description"] = jsonVars['SysContact']['description'] + \
+                        'Note: Enter a string up to 64 characters, such as an email address or a name and telephone number.'
+                    templateVars["varDefault"] = ''
+                    templateVars["varInput"] = 'SNMP System Contact:'
+                    templateVars["varName"] = 'SNMP System Contact'
+                    templateVars["varRegex"] = '.*'
+                    templateVars["minLength"] = 1
+                    templateVars["maxLength"] = jsonVars['SysContact']['maxLength']
+                    templateVars["system_contact"] = varStringLoop(**templateVars)
+
+                    # SNMP Location
+                    templateVars["Description"] = jsonVars['SysLocation']['description']
+                    templateVars["varDefault"] = ''
+                    templateVars["varInput"] = 'What is the Location of the host on which the SNMP agent (server) runs?'
+                    templateVars["varName"] = 'SNMP System Location'
+                    templateVars["varRegex"] = '.*'
+                    templateVars["minLength"] = 1
+                    templateVars["maxLength"] = jsonVars['SysLocation']['maxLength']
+                    templateVars["system_location"] = varStringLoop(**templateVars)
+
+                    # SNMP Users
+                    ilCount = 1
+                    snmp_user_list = []
+                    snmp_loop = False
+                    while snmp_loop == False:
+                        question = input(f'Would you like to configure an SNMPv3 User?  Enter "Y" or "N" [Y]: ')
+                        if question == '' or question == 'Y':
+                            snmp_user_list,snmp_loop = snmp_users(jsonData, ilCount, **templateVars)
+                        elif question == 'N':
+                            snmp_loop = True
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+                    templateVars["users"] = snmp_user_list
+
+                    # SNMP Trap Destinations
+                    ilCount = 1
+                    snmp_dests = []
+                    snmp_loop = False
+                    if len(snmp_user_list) > 0:
+                        while snmp_loop == False:
+                            question = input(f'Would you like to configure SNMP Trap Destionations?  Enter "Y" or "N" [Y]: ')
+                            if question == '' or question == 'Y':
+                                snmp_dests,snmp_loop = snmp_trap_servers(jsonData, ilCount, snmp_user_list, **templateVars)
+                            elif question == 'N':
+                                snmp_loop = True
+                            else:
+                                print(f'\n------------------------------------------------------\n')
+                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                                print(f'\n------------------------------------------------------\n')
+                    templateVars["trap_destinations"] = snmp_dests
+
+                    ilCount = 1
+                    syslog_loop = False
+                    while syslog_loop == False:
+                        question = input(f'Do you want to configure Remote Syslog?  Enter "Y" or "N" [Y]: ')
+                        if question == '' or question == 'Y':
+                            # Syslog Local Logging
+                            jsonVars = jsonData['components']['schemas']['syslog.LocalClientBase']['allOf'][1]['properties']
+                            templateVars["var_description"] = jsonVars['MinSeverity']['description']
+                            templateVars["jsonVars"] = sorted(jsonVars['MinSeverity']['enum'])
+                            templateVars["defaultVar"] = jsonVars['MinSeverity']['default']
+                            templateVars["varType"] = 'Syslog Local Minimum Severity'
+                            templateVars["min_severity"] = variablesFromAPI(**templateVars)
+
+                            templateVars["local_logging"] = {'file':{'min_severity':templateVars["min_severity"]}}
+                            remote_logging = syslog_servers(jsonData, **templateVars)
+                            templateVars['remote_logging'] = remote_logging
+
+                            syslog_loop = True
+
+                        elif question == 'N':
+                            templateVars["min_severity"] = 'warning'
+                            templateVars['remote_logging'] = [
+                                {
+                                    'server1':{
+                                        'enable':False,
+                                        'hostname':'0.0.0.0',
+                                        'min_severity':'warning',
+                                        'port':514,
+                                        'protocol':'udp'
+                                    },
+                                    'server2':{
+                                        'enable':False,
+                                        'hostname':'0.0.0.0',
+                                        'min_severity':'warning',
+                                        'port':514,
+                                        'protocol':'udp'
+                                    }
+                                }
+                            ]
+                            syslog_loop = True
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Policy Variables:')
+                    print(f'    IMC Access VLAN  = {imc_vlan}')
+                    print(f'    System Contact   = "{templateVars["system_contact"]}"')
+                    print(f'    System Locaction = "{templateVars["system_location"]}"')
+                    if len(templateVars["trap_destinations"]) > 0:
+                        print(f'    snmp_trap_destinations = ''{')
+                        for item in templateVars["trap_destinations"]:
+                            for k, v in item.items():
+                                if k == 'destination_address':
+                                    print(f'      "{v}" = ''{')
+                            for k, v in item.items():
+                                if k == 'community':
+                                    print(f'        community_string    = "Sensitive"')
+                                elif k == 'destination_address':
+                                    print(f'        destination_address = "{v}"')
+                                elif k == 'enabled':
+                                    print(f'        enable              = {v}')
+                                elif k == 'port':
+                                    print(f'        port                = {v}')
+                                elif k == 'trap_type':
+                                    print(f'        trap_type           = "{v}"')
+                                elif k == 'user':
+                                    print(f'        user                = "{v}"')
+                            print(f'      ''}')
+                        print(f'    ''}')
+                    if len(templateVars["users"]) > 0:
+                        print(f'    snmp_users = ''{')
+                        for item in templateVars["users"]:
+                            for k, v in item.items():
+                                if k == 'name':
+                                    print(f'      "{v}" = ''{')
+                            for k, v in item.items():
+                                if k == 'auth_password':
+                                    print(f'        auth_password    = "Sensitive"')
+                                elif k == 'auth_type':
+                                    print(f'        auth_type        = "{v}"')
+                                elif k == 'privacy_password':
+                                    print(f'        privacy_password = "Sensitive"')
+                                elif k == 'privacy_type':
+                                    print(f'        privacy_type     = "{v}"')
+                                elif k == 'security_level':
+                                    print(f'        security_level   = "{v}"')
+                            print(f'      ''}')
+                        print(f'    ''}')
+                    print(f'    remote_clients = [')
+                    item_count = 1
+                    for key, value in templateVars["remote_logging"].items():
+                        print(f'      ''{')
+                        for k, v in value.items():
+                            if k == 'enable':
+                                print(f'        enabled      = {"%s".lower() % (v)}')
+                            elif k == 'hostname':
+                                print(f'        hostname     = "{v}"')
+                            elif k == 'min_severity':
+                                print(f'        min_severity = "{v}"')
+                            elif k == 'port':
+                                print(f'        port         = {v}')
+                            elif k == 'protocol':
+                                print(f'        protocol     = "{v}"')
+                        print(f'      ''}')
+                        item_count += 1
+                    print(f'    ]')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    valid_confirm = False
+                    while valid_confirm == False:
+                        confirm_policy = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
+                        if confirm_policy == 'Y' or confirm_policy == '':
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure BIOS Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'BIOS Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'bios_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Configure BIOS Policy
+                            name = 'VMware'
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} BIOS Policy'
+                            templateVars["bios_template"] = 'VMware'
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure IMC Access Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'IMC Access Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'imc_access_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Configure IMC Access Policy
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} IMC Access Policy'
+                            templateVars["inband_ip_pool"] = 'VMWare_KVM'
+                            templateVars["inband_vlan_id"] = imc_vlan
+                            templateVars["ipv4_address_configuration"] = True
+                            templateVars["ipv6_address_configuration"] = False
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure IPMI over LAN Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'IPMI over LAN Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'ipmi_over_lan_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # IPMI over LAN Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} IPMI over LAN Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Local User Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Local User Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'local_user_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Local User Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Local User Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Power Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Power Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'power_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Power Settings
+                            names = ['5108', '9508', 'Server']
+                            for name in names:
+                                templateVars["allocated_budget"] = 0
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Power Policy'
+                                if name == 'Server': templateVars["power_restore_state"] = 'LastState'
+                                elif name == '9508': templateVars["allocated_budget"] = 5600
+
+                                templateVars["power_redundancy"] = 'Grid'
+                                templateVars["ipmi_key"] = 1
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Serial over LAN Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Serial over LAN Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'serial_over_lan_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Serial over LAN Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Serial over LAN Policy'
+                            templateVars["enabled"] = True
+                            templateVars["baud_rate"] = 115200
+                            templateVars["com_port"] = 'com0'
+                            templateVars["ssh_port"] = 2400
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure SNMP Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'SNMP Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'snmp_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # SNMP Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} SNMP Policy'
+                            templateVars["access_community_string"] = ''
+                            templateVars["enabled"] = True
+                            templateVars["engine_input_id"] = ''
+                            templateVars["port"] = 161
+                            templateVars["snmp_community_access"] = 'Disabled'
+                            templateVars["trap_community_string"] = ''
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Syslog Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Syslog Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'syslog_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Syslog Settings
+                            name = org
+                            templateVars["name"] = name
+                            templateVars["descr"] = f'{name} Syslog Policy'
+                            templateVars["enabled"] = True
+                            templateVars["ipmi_key"] = 1
+
+                            # Write Policies to Template File
+                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                            write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            #_______________________________________________________________________
+                            #
+                            # Configure Thermal Policy
+                            #_______________________________________________________________________
+
+                            templateVars["initial_write"] = True
+                            templateVars["policy_type"] = 'Thermal Policy'
+                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                            templateVars["template_file"] = 'template_open.jinja2'
+                            templateVars["template_type"] = 'thermal_policies'
+
+                            # Open the Template file
+                            write_to_template(self, **templateVars)
+                            templateVars["initial_write"] = False
+
+                            # Thermal Settings
+                            names = ['5108', '9508']
+                            for name in names:
+                                templateVars["name"] = name
+                                templateVars["descr"] = f'{name} Thermal Policy'
+                                templateVars["fan_control_mode"] = 'Balanced'
+
+                                # Write Policies to Template File
+                                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                                write_to_template(self, **templateVars)
+
+                            # Close the Template file
+                            templateVars["template_file"] = 'template_close.jinja2'
+                            write_to_template(self, **templateVars)
+
+                            configure_loop = True
+                            policy_loop = True
+                            valid_confirm = True
+
+                        elif confirm_policy == 'N':
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Starting Section over.')
+                            print(f'\n------------------------------------------------------\n')
+                            valid_confirm = True
+
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+
+
+            elif configure == 'N':
+                configure_loop = True
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+    #==============================================
     # Resource Pool Module
-    #========================================
+    #==============================================
     def resource_pools(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'resource'
@@ -8450,7 +9741,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  The {policy_type} represents a collection of resources that can be associated to ')
             print(f'  the configuration entities such as server profiles.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -8546,11 +9837,10 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # SAN Connectivity Policy Module
-    #========================================
+    #==============================================
     def san_connectivity_policies(self, jsonData, easy_jsonData):
-        pci_order_consumed = [{0:[0, 1, 2, 3, 4, 5, 6, 7]},{1:[0, 1, 2, 3, 4, 5, 6, 7]}]
         name_prefix = self.name_prefix
         name_suffix = 'san'
         org = self.org
@@ -8572,7 +9862,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  You can Skip this policy if you are not configuring Fibre-Channel.\n')
             print(f'  A {policy_type} will configure vHBA adapters for Server Profiles.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -8639,14 +9929,23 @@ class easy_imm_wizard(object):
                         templateVars["name"] = 'the vHBAs'
                         policy_list = [
                             'policies.fibre_channel_adapter_policies.fibre_channel_adapter_policy',
-                            'policies.fibre_channel_qos_policies.fibre_channel_qos_policy'
+                            'policies.fibre_channel_qos_policies.fibre_channel_qos_policy',
+                            'policies.lan_connectivity_policies.lan_connectivity_policy'
                         ]
                         templateVars["allow_opt_out"] = False
                         for policy in policy_list:
                             policy_short = policy.split('.')[2]
                             templateVars[policy_short],policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
                             templateVars.update(policyData)
-                            print(f'policy is {policy_short} and value is {templateVars[policy_short]}')
+
+                        pci_order_consumed = [{0:[]},{1:[]}]
+                        print(pci_order_consumed)
+                        lan_policy = templateVars['lan_connectivity_policy']
+                        for item in policyData['lan_connectivity_policies'][0][lan_policy][0]['vnics']:
+                            for k, v in item.items():
+                                pLink = v[0]['placement_pci_link']
+                                pOrder = v[0]['placement_pci_order']
+                                pci_order_consumed[0][pLink].append(pOrder)
 
                         for x in fabrics:
                             templateVars["name"] = f'the vHBA on Fabric {x}'
@@ -9040,9 +10339,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # SD Card Policy Module
-    #========================================
+    #==============================================
     def sd_card_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'sdcard'
@@ -9099,9 +10398,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Serial over LAN Policy Module
-    #========================================
+    #==============================================
     def serial_over_lan_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'sol'
@@ -9128,7 +10427,7 @@ class easy_imm_wizard(object):
             print(f'   - COM Port')
             print(f'   - SSH Port\n')
             print(f'  This Policy is not required to standup a server but is a good practice for day 2 support.')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -9210,9 +10509,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # SMTP Policy Module
-    #========================================
+    #==============================================
     def smtp_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'smtp'
@@ -9236,7 +10535,7 @@ class easy_imm_wizard(object):
             print(f'  An {policy_type} sends server faults as email alerts to the configured SMTP server.')
             print(f'  You can specify the preferred settings for outgoing communication and select the fault ')
             print(f'  severity level to report and the mail recipients.\n\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -9380,9 +10679,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # SNMP Policy Module
-    #========================================
+    #==============================================
     def snmp_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'snmp'
@@ -9405,7 +10704,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  An {policy_type} will configure chassis, domains, and servers with SNMP parameters.')
             print(f'  This Policy is not required to standup a server but is a good practice for day 2 support.')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -9437,20 +10736,28 @@ class easy_imm_wizard(object):
                             print(f'  Excluding [22, 23, 80, 123, 389, 443, 623, 636, 2068, 3268, 3269].')
                             print(f'\n-------------------------------------------------------------------------------------------\n')
 
-                    valid = False
-                    while valid == False:
-                        templateVars["system_contact"] = input(f'Note: Enter a string up to 64 characters, such as an email address or a name and telephone number.\n'\
-                            'What is the Contact person responsible for the SNMP implementation?  [UCS Admins]: ')
-                        if templateVars["system_contact"] == '':
-                            templateVars["system_contact"] = 'UCS Admins'
-                        valid = validating.string_length('System Contact', templateVars["system_contact"], 1, 64)
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['snmp.Policy']['allOf'][1]['properties']
 
-                    valid = False
-                    while valid == False:
-                        templateVars["system_location"] = input(f'What is the Location of the host on which the SNMP agent (server) runs?  [Data Center]: ')
-                        if templateVars["system_location"] == '':
-                            templateVars["system_location"] = 'Data Center'
-                        valid = validating.string_length('System Location', templateVars["system_location"], 1, 64)
+                    # SNMP Contact
+                    templateVars["Description"] = jsonVars['SysContact']['description']
+                    templateVars["varDefault"] = 'UCS Admins'
+                    templateVars["varInput"] = 'SNMP System Contact:'
+                    templateVars["varName"] = 'SNMP System Contact'
+                    templateVars["varRegex"] = '.*'
+                    templateVars["minLength"] = 1
+                    templateVars["maxLength"] = jsonVars['SysContact']['maxLength']
+                    templateVars["system_contact"] = varStringLoop(**templateVars)
+
+                    # SNMP Location
+                    templateVars["Description"] = jsonVars['SysLocation']['description']
+                    templateVars["varDefault"] = 'Data Center'
+                    templateVars["varInput"] = 'What is the Location of the host on which the SNMP agent (server) runs?'
+                    templateVars["varName"] = 'System Location'
+                    templateVars["varRegex"] = '.*'
+                    templateVars["minLength"] = 1
+                    templateVars["maxLength"] = jsonVars['SysLocation']['maxLength']
+                    templateVars["system_location"] = varStringLoop(**templateVars)
 
                     templateVars["access_community_string"] = ''
                     valid = False
@@ -9478,8 +10785,6 @@ class easy_imm_wizard(object):
                             print(f'\n------------------------------------------------------\n')
 
                     if not templateVars["access_community_string"] == '':
-                        templateVars["multi_select"] = False
-                        jsonVars = jsonData['components']['schemas']['snmp.Policy']['allOf'][1]['properties']
                         templateVars["var_description"] = jsonVars['CommunityAccess']['description']
                         templateVars["jsonVars"] = sorted(jsonVars['CommunityAccess']['enum'])
                         templateVars["defaultVar"] = jsonVars['CommunityAccess']['default']
@@ -9537,299 +10842,40 @@ class easy_imm_wizard(object):
                             print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
                             print(f'\n------------------------------------------------------\n')
 
-                    templateVars["users"] = []
-                    inner_loop_count = 1
+                    # SNMP Users
+                    ilCount = 1
+                    snmp_user_list = []
                     snmp_loop = False
                     while snmp_loop == False:
                         question = input(f'Would you like to configure an SNMPv3 User?  Enter "Y" or "N" [Y]: ')
                         if question == '' or question == 'Y':
-                            valid_users = False
-                            while valid_users == False:
-                                valid = False
-                                while valid == False:
-                                    snmp_user = input(f'What is your SNMPv3 username? ')
-                                    if not snmp_user == '':
-                                        valid = validating.snmp_string('SNMPv3 User', snmp_user)
-                                    else:
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'  Error!! Invalid Value.  Please Re-enter the SNMPv3 Username.')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                                templateVars["multi_select"] = False
-                                jsonVars = jsonData['components']['schemas']['snmp.User']['allOf'][1]['properties']
-                                templateVars["var_description"] = jsonVars['SecurityLevel']['description']
-                                templateVars["jsonVars"] = sorted(jsonVars['SecurityLevel']['enum'])
-                                templateVars["defaultVar"] = jsonVars['SecurityLevel']['default']
-                                templateVars["varType"] = 'SNMP Security Level'
-                                security_level = variablesFromAPI(**templateVars)
-
-                                if security_level == 'AuthNoPriv' or security_level == 'AuthPriv':
-                                    templateVars["var_description"] = jsonVars['AuthType']['description']
-                                    templateVars["jsonVars"] = sorted(jsonVars['AuthType']['enum'])
-                                    templateVars["defaultVar"] = 'SHA'
-                                    templateVars["popList"] = ['NA', 'SHA-224', 'SHA-256', 'SHA-384', 'SHA-512']
-                                    templateVars["varType"] = 'SNMP Auth Type'
-                                    auth_type = variablesFromAPI(**templateVars)
-
-                                if security_level == 'AuthNoPriv' or security_level == 'AuthPriv':
-                                    valid = False
-                                    while valid == False:
-                                        auth_password = stdiomask.getpass(f'What is the authorization password for {snmp_user}? ')
-                                        if not auth_password == '':
-                                            valid = validating.snmp_string('SNMPv3 Authorization Password', auth_password)
-                                        else:
-                                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                                            print(f'  Error!! Invalid Value.  Please Re-enter the SNMPv3 Username.')
-                                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    TF_VAR = 'TF_VAR_snmp_auth_password_%s' % (inner_loop_count)
-                                    os.environ[TF_VAR] = '%s' % (auth_password)
-                                    auth_password = inner_loop_count
-
-                                if security_level == 'AuthPriv':
-                                    templateVars["var_description"] = jsonVars['PrivacyType']['description']
-                                    templateVars["jsonVars"] = sorted(jsonVars['PrivacyType']['enum'])
-                                    templateVars["defaultVar"] = 'AES'
-                                    templateVars["popList"] = ['NA']
-                                    templateVars["varType"] = 'SNMP Auth Type'
-                                    privacy_type = variablesFromAPI(**templateVars)
-
-                                    valid = False
-                                    while valid == False:
-                                        privacy_password = stdiomask.getpass(f'What is the privacy password for {snmp_user}? ')
-                                        if not privacy_password == '':
-                                            valid = validating.snmp_string('SNMPv3 Privacy Password', privacy_password)
-                                        else:
-                                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                                            print(f'  Error!! Invalid Value.  Please Re-enter the SNMPv3 Username.')
-                                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    TF_VAR = 'TF_VAR_snmp_privacy_password_%s' % (inner_loop_count)
-                                    os.environ[TF_VAR] = '%s' % (privacy_password)
-                                    privacy_password = inner_loop_count
-
-                                if security_level == 'AuthPriv':
-                                    snmp_userx = {
-                                        'auth_password':inner_loop_count,
-                                        'auth_type':auth_type,
-                                        'name':snmp_user,
-                                        'privacy_password':inner_loop_count,
-                                        'privacy_type':privacy_type,
-                                        'security_level':security_level
-                                    }
-                                elif security_level == 'AuthNoPriv':
-                                    snmp_userx = {
-                                        'auth_password':inner_loop_count,
-                                        'auth_type':auth_type,
-                                        'name':snmp_user,
-                                        'security_level':security_level
-                                    }
-
-                                # for k, v in os.environ.items():
-                                #     print(f'key is {k}, and value is {v}')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'   auth_password    = "Sensitive"')
-                                print(f'   auth_type        = "{auth_type}"')
-                                if security_level == 'AuthPriv':
-                                    print(f'   privacy_password = "Sensitive"')
-                                    print(f'   privacy_type     = "{privacy_type}"')
-                                print(f'   security_level   = "{security_level}"')
-                                print(f'   snmp_user        = "{snmp_user}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                valid_confirm = False
-                                while valid_confirm == False:
-                                    confirm_v = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
-                                    if confirm_v == 'Y' or confirm_v == '':
-                                        templateVars["users"].append(snmp_userx)
-                                        valid_exit = False
-                                        while valid_exit == False:
-                                            loop_exit = input(f'Would You like to Configure another SNMP User?  Enter "Y" or "N" [N]: ')
-                                            if loop_exit == 'Y':
-                                                inner_loop_count += 1
-                                                valid_confirm = True
-                                                valid_exit = True
-                                            elif loop_exit == 'N' or loop_exit == '':
-                                                snmp_loop = True
-                                                valid_confirm = True
-                                                valid_exit = True
-                                                valid_users = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                    elif confirm_v == 'N':
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'  Starting Remote Host Configuration Over.')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = True
-                                    else:
-                                        print(f'\n------------------------------------------------------\n')
-                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                        print(f'\n------------------------------------------------------\n')
-
+                            snmp_user_list,snmp_loop = snmp_users(jsonData, ilCount, **templateVars)
                         elif question == 'N':
                             snmp_loop = True
                         else:
                             print(f'\n------------------------------------------------------\n')
                             print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
                             print(f'\n------------------------------------------------------\n')
+                    templateVars["users"] = snmp_user_list
 
-
-                    snmp_user_list = []
-                    if len(templateVars["users"]):
-                        for item in templateVars["users"]:
-                            for k, v in item.items():
-                                if k == 'name':
-                                    snmp_user_list.append(v)
-
-                    templateVars["trap_destinations"] = []
-                    inner_loop_count = 1
+                    # SNMP Trap Destinations
+                    ilCount = 1
+                    snmp_dests = []
                     snmp_loop = False
                     while snmp_loop == False:
                         question = input(f'Would you like to configure SNMP Trap Destionations?  Enter "Y" or "N" [Y]: ')
                         if question == '' or question == 'Y':
-                            valid_traps = False
-                            while valid_traps == False:
-                                templateVars["multi_select"] = False
-                                jsonVars = jsonData['components']['schemas']['snmp.Trap']['allOf'][1]['properties']
-                                if len(snmp_user_list) == 0:
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    print(f'  There are no valid SNMP Users so Trap Destinations can only be set to SNMPv2.')
-                                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    snmp_version = 'V2'
-                                else:
-                                    templateVars["var_description"] = jsonVars['Version']['description']
-                                    templateVars["jsonVars"] = sorted(jsonVars['Version']['enum'])
-                                    templateVars["defaultVar"] = jsonVars['Version']['default']
-                                    templateVars["varType"] = 'SNMP Version'
-                                    snmp_version = variablesFromAPI(**templateVars)
-
-                                if snmp_version == 'V2':
-                                    valid = False
-                                    while valid == False:
-                                        community_string = stdiomask.getpass(f'What is the Community String for the Destination? ')
-                                        if not community_string == '':
-                                            valid = validating.snmp_string('SNMP Community String', community_string)
-                                        else:
-                                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                                            print(f'  Error!! Invalid Value.  Please Re-enter the SNMP Community String.')
-                                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                                    TF_VAR = 'TF_VAR_snmp_community_string_%s' % (inner_loop_count)
-                                    os.environ[TF_VAR] = '%s' % (community_string)
-                                    community_string = inner_loop_count
-
-                                if snmp_version == 'V3':
-                                    templateVars["multi_select"] = False
-                                    templateVars["var_description"] = '    Please Select the SNMP User to assign to this Destination:\n'
-                                    templateVars["var_type"] = 'SNMP User'
-                                    snmp_user = vars_from_list(snmp_user_list, **templateVars)
-                                    snmp_user = snmp_user[0]
-
-                                if snmp_version == 'V2':
-                                    templateVars["var_description"] = jsonVars['Type']['description']
-                                    templateVars["jsonVars"] = sorted(jsonVars['Type']['enum'])
-                                    templateVars["defaultVar"] = jsonVars['Type']['default']
-                                    templateVars["varType"] = 'SNMP Trap Type'
-                                    trap_type = variablesFromAPI(**templateVars)
-                                else:
-                                    trap_type = 'Trap'
-
-                                valid = False
-                                while valid == False:
-                                    destination_address = input(f'What is the SNMP Trap Destination Hostname/Address? ')
-                                    if not destination_address == '':
-                                        if re.search(r'^[0-9a-fA-F]+[:]+[0-9a-fA-F]$', destination_address) or \
-                                            re.search(r'^(\d{1,3}\.){3}\d{1,3}$', destination_address):
-                                            valid = validating.ip_address('SNMP Trap Destination', destination_address)
-                                        else:
-                                            valid = validating.dns_name('SNMP Trap Destination', destination_address)
-                                    else:
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'  Error!! Invalid Value.  Please Re-enter the SNMP Trap Destination Hostname/Address.')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                                valid = False
-                                while valid == False:
-                                    port = input(f'Enter the Port to Assign to this Destination.  Valid Range is 1-65535.  [162]: ')
-                                    if port == '':
-                                        port = 162
-                                    if re.search(r'[0-9]{1,4}', str(port)):
-                                        valid = validating.snmp_port('SNMP Port', port, 1, 65535)
-                                    else:
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'  Invalid Entry!  Please Enter a valid Port in the range of 1-65535.')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                                if snmp_version == 'V3':
-                                    snmp_destination = {
-                                        'destination_address':destination_address,
-                                        'enabled':True,
-                                        'port':port,
-                                        'trap_type':trap_type,
-                                        'user':snmp_user,
-                                        'version':snmp_version
-                                    }
-                                else:
-                                    snmp_destination = {
-                                        'community':community_string,
-                                        'destination_address':destination_address,
-                                        'enabled':True,
-                                        'port':port,
-                                        'trap_type':trap_type,
-                                        'version':snmp_version
-                                    }
-
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                if snmp_version == 'V2':
-                                    print(f'   community_string    = "Sensitive"')
-                                print(f'   destination_address = "{destination_address}"')
-                                print(f'   enable              = True')
-                                print(f'   trap_type           = "{trap_type}"')
-                                print(f'   snmp_version        = "{snmp_version}"')
-                                if snmp_version == 'V3':
-                                    print(f'   user                = "{snmp_user}"')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                valid_confirm = False
-                                while valid_confirm == False:
-                                    confirm_v = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
-                                    if confirm_v == 'Y' or confirm_v == '':
-                                        templateVars["trap_destinations"].append(snmp_destination)
-                                        valid_exit = False
-                                        while valid_exit == False:
-                                            loop_exit = input(f'Would You like to Configure another SNMP Trap Destination?  Enter "Y" or "N" [N]: ')
-                                            if loop_exit == 'Y':
-                                                inner_loop_count += 1
-                                                valid_confirm = True
-                                                valid_exit = True
-                                            elif loop_exit == 'N' or loop_exit == '':
-                                                snmp_loop = True
-                                                valid_confirm = True
-                                                valid_exit = True
-                                                valid_traps = True
-                                            else:
-                                                print(f'\n------------------------------------------------------\n')
-                                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                                print(f'\n------------------------------------------------------\n')
-
-                                    elif confirm_v == 'N':
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        print(f'  Starting Remote Host Configuration Over.')
-                                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                                        valid_confirm = True
-                                    else:
-                                        print(f'\n------------------------------------------------------\n')
-                                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                        print(f'\n------------------------------------------------------\n')
-
+                            snmp_dests,snmp_loop = snmp_trap_servers(jsonData, ilCount, snmp_user_list, **templateVars)
                         elif question == 'N':
                             snmp_loop = True
                         else:
                             print(f'\n------------------------------------------------------\n')
                             print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
                             print(f'\n------------------------------------------------------\n')
+                    templateVars["trap_destinations"] = snmp_dests
 
-                    templateVars["enabled"] = True
                     print(f'\n-------------------------------------------------------------------------------------------\n')
-                    if templateVars["access_community_string"] == '':
+                    if not templateVars["access_community_string"] == '':
                         print(f'    access_community_string = "Sensitive"')
                     print(f'    description             = "{templateVars["descr"]}"')
                     print(f'    enable_snmp             = {templateVars["enabled"]}')
@@ -9845,17 +10891,19 @@ class easy_imm_wizard(object):
                                     print(f'      "{v}" = ''{')
                             for k, v in item.items():
                                 if k == 'community':
-                                    print(f'        community_string = "Sensitive"')
+                                    print(f'        community_string    = "Sensitive"')
+                                elif k == 'destination_address':
+                                    print(f'        destination_address = "{v}"')
                                 elif k == 'enabled':
-                                    print(f'        enable           = {v}')
-                                elif k == 'trap_type':
-                                    print(f'        trap_type        = "{v}"')
+                                    print(f'        enable              = {v}')
                                 elif k == 'port':
-                                    print(f'        port             = {v}')
+                                    print(f'        port                = {v}')
+                                elif k == 'trap_type':
+                                    print(f'        trap_type           = "{v}"')
                                 elif k == 'user':
-                                    print(f'        user             = "{v}"')
+                                    print(f'        user                = "{v}"')
                                 elif k == 'version':
-                                    print(f'        snmp_server      = "{v}"')
+                                    print(f'        snmp_server         = "{v}"')
                             print(f'      ''}')
                         print(f'    ''}')
                     if len(templateVars["users"]) > 0:
@@ -9877,7 +10925,7 @@ class easy_imm_wizard(object):
                                     print(f'        security_level   = "{v}"')
                             print(f'      ''}')
                         print(f'    ''}')
-                    if templateVars["trap_community_string"] == '':
+                    if not templateVars["trap_community_string"] == '':
                         print(f'    trap_community_string   = "Sensitive"')
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     valid_confirm = False
@@ -9915,9 +10963,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # SSH Policy Module
-    #========================================
+    #==============================================
     def ssh_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'ssh'
@@ -9941,7 +10989,7 @@ class easy_imm_wizard(object):
             print(f'  An {policy_type} enables an SSH client to make a secure, encrypted connection. You can ')
             print(f'  create one or more SSH policies that contain a specific grouping of SSH properties for a ')
             print(f'  server or a set of servers.\n\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -10031,9 +11079,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Storage Policy Module
-    #========================================
+    #==============================================
     def storage_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'storage'
@@ -10090,9 +11138,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Switch Control Policy Module
-    #========================================
+    #==============================================
     def switch_control_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'sw_ctrl'
@@ -10118,7 +11166,7 @@ class easy_imm_wizard(object):
             print(f'  We recommend the settings the wizard is setup to push.  So you will only be asked for')
             print(f'  the name and description for the Policy.  You only need one of these policies for')
             print(f'  Organization {org}.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -10175,9 +11223,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Syslog Policy Module
-    #========================================
+    #==============================================
     def syslog_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'syslog'
@@ -10201,7 +11249,7 @@ class easy_imm_wizard(object):
             print(f'  A {policy_type} will configure domain and servers with remote syslog servers.')
             print(f'  You can configure up to two Remote Syslog Servers.')
             print(f'  This Policy is not required to standup a server but is a good practice for day 2 support.')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -10217,6 +11265,7 @@ class easy_imm_wizard(object):
                     templateVars["name"] = policy_name(name, policy_type)
                     templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
 
+                    # Syslog Local Logging
                     templateVars["multi_select"] = False
                     jsonVars = jsonData['components']['schemas']['syslog.LocalClientBase']['allOf'][1]['properties']
                     templateVars["var_description"] = jsonVars['MinSeverity']['description']
@@ -10227,94 +11276,8 @@ class easy_imm_wizard(object):
 
                     templateVars["local_logging"] = {'file':{'min_severity':templateVars["min_severity"]}}
 
-                    templateVars["remote_logging"] = {}
-                    syslog_count = 1
-                    syslog_loop = False
-                    while syslog_loop == False:
-                        valid = False
-                        while valid == False:
-                            hostname = input(f'Enter the Hostname/IP Address of the Remote Server: ')
-                            if re.search(r'[a-zA-Z]+', hostname):
-                                valid = validating.dns_name('Remote Logging Server', hostname)
-                            else:
-                                valid = validating.ip_address('Remote Logging Server', hostname)
-
-                        jsonVars = jsonData['components']['schemas']['syslog.RemoteClientBase']['allOf'][1]['properties']
-                        templateVars["var_description"] = jsonVars['MinSeverity']['description']
-                        templateVars["jsonVars"] = sorted(jsonVars['MinSeverity']['enum'])
-                        templateVars["defaultVar"] = jsonVars['MinSeverity']['default']
-                        templateVars["varType"] = 'Syslog Remote Minimum Severity'
-                        min_severity = variablesFromAPI(**templateVars)
-
-                        templateVars["var_description"] = jsonVars['Protocol']['description']
-                        templateVars["jsonVars"] = sorted(jsonVars['Protocol']['enum'])
-                        templateVars["defaultVar"] = jsonVars['Protocol']['default']
-                        templateVars["varType"] = 'Syslog Protocol'
-                        templateVars["protocol"] = variablesFromAPI(**templateVars)
-
-                        valid = False
-                        while valid == False:
-                            port = input(f'Enter the Port to Assign to this Policy.  Valid Range is 1-65535.  [514]: ')
-                            if port == '':
-                                port = 514
-                            if re.search(r'[0-9]{1,4}', str(port)):
-                                valid = validating.number_in_range('Port', port, 1, 65535)
-                            else:
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Invalid Entry!  Please Enter a valid Port in the range of 1-65535.')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-
-                        remote_host = {
-                            'enable':True,
-                            'hostname':hostname,
-                            'min_severity':min_severity,
-                            'port':port,
-                            'protocol':templateVars["protocol"]
-                        }
-                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                        print(f'   hostname     = "{hostname}"')
-                        print(f'   min_severity = "{min_severity}"')
-                        print(f'   port         = {port}')
-                        print(f'   protocol     = "{templateVars["protocol"]}"')
-                        print(f'\n-------------------------------------------------------------------------------------------\n')
-                        valid_confirm = False
-                        while valid_confirm == False:
-                            confirm_host = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
-                            if confirm_host == 'Y' or confirm_host == '':
-                                if syslog_count == 1:
-                                    templateVars['remote_logging'].update({'server1':remote_host})
-                                if syslog_count == 2:
-                                    templateVars['remote_logging'].update({'server2':remote_host})
-                                if syslog_count == 1:
-                                    valid_exit = False
-                                    while valid_exit == False:
-                                        remote_exit = input(f'Would You like to Configure another Remote Host?  Enter "Y" or "N" [Y]: ')
-                                        if remote_exit == 'Y' or remote_exit == '':
-                                            syslog_count += 1
-                                            valid_confirm = True
-                                            valid_exit = True
-                                        elif remote_exit == 'N':
-                                            syslog_loop = True
-                                            valid_exit = True
-                                        else:
-                                            print(f'\n------------------------------------------------------\n')
-                                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                            print(f'\n------------------------------------------------------\n')
-
-                                else:
-                                    syslog_loop = True
-                                    valid_confirm = True
-
-                            elif confirm_host == 'N':
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                print(f'  Starting Remote Host Configuration Over.')
-                                print(f'\n-------------------------------------------------------------------------------------------\n')
-                                syslog_loop = True
-                                valid_confirm = True
-                            else:
-                                print(f'\n------------------------------------------------------\n')
-                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                                print(f'\n------------------------------------------------------\n')
+                    remote_logging = syslog_servers(jsonData, **templateVars)
+                    templateVars['remote_logging'] = remote_logging
 
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     print(f'    description        = "{templateVars["descr"]}"')
@@ -10374,9 +11337,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # System QoS Policy Module
-    #========================================
+    #==============================================
     def system_qos_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'qos'
@@ -10410,7 +11373,7 @@ class easy_imm_wizard(object):
             print(f'  amounts of packets through the network will be improved with Jumbo MTU support.')
             print(f'  Beyond the System MTU, we recommend you utilize the default parameters of this wizard.')
             print(f'  You only need one of these policies for Organization {org}.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -10560,9 +11523,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Thermal Policy Module
-    #========================================
+    #==============================================
     def thermal_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -10584,7 +11547,7 @@ class easy_imm_wizard(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             print(f'  A {policy_type} will configure the Cooling/FAN Policy for Chassis.  We recommend ')
             print(f'  Balanced for a 5108 and Acoustic for a 9508 Chassis, as of this writing.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -10648,9 +11611,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # UCS Chassis Profile Module
-    #========================================
+    #==============================================
     def ucs_chassis_profiles(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'chassis'
@@ -10768,9 +11731,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # UCS Domain Profile Module
-    #========================================
+    #==============================================
     def ucs_domain_profiles(self, jsonData, easy_jsonData, policy_prefix):
         name_prefix = self.name_prefix
         name_suffix = 'ucs'
@@ -10812,32 +11775,9 @@ class easy_imm_wizard(object):
                     templateVars["varType"] = 'Action'
                     templateVars["action"] = variablesFromAPI(**templateVars)
 
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    print(f'  Note: If you do not have the Serial Number at this time you can manually add it to the:')
-                    print(f'        - ucs_domain_profiles/ucs_domain_profiles.auto.tfvars file later.')
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    valid = False
-                    while valid == False:
-                        templateVars["serial_number_fabric_a"] = input('What is the Serial Number of Fabric A? [press enter to skip]: ')
-                        if templateVars["serial_number_fabric_a"] == '':
-                            valid = True
-                        elif re.fullmatch(r'^[A-Z]{3}[2-3][\d]([0][1-9]|[1-4][0-9]|[5][1-3])[\dA-Z]{4}$', templateVars["serial_number_fabric_a"]):
-                            valid = True
-                        else:
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'  Error!! Invalid Serial Number.  "{templateVars["serial_number_fabric_a"]}" is not a valid serial.')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                    valid = False
-                    while valid == False:
-                        templateVars["serial_number_fabric_b"] = input('What is the Serial Number of Fabric B? [press enter to skip]: ')
-                        if templateVars["serial_number_fabric_b"] == '':
-                            valid = True
-                        elif re.fullmatch(r'^[A-Z]{3}[2-3][\d]([0][1-9]|[1-4][0-9]|[5][1-3])[\dA-Z]{4}$', templateVars["serial_number_fabric_b"]):
-                            valid = True
-                        else:
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'  Error!! Invalid Serial Number.  "{templateVars["serial_number_fabric_b"]}" is not a valid serial.')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                    serial_a,serial_b = ucs_domain_serials()
+                    templateVars["serial_number_fabric_a"] = serial_a
+                    templateVars["serial_number_fabric_b"] = serial_b
 
                     policy_list = [
                         'policies.network_connectivity_policies.network_connectivity_policy',
@@ -10958,9 +11898,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # UCS Server Profile Module
-    #========================================
+    #==============================================
     def ucs_server_profiles(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'server'
@@ -11248,9 +12188,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # UCS Server Profile Template Module
-    #========================================
+    #==============================================
     def ucs_server_profile_templates(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'template'
@@ -11303,7 +12243,7 @@ class easy_imm_wizard(object):
                             #
                             # Compute Configuration
                             #___________________________
-                            'pools.uuid_pools.uuid_pool'
+                            'pools.uuid_pools.uuid_pool',
                             'policies.bios_policies.bios_policy',
                             'policies.boot_order_policies.boot_order_policy',
                             'policies.power_policies.power_policy',
@@ -11471,9 +12411,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # UUID Pools Module
-    #========================================
+    #==============================================
     def uuid_pools(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'uuid_pool'
@@ -11510,50 +12450,61 @@ class easy_imm_wizard(object):
                     templateVars["name"] = policy_name(name, policy_type)
                     templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
 
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    print(f'  Assignment order decides the order in which the next identifier is allocated.')
-                    print(f'    1. default - (Intersight Default) Assignment order is decided by the system.')
-                    print(f'    2. sequential - (Recommended) Identifiers are assigned in a sequential order.')
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    valid = False
-                    while valid == False:
-                        templateVars["assignment_order"] = input('Specify the Index for the value to select [2]: ')
-                        if templateVars["assignment_order"] == '' or templateVars["assignment_order"] == '2':
-                            templateVars["assignment_order"] = 'sequential'
-                            valid = True
-                        elif templateVars["assignment_order"] == '1':
-                            templateVars["assignment_order"] = 'default'
-                            valid = True
-                        else:
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'  Error!! Invalid Option.  Please Select a valid option from the List.')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['pool.AbstractPool']['allOf'][1]['properties']
 
-                    valid = False
-                    while valid == False:
-                        templateVars['prefix'] = input(f'\nWhat is the UUID Prefix you would like to assign to the Pool?  [000025B5-0000-0000]: ')
-                        if templateVars['prefix'] == '':
-                            templateVars['prefix'] = '000025B5-0000-0000'
-                        valid = validating.uuid_prefix('UUID Pool From', templateVars['prefix'])
+                    templateVars["var_description"] = jsonVars['AssignmentOrder']['description']
+                    templateVars["jsonVars"] = sorted(jsonVars['AssignmentOrder']['enum'])
+                    templateVars["defaultVar"] = jsonVars['AssignmentOrder']['default']
+                    templateVars["varType"] = 'Assignment Order'
+                    templateVars["assignment_order"] = variablesFromAPI(**templateVars)
 
-                    valid = False
-                    while valid == False:
-                        pool_from = input(f'\nWhat is the first Suffix in the Block?  [0000-000000000000]: ')
-                        if pool_from == '':
-                            pool_from = '0000-000000000000'
-                        valid = validating.uuid_suffix('UUID Pool From', pool_from)
+                    jsonVars = jsonData['components']['schemas']['uuidpool.Pool']['allOf'][1]['properties']
 
-                    valid = False
-                    while valid == False:
-                        pool_size = input(f'\nWhat is the size of the Block?  [512]: ')
-                        if pool_size == '':
-                            pool_size = '512'
-                        valid = validating.number_in_range('UUID Pool Size', pool_size, 1, 1000)
+                    templateVars["Description"] = jsonVars['Prefix']['description']
+                    templateVars["varDefault"] = '000025B5-0000-0000'
+                    templateVars["varInput"] = 'What is the UUID Prefix you would like to assign to the Pool?  [000025B5-0000-0000]:'
+                    templateVars["varName"] = 'UUID Prefix'
+                    templateVars["varRegex"] = jsonVars['Prefix']['pattern']
+                    templateVars["minLength"] = 18
+                    templateVars["maxLength"] = 18
+                    templateVars["prefix"] = varStringLoop(**templateVars)
+
+                    jsonVars = jsonData['components']['schemas']['uuidpool.UuidBlock']['allOf'][1]['properties']
+
+                    templateVars["Description"] = jsonVars['From']['description']
+                    templateVars["varDefault"] = '0000-000000000000'
+                    templateVars["varInput"] = 'What is the First UUID Suffix in the Block?  [0000-000000000000]:'
+                    templateVars["varName"] = 'UUID First Suffix'
+                    templateVars["varRegex"] = jsonVars['From']['pattern']
+                    templateVars["minLength"] = 17
+                    templateVars["maxLength"] = 17
+                    pool_from = varStringLoop(**templateVars)
+
+                    jsonVars = jsonData['components']['schemas']['pool.AbstractBlockType']['allOf'][1]['properties']
+
+                    templateVars["Description"] = jsonVars['Size']['description']
+                    templateVars["varInput"] = 'How Many IP Addresses should be added to the Pool?  Range is 1-1000.'
+                    templateVars["varDefault"] = 1000
+                    templateVars["varName"] = 'Pool Size'
+                    templateVars["minNum"] = jsonVars['Size']['minimum']
+                    templateVars["maxNum"] = jsonVars['Size']['maximum']
+                    pool_size = varNumberLoop(**templateVars)
+
+                    if re.search('[a-z]', pool_from):
+                        pool_from = pool_from.upper()
+                    from_split = pool_from.split('-')
+                    pool_to = hex(int(from_split[1], 16) + pool_size - 1).split('x')[-1]
+                    add_zeros = 12 - len(pool_to)
+                    if not add_zeros == 0:
+                        pool_to = str(from_split[0]) + '-' + ('0' * add_zeros) + pool_to
+                    pool_to = pool_to.upper()
 
                     templateVars["uuid_blocks"] = [
                         {
                             'from':pool_from,
-                            'size':pool_size
+                            'size':pool_size,
+                            'to':pool_to
                         }
                     ]
                     print(f'\n-------------------------------------------------------------------------------------------\n')
@@ -11561,16 +12512,18 @@ class easy_imm_wizard(object):
                     print(f'    description      = "{templateVars["descr"]}"')
                     print(f'    name             = "{templateVars["name"]}"')
                     print(f'    prefix           = "{templateVars["prefix"]}"')
-                    print(f'    uuid_blocks = [')
+                    print(f'    uuid_blocks = ''{')
                     for i in templateVars["uuid_blocks"]:
                         print(f'      ''{')
                         for k, v in i.items():
                             if k == 'from':
-                                print(f'        from   = {v}')
+                                print(f'        from = "{v}"')
                             elif k == 'size':
-                                print(f'        size   = {v}')
+                                print(f'        size = {v}')
+                            elif k == 'to':
+                                print(f'        to   = "{v}"')
                         print(f'      ''}')
-                    print(f'    ]')
+                    print(f'    ''}')
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     valid_confirm = False
                     while valid_confirm == False:
@@ -11607,9 +12560,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Virtual KVM Policy Module
-    #========================================
+    #==============================================
     def virtual_kvm_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'vkvm'
@@ -11634,7 +12587,7 @@ class easy_imm_wizard(object):
             print(f'   - Local Server Video - If enabled, displays KVM on any monitor attached to the server.')
             print(f'   - Video Encryption - encrypts all video information sent through KVM.')
             print(f'   - Remote Port - The port used for KVM communication. Range is 1 to 65535.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -11723,9 +12676,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # Virtual Media Policy Policy Module
-    #========================================
+    #==============================================
     def virtual_media_policies(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'vmedia'
@@ -11752,7 +12705,7 @@ class easy_imm_wizard(object):
             print(f'  could contain virtual media mappings for different OS images, and configure up to two ')
             print(f'  virtual media mappings, one for ISO files through CDD and the other for IMG files ')
             print(f'  through HDD.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure an {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -12176,9 +13129,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # VLAN Policy Module
-    #========================================
+    #==============================================
     def vlan_policies(self, jsonData, easy_jsonData):
         vlan_policies_vlans = []
         name_prefix = self.name_prefix
@@ -12212,7 +13165,7 @@ class easy_imm_wizard(object):
             print(f'  If you want to Assign a Native VLAN Make sure it is in the vlan list for this wizard.')
             print(f'  IMPORTANT NOTE: You can only have one Native VLAN for the Fabric at this time,')
             print(f'                  as Disjoint Layer 2 is not yet supported.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             policy_loop = False
@@ -12289,14 +13242,14 @@ class easy_imm_wizard(object):
                 if not native_vlan == '' and len(vlan_list) > 1:
                     templateVars["vlans"] = [
                         {
-                            'auto_allow_on_uplinks':True,
+                            'auto_allow_on_uplinks':False,
                             'id':native_vlan,
                             'multicast_policy':templateVars["multicast_policy"],
                             'name':native_name,
                             'native_vlan':True
                         },
                         {
-                            'auto_allow_on_uplinks':True,
+                            'auto_allow_on_uplinks':False,
                             'id':vlan_list,
                             'multicast_policy':templateVars["multicast_policy"],
                             'name':vlan_name,
@@ -12306,7 +13259,7 @@ class easy_imm_wizard(object):
                 elif not native_vlan == '' and len(vlan_list) == 1:
                     templateVars["vlans"] = [
                         {
-                            'auto_allow_on_uplinks':True,
+                            'auto_allow_on_uplinks':False,
                             'id':native_vlan,
                             'multicast_policy':templateVars["multicast_policy"],
                             'name':native_name,
@@ -12316,7 +13269,7 @@ class easy_imm_wizard(object):
                 else:
                     templateVars["vlans"] = [
                         {
-                            'auto_allow_on_uplinks':True,
+                            'auto_allow_on_uplinks':False,
                             'id':vlan_list,
                             'multicast_policy':templateVars["multicast_policy"],
                             'name':vlan_name,
@@ -12365,9 +13318,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # VSAN Policy Module
-    #========================================
+    #==============================================
     def vsan_policies(self, jsonData, easy_jsonData):
         vsan_policies_vsans = []
         name_prefix = self.name_prefix
@@ -12394,7 +13347,7 @@ class easy_imm_wizard(object):
             print(f'  IMPORTANT Note: The Fabric Interconnects will encapsulate Fibre-Channel traffic locally')
             print(f'                  in a FCoE (Fibre-Channel over Ethernet) VLAN.  This VLAN Must not be')
             print(f'                  already used by the VLAN Policy.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -12602,9 +13555,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # WWNN Pools Module
-    #========================================
+    #==============================================
     def wwnn_pools(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         name_suffix = 'wwnn_pool'
@@ -12629,7 +13582,7 @@ class easy_imm_wizard(object):
             print(f'  - Leverage the Cisco UCS OUI of 20:00:00:25:B5 for the WWNN Pool Prefix.')
             print(f'  - Pool Size can be between 1 and 1000 addresses.')
             print(f'  - Refer to "UCS Naming Conventions 0.5.ppsx" in the Repository for further guidance.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -12645,62 +13598,69 @@ class easy_imm_wizard(object):
                     templateVars["name"] = policy_name(name, policy_type)
                     templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
 
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    print(f'  Assignment order decides the order in which the next identifier is allocated.')
-                    print(f'    1. default - (Intersight Default) Assignment order is decided by the system.')
-                    print(f'    2. sequential - (Recommended) Identifiers are assigned in a sequential order.')
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    valid = False
-                    while valid == False:
-                        templateVars["assignment_order"] = input('Specify the number for the value to select.  [2]: ')
-                        if templateVars["assignment_order"] == '' or templateVars["assignment_order"] == '2':
-                            templateVars["assignment_order"] = 'sequential'
-                            valid = True
-                        elif templateVars["assignment_order"] == '1':
-                            templateVars["assignment_order"] = 'default'
-                            valid = True
-                        else:
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'  Error!! Invalid Option.  Please Select a valid option from the List.')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['pool.AbstractPool']['allOf'][1]['properties']
 
-                    valid = False
-                    while valid == False:
-                        begin = input('What is the Beginning WWNN Address to Assign to the Pool?  [20:00:00:25:B5:00:00:00]: ')
-                        if begin == '':
-                            begin = '20:00:00:25:B5:00:00:00'
-                        valid = validating.wwxn_address('WWNN Pool Address', begin)
+                    templateVars["var_description"] = jsonVars['AssignmentOrder']['description']
+                    templateVars["jsonVars"] = sorted(jsonVars['AssignmentOrder']['enum'])
+                    templateVars["defaultVar"] = jsonVars['AssignmentOrder']['default']
+                    templateVars["varType"] = 'Assignment Order'
+                    templateVars["assignment_order"] = variablesFromAPI(**templateVars)
 
-                    valid = False
-                    while valid == False:
-                        pool_size = input('How Many WWNN Addresses should be added to the Pool?  Range is 1-1000 [512]: ')
-                        if pool_size == '':
-                            pool_size = '512'
-                        valid = validating.number_in_range('Pool Size', pool_size, 1, 1000)
+                    jsonVars = jsonData['components']['schemas']['fcpool.Block']['allOf'][1]['properties']
 
-                    begin = begin.upper()
-                    beginx = int(begin.replace(':', ''), 16)
-                    add_dec = (beginx + int(pool_size))
-                    ending = ':'.join(['{}{}'.format(a, b)
+                    templateVars["Description"] = jsonVars['From']['description']
+                    templateVars["varDefault"] = '20:00:00:25:B5:00:00:00'
+                    templateVars["varInput"] = 'What is the Starting WWNN Address to Assign to the Pool?  [20:00:00:25:B5:00:00:00]:'
+                    templateVars["varName"] = 'Starting WWNN Address'
+                    templateVars["varRegex"] = jsonVars['From']['pattern']
+                    templateVars["minLength"] = 23
+                    templateVars["maxLength"] = 23
+                    pool_from = varStringLoop(**templateVars)
+
+                    jsonVars = jsonData['components']['schemas']['pool.AbstractBlockType']['allOf'][1]['properties']
+
+                    templateVars["Description"] = jsonVars['Size']['description']
+                    templateVars["varInput"] = 'How Many WWNN Addresses should be added to the Pool?  Range is 1-1000.'
+                    templateVars["varDefault"] = 1000
+                    templateVars["varName"] = 'Pool Size'
+                    templateVars["minNum"] = jsonVars['Size']['minimum']
+                    templateVars["maxNum"] = jsonVars['Size']['maximum']
+                    pool_size = varNumberLoop(**templateVars)
+
+                    if re.search('[a-z]', pool_from):
+                        pool_from = pool_from.upper()
+                    beginx = int(pool_from.replace(':', ''), 16)
+                    add_dec = (beginx + int(pool_size) - 1)
+                    pool_to = ':'.join(['{}{}'.format(a, b)
                         for a, b
                         in zip(*[iter('{:012x}'.format(add_dec))]*2)])
-                    ending = ending.upper()
-                    templateVars["wwnn_blocks"] = [{'from':begin, 'to':ending}]
+                    pool_to = pool_to.upper()
+
+                    templateVars["wwnn_blocks"] = [
+                        {
+                            'from':pool_from,
+                            'size':pool_size,
+                            'to':pool_to
+                        }
+                    ]
 
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     print(f'    assignment_order = "{templateVars["assignment_order"]}"')
                     print(f'    description      = "{templateVars["descr"]}"')
                     print(f'    name             = "{templateVars["name"]}"')
-                    print(f'    wwnn_blocks = [')
+                    print(f'    id_blocks = ''{')
                     for item in templateVars["wwnn_blocks"]:
-                        print('      {')
+                        print('      "0" = {')
                         for k, v in item.items():
                             if k == 'from':
                                 print(f'        from = "{v}" ')
+                            elif k == 'size':
+                                print(f'        size = {v}')
                             elif k == 'to':
                                 print(f'        to   = "{v}"')
                         print('      }')
-                    print(f'    ]')
+                    print(f'    ''}')
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     valid_confirm = False
                     while valid_confirm == False:
@@ -12737,9 +13697,9 @@ class easy_imm_wizard(object):
         templateVars["template_file"] = 'template_close.jinja2'
         write_to_template(self, **templateVars)
 
-    #========================================
+    #==============================================
     # WWPN Pools Module
-    #========================================
+    #==============================================
     def wwpn_pools(self, jsonData, easy_jsonData):
         name_prefix = self.name_prefix
         org = self.org
@@ -12764,7 +13724,7 @@ class easy_imm_wizard(object):
             print(f'  - For WWPN Pools; create a pool for each Fabric.')
             print(f'  - Pool Size can be between 1 and 1000 addresses.')
             print(f'  - Refer to "UCS Naming Conventions 0.5.ppsx" in the Repository for further guidance.\n')
-            print(f'  This wizard will save the configuraton for this section to the following file:')
+            print(f'  This wizard will save the configuration for this section to the following file:')
             print(f'  - Intersight/{org}/{self.type}/{templateVars["template_type"]}.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to Configure a {policy_type}?  Enter "Y" or "N" [Y]: ')
@@ -12778,68 +13738,73 @@ class easy_imm_wizard(object):
                     templateVars["name"] = policy_name(name, policy_type)
                     templateVars["descr"] = policy_descr(templateVars["name"], policy_type)
 
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    print(f'  Assignment order decides the order in which the next identifier is allocated.')
-                    print(f'    1. default - (Intersight Default) Assignment order is decided by the system.')
-                    print(f'    2. sequential - (Recommended) Identifiers are assigned in a sequential order.')
-                    print(f'\n-------------------------------------------------------------------------------------------\n')
-                    valid = False
-                    while valid == False:
-                        templateVars["assignment_order"] = input('Specify the number for the value to select.  [2]: ')
-                        if templateVars["assignment_order"] == '' or templateVars["assignment_order"] == '2':
-                            templateVars["assignment_order"] = 'sequential'
-                            valid = True
-                        elif templateVars["assignment_order"] == '1':
-                            templateVars["assignment_order"] = 'default'
-                            valid = True
-                        else:
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
-                            print(f'  Error!! Invalid Option.  Please Select a valid option from the List.')
-                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                    templateVars["multi_select"] = False
+                    jsonVars = jsonData['components']['schemas']['pool.AbstractPool']['allOf'][1]['properties']
 
-                    valid = False
-                    while valid == False:
-                        if loop_count % 2 == 0:
-                            begin = input('What is the Beginning WWPN Address to Assign to the Pool?  [20:00:00:25:B5:0A:00:00]: ')
-                        else:
-                            begin = input('What is the Beginning WWPN Address to Assign to the Pool?  [20:00:00:25:B5:0B:00:00]: ')
-                        if begin == '':
-                            if loop_count % 2 == 0:
-                                begin = '20:00:00:25:B5:0A:00:00'
-                            else:
-                                begin = '20:00:00:25:B5:0B:00:00'
-                        valid = validating.wwxn_address('WWPN Pool Address', begin)
+                    templateVars["var_description"] = jsonVars['AssignmentOrder']['description']
+                    templateVars["jsonVars"] = sorted(jsonVars['AssignmentOrder']['enum'])
+                    templateVars["defaultVar"] = jsonVars['AssignmentOrder']['default']
+                    templateVars["varType"] = 'Assignment Order'
+                    templateVars["assignment_order"] = variablesFromAPI(**templateVars)
 
-                    valid = False
-                    while valid == False:
-                        pool_size = input('How Many WWPN Addresses should be added to the Pool?  Range is 1-1000 [512]: ')
-                        if pool_size == '':
-                            pool_size = '512'
-                        valid = validating.number_in_range('Pool Size', pool_size, 1, 1000)
+                    jsonVars = jsonData['components']['schemas']['fcpool.Block']['allOf'][1]['properties']
 
-                    begin = begin.upper()
-                    beginx = int(begin.replace(':', ''), 16)
-                    add_dec = (beginx + int(pool_size))
-                    ending = ':'.join(['{}{}'.format(a, b)
+                    templateVars["Description"] = jsonVars['From']['description']
+                    if loop_count % 2 == 0: 
+                        templateVars["varDefault"] = '20:00:00:25:B5:0A:00:00'
+                        templateVars["varInput"] = 'What is the Starting WWPN Address to Assign to the Pool?  [20:00:00:25:B5:0A:00:00]:'
+                    else:
+                        templateVars["varDefault"] = '20:00:00:25:B5:0B:00:00'
+                        templateVars["varInput"] = 'What is the Starting WWPN Address to Assign to the Pool?  [20:00:00:25:B5:0B:00:00]:'
+                    templateVars["varName"] = 'Starting WWPN Address'
+                    templateVars["varRegex"] = jsonVars['From']['pattern']
+                    templateVars["minLength"] = 23
+                    templateVars["maxLength"] = 23
+                    pool_from = varStringLoop(**templateVars)
+
+                    jsonVars = jsonData['components']['schemas']['pool.AbstractBlockType']['allOf'][1]['properties']
+
+                    templateVars["Description"] = jsonVars['Size']['description']
+                    templateVars["varInput"] = 'How Many WWPN Addresses should be added to the Pool?  Range is 1-1000.'
+                    templateVars["varDefault"] = 1000
+                    templateVars["varName"] = 'Pool Size'
+                    templateVars["minNum"] = jsonVars['Size']['minimum']
+                    templateVars["maxNum"] = jsonVars['Size']['maximum']
+                    pool_size = varNumberLoop(**templateVars)
+
+                    if re.search('[a-z]', pool_from):
+                        pool_from = pool_from.upper()
+                    beginx = int(pool_from.replace(':', ''), 16)
+                    add_dec = (beginx + int(pool_size) - 1)
+                    pool_to = ':'.join(['{}{}'.format(a, b)
                         for a, b
                         in zip(*[iter('{:012x}'.format(add_dec))]*2)])
-                    ending = ending.upper()
-                    templateVars["wwpn_blocks"] = [{'from':begin, 'to':ending}]
+                    pool_to = pool_to.upper()
+
+                    templateVars["wwpn_blocks"] = [
+                        {
+                            'from':pool_from,
+                            'size':pool_size,
+                            'to':pool_to
+                        }
+                    ]
 
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     print(f'    assignment_order = "{templateVars["assignment_order"]}"')
                     print(f'    description      = "{templateVars["descr"]}"')
                     print(f'    name             = "{templateVars["name"]}"')
-                    print(f'    wwpn_blocks = [')
+                    print(f'    id_blocks = ''{')
                     for item in templateVars["wwpn_blocks"]:
-                        print('      {')
+                        print('      "0" = {')
                         for k, v in item.items():
                             if k == 'from':
                                 print(f'        from = "{v}" ')
+                            elif k == 'size':
+                                print(f'        size = {v}')
                             elif k == 'to':
                                 print(f'        to   = "{v}"')
                         print('      }')
-                    print(f'    ]')
+                    print(f'    ''}')
                     print(f'\n-------------------------------------------------------------------------------------------\n')
                     valid_confirm = False
                     while valid_confirm == False:
@@ -12989,6 +13954,39 @@ def naming_rule_fabric(loop_count, name_prefix, org):
             name = 'Fabric_B'
     return name
 
+def ntp_alternate():
+    valid = False
+    while valid == False:
+        alternate_true = input('Do you want to Configure an Alternate NTP Server?  Enter "Y" or "N" [Y]: ')
+        if alternate_true == 'Y' or alternate_true == '':
+            alternate_ntp = input('What is your Alternate NTP Server? [1.north-america.pool.ntp.org]: ')
+            if alternate_ntp == '':
+                alternate_ntp = '1.north-america.pool.ntp.org'
+            if re.search(r'[a-zA-Z]+', alternate_ntp):
+                valid = validating.dns_name('Alternate NTP Server', alternate_ntp)
+            else:
+                valid = validating.ip_address('Alternate NTP Server', alternate_ntp)
+        elif alternate_true == 'N':
+            alternate_ntp = ''
+            valid = True
+        else:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+    return alternate_ntp
+
+def ntp_primary():
+    valid = False
+    while valid == False:
+        primary_ntp = input('What is your Primary NTP Server [0.north-america.pool.ntp.org]: ')
+        if primary_ntp == "":
+            primary_ntp = '0.north-america.pool.ntp.org'
+        if re.search(r'[a-zA-Z]+', primary_ntp):
+            valid = validating.dns_name('Primary NTP Server', primary_ntp)
+        else:
+            valid = validating.ip_address('Primary NTP Server', primary_ntp)
+    return primary_ntp
+
 def policies_list(policies_list, **templateVars):
     valid = False
     while valid == False:
@@ -13073,7 +14071,7 @@ def policy_descr(name, policy_type):
         descr = input(f'What is the Description for the {policy_type}?  [{name} {policy_type}]: ')
         if descr == '':
             descr = '%s %s' % (name, policy_type)
-        valid = validating.description(f'{policy_type} templateVars["Description"]', descr, 1, 62)
+        valid = validating.description(f'{policy_type} templateVars["descr"]', descr, 1, 62)
         if valid == True:
             return descr
 
@@ -13118,11 +14116,134 @@ def policy_loop_standard(self, header, initial_policy, template_type):
                 templateVars["header"] = header
 
                 # Loop Through Json Items to Create templateVars Blocks
-                for k, v in item.items():
-                    templateVars[k] = v
+                if template_type == 'bios_policies':
+                    for k, v in item.items():
+                        if (k == 'name' or k == 'descr' or k == 'tags'):
+                            templateVars[k] = v
 
-                # if template_type == 'iscsi_boot_policies':
-                #     print(templateVars)
+                    templateVars["bios_settings"] = {}
+                    for k, v in item.items():
+                        if not (k == 'name' or k == 'descr' or k == 'tags'):
+                            templateVars["bios_settings"][k] = v
+                elif template_type == 'system_qos_policies':
+                    for k, v in item.items():
+                        if (k == 'name' or k == 'descr' or k == 'tags'):
+                            templateVars[k] = v
+
+                    templateVars["classes"] = [{},{},{},{},{},{}]
+                    for key, value in item.items():
+                        if key == 'classes':
+                            class_count = 0
+                            for i in value:
+                                for k, v in i.items():
+                                    templateVars["classes"][class_count][k] = v
+                                class_count += 1
+                else:
+                    for k, v in item.items():
+                        templateVars[k] = v
+
+                if template_type == 'ip_pools':
+                    if 'ipv4_blocks' in templateVars:
+                        index_count = 0
+                        for i in templateVars["ipv4_blocks"]:
+                             index_count += 1
+                        for r in range(0,index_count):
+                            if 'to' in templateVars["ipv4_blocks"][r]:
+                                templateVars["ipv4_blocks"][r]["size"] = int(
+                                    ipaddress.IPv4Address(templateVars["ipv4_blocks"][r]["to"])
+                                    ) - int(ipaddress.IPv4Address(templateVars["ipv4_blocks"][r]["from"])) + 1
+                                ipv4_to = templateVars["ipv4_blocks"][r]['to']
+                                templateVars["ipv4_blocks"][r].pop('to')
+                                templateVars["ipv4_blocks"][r]['to'] = ipv4_to
+
+                    if 'ipv6_blocks' in templateVars:
+                        index_count = 0
+                        for i in templateVars["ipv6_blocks"]:
+                             index_count += 1
+                        for r in range(0,index_count):
+                            if 'to' in templateVars["ipv6_blocks"][r]:
+                                templateVars["ipv6_blocks"][r]["size"] = int(
+                                    ipaddress.IPv6Address(templateVars["ipv6_blocks"][r]["to"])
+                                    ) - int(ipaddress.IPv6Address(templateVars["ipv6_blocks"][r]["from"])) + 1
+                                ipv6_to = templateVars["ipv6_blocks"][r]['to']
+                                templateVars["ipv6_blocks"][r].pop('to')
+                                templateVars["ipv6_blocks"][r]['to'] = ipv6_to
+                elif template_type == 'iqn_pools':
+                    if 'iqn_blocks' in templateVars:
+                        index_count = 0
+                        for i in templateVars["iqn_blocks"]:
+                             index_count += 1
+                        for r in range(0,index_count):
+                            if 'to' in templateVars["iqn_blocks"][r]:
+                                templateVars["iqn_blocks"][r]["size"] = int(
+                                    templateVars["iqn_blocks"][r]["to"]
+                                    ) - int(templateVars["iqn_blocks"][r]["from"]) + 1
+                                iqn_to = templateVars["iqn_blocks"][r]["to"]
+                                templateVars["iqn_blocks"][r].pop('to')
+                                templateVars["iqn_blocks"][r]["to"] = iqn_to
+                elif template_type == 'mac_pools':
+                    if 'mac_blocks' in templateVars:
+                        index_count = 0
+                        for i in templateVars["mac_blocks"]:
+                             index_count += 1
+                        for r in range(0,index_count):
+                            if 'to' in templateVars["mac_blocks"][r]:
+                                int_from = int(templateVars["mac_blocks"][r]["from"].replace(':', ''), 16)
+                                int_to = int(templateVars["mac_blocks"][r]["to"].replace(':', ''), 16)
+                                templateVars["mac_blocks"][r]["size"] = int_to - int_from + 1
+                                mac_to = templateVars["mac_blocks"][r]["to"]
+                                templateVars["mac_blocks"][r].pop('to')
+                                templateVars["mac_blocks"][r]["to"] = mac_to
+                elif template_type == 'system_qos_policies':
+                    total_weight = 0
+                    for r in range(0,6):
+                        if templateVars["classes"][r]["state"] == 'Enabled':
+                            total_weight += int(templateVars["classes"][r]["weight"])
+                    for r in range(0,6):
+                        if templateVars["classes"][r]["state"] == 'Enabled':
+                            x = ((int(templateVars["classes"][r]["weight"]) / total_weight) * 100)
+                            templateVars["classes"][r]["bandwidth_percent"] = str(x).split('.')[0]
+                        else:
+                            templateVars["classes"][r]["bandwidth_percent"] = 0
+                elif template_type == 'uuid_pools':
+                    if 'uuid_blocks' in templateVars:
+                        index_count = 0
+                        for i in templateVars["uuid_blocks"]:
+                             index_count += 1
+                        for r in range(0,index_count):
+                            if 'to' in templateVars["uuid_blocks"][r]:
+                                int_from = int(templateVars["uuid_blocks"][r]["from"].split('-')[1])
+                                int_to = int(templateVars["uuid_blocks"][r]["to"].split('-')[1])
+                                templateVars["uuid_blocks"][r]["size"] = int_to - int_from + 1
+                                uuid_to = templateVars["uuid_blocks"][r]["to"]
+                                templateVars["uuid_blocks"][r].pop('to')
+                                templateVars["uuid_blocks"][r]["to"] = uuid_to
+                elif template_type == 'wwnn_pools':
+                    if 'wwnn_blocks' in templateVars:
+                        index_count = 0
+                        for i in templateVars["wwnn_blocks"]:
+                             index_count += 1
+                        for r in range(0,index_count):
+                            if 'to' in templateVars["wwnn_blocks"][r]:
+                                int_from = int(templateVars["wwnn_blocks"][r]["from"].replace(':', ''), 16)
+                                int_to = int(templateVars["wwnn_blocks"][r]["to"].replace(':', ''), 16)
+                                templateVars["wwnn_blocks"][r]["size"] = int_to - int_from + 1
+                                wwxn_to = templateVars["wwnn_blocks"][r]["to"]
+                                templateVars["wwnn_blocks"][r].pop('to')
+                                templateVars["wwnn_blocks"][r]["to"] = wwxn_to
+                elif template_type == 'wwpn_pools':
+                    if 'wwpn_blocks' in templateVars:
+                        index_count = 0
+                        for i in templateVars["wwpn_blocks"]:
+                             index_count += 1
+                        for r in range(0,index_count):
+                            if 'to' in templateVars["wwpn_blocks"][r]:
+                                int_from = int(templateVars["wwpn_blocks"][r]["from"].replace(':', ''), 16)
+                                int_to = int(templateVars["wwpn_blocks"][r]["to"].replace(':', ''), 16)
+                                templateVars["wwpn_blocks"][r]["size"] = int_to - int_from + 1
+                                wwxn_to = templateVars["wwpn_blocks"][r]["to"]
+                                templateVars["wwpn_blocks"][r].pop('to')
+                                templateVars["wwpn_blocks"][r]["to"] = wwxn_to
                 # Process the template
                 dest_dir = '%s' % (self.type)
                 dest_file = '%s.auto.tfvars' % (template_type)
@@ -13242,6 +14363,8 @@ def policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateV
                 easy_imm_wizard(name_prefix, templateVars["org"], inner_type).ethernet_adapter_policies(jsonData, easy_jsonData)
             elif inner_policy == 'ethernet_network_control_policies':
                 easy_imm_wizard(name_prefix, templateVars["org"], inner_type).ethernet_network_control_policies(jsonData, easy_jsonData)
+            elif inner_policy == 'ethernet_network_group_policies':
+                easy_imm_wizard(name_prefix, templateVars["org"], inner_type).ethernet_network_group_policies(jsonData, easy_jsonData)
             elif inner_policy == 'ethernet_network_policies':
                 easy_imm_wizard(name_prefix, templateVars["org"], inner_type).ethernet_network_policies(jsonData, easy_jsonData)
             elif inner_policy == 'ethernet_qos_policies':
@@ -13319,6 +14442,516 @@ def policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateV
             elif inner_policy == 'vsan_policies':
                 easy_imm_wizard(name_prefix, templateVars["org"], inner_type).vsan_policies(jsonData, easy_jsonData)
 
+def port_modes_fc(jsonData, easy_jsonData, name_prefix, **templateVars):
+    port_modes = {}
+    ports_in_use = []
+    fc_converted_ports = []
+    valid = False
+    while valid == False:
+        fc_mode = input('Do you want to convert ports to Fibre Channel Mode?  Enter "Y" or "N" [Y]: ')
+        if fc_mode == '' or fc_mode == 'Y':
+            fc_mode = 'Y'
+            jsonVars = easy_jsonData['policies']['fabric.PortPolicy']
+            templateVars["var_description"] = jsonVars['unifiedPorts']['description']
+            templateVars["jsonVars"] = sorted(jsonVars['unifiedPorts']['enum'])
+            templateVars["defaultVar"] = jsonVars['unifiedPorts']['default']
+            templateVars["varType"] = 'Unified Port Ranges'
+            fc_ports = variablesFromAPI(**templateVars)
+            x = fc_ports.split('-')
+            fc_ports = [int(x[0]),int(x[1])]
+            for i in range(int(x[0]), int(x[1]) + 1):
+                ports_in_use.append(i)
+                fc_converted_ports.append(i)
+            port_modes = {'custom_mode':'FibreChannel','port_list':fc_ports,'slot_id':1}
+            valid = True
+        elif fc_mode == 'N':
+            valid = True
+        else:
+            print(f'\n------------------------------------------------------\n')
+            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+            print(f'\n------------------------------------------------------\n')
+    
+    return fc_mode,ports_in_use,fc_converted_ports,port_modes
+
+def port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars):
+    port_channels = []
+    port_roles = []
+    port_count = 1
+    ports_in_use = templateVars["ports_in_use"]
+    if templateVars["port_type"] == 'Appliance Port-Channel' and templateVars["device_model"] == 'UCS-FI-64108': portx = '99,100'
+    elif templateVars["port_type"] == 'Appliance Port-Channel': portx = '51,52'
+    elif templateVars["port_type"] == 'Ethernet Uplink Port-Channel' and templateVars["device_model"] == 'UCS-FI-64108': portx = '97,98'
+    elif templateVars["port_type"] == 'Ethernet Uplink Port-Channel': portx = '49,50'
+    elif templateVars["port_type"] == 'FCoE Uplink Port-Channel' and templateVars["device_model"] == 'UCS-FI-64108': portx = '101,102'
+    elif templateVars["port_type"] == 'FCoE Uplink Port-Channel': portx = '53,54'
+    elif templateVars["port_type"] == 'Appliance Ports' and templateVars["device_model"] == 'UCS-FI-64108': portx = '99'
+    elif templateVars["port_type"] == 'Appliance Ports': portx = '51'
+    elif templateVars["port_type"] == 'Ethernet Uplink' and templateVars["device_model"] == 'UCS-FI-64108': portx = '97'
+    elif templateVars["port_type"] == 'Ethernet Uplink': portx = '49'
+    elif templateVars["port_type"] == 'FCoE Uplink' and templateVars["device_model"] == 'UCS-FI-64108': portx = '101'
+    elif templateVars["port_type"] == 'FCoE Uplink': portx = '53'
+    elif templateVars["port_type"] == 'Server Ports' and templateVars["device_model"] == 'UCS-FI-64108': portx = '5-36'
+    elif templateVars["port_type"] == 'Server Ports': portx = '5-18'
+    valid = False
+    while valid == False:
+        configure_port = input(f'Do you want to configure an {templateVars["port_type"]}?  Enter "Y" or "N" [N]: ')
+        if configure_port == 'Y':
+            configure_valid = False
+            while configure_valid == False:
+                print(f'\n------------------------------------------------------\n')
+                print(f'  The Port List can be in the format of:')
+                print(f'     5 - Single Port')
+                print(f'     5-10 - Range of Ports')
+                print(f'     5,11,12,13,14,15 - List of Ports')
+                print(f'     5-10,20-30 - Ranges and Lists of Ports')
+                print(f'\n------------------------------------------------------\n')
+                port_list = input(f'Please enter the list of ports you want to add to the {templateVars["port_type"]}?  [{portx}]: ')
+                if port_list == '': port_list = portx
+
+                if re.search(r'(^\d+$|^\d+,{1,48}\d+$|^(\d+\-\d+|\d,){1,48}\d+$)', port_list):
+                    original_port_list = port_list
+                    ports_expanded = vlan_list_full(port_list)
+                    port_list = []
+                    for x in ports_expanded:
+                        port_list.append(int(x))
+                    port_overlap_count = 0
+                    port_overlap = []
+                    for x in ports_in_use:
+                        for y in port_list:
+                            if int(x) == int(y):
+                                port_overlap_count += 1
+                                port_overlap.append(x)
+                    if port_overlap_count == 0:
+                        if templateVars["device_model"] == 'UCS-FI-64108': max_port = 108
+                        else: max_port = 54
+                        if templateVars["fc_mode"] == 'Y': min_port = int(templateVars["fc_ports"][1])
+                        else: min_port = 1
+                        for port in port_list:
+                            valid_ports = validating.number_in_range('Port Range', port, min_port, max_port)
+                            if valid_ports == False:
+                                break
+                        if valid_ports == True:
+                            # Prompt User for the Admin Speed of the Port
+                            templateVars["multi_select"] = False
+                            jsonVars = jsonData['components']['schemas']['fabric.TransceiverRole']['allOf'][1]['properties']
+                            templateVars["var_description"] = jsonVars['AdminSpeed']['description']
+                            templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
+                            templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
+                            templateVars["varType"] = 'Admin Speed'
+                            templateVars["admin_speed"] = variablesFromAPI(**templateVars)
+
+                            if re.search('(Appliance Appliance Ports|(Ethernet|FCoE) Uplink)', templateVars["port_type"]):
+                                # Prompt User for the FEC Mode of the Port
+                                templateVars["var_description"] = jsonVars['Fec']['description']
+                                templateVars["jsonVars"] = sorted(jsonVars['Fec']['enum'])
+                                templateVars["defaultVar"] = jsonVars['Fec']['default']
+                                templateVars["varType"] = 'Fec Mode'
+                                templateVars["fec"] = variablesFromAPI(**templateVars)
+
+                            if re.search('(Appliance Port-Channel|Appliance Ports)', templateVars["port_type"]):
+                                # Prompt User for the Mode of the Port
+                                jsonVars = jsonData['components']['schemas']['fabric.AppliancePcRole']['allOf'][1]['properties']
+                                templateVars["var_description"] = jsonVars['Mode']['description']
+                                templateVars["jsonVars"] = sorted(jsonVars['Mode']['enum'])
+                                templateVars["defaultVar"] = jsonVars['Mode']['default']
+                                templateVars["varType"] = 'Mode'
+                                templateVars["mode"] = variablesFromAPI(**templateVars)
+
+                                templateVars["var_description"] = jsonVars['Priority']['description']
+                                templateVars["jsonVars"] = sorted(jsonVars['Priority']['enum'])
+                                templateVars["defaultVar"] = jsonVars['Priority']['default']
+                                templateVars["varType"] = 'Priority'
+                                templateVars["priority"] = variablesFromAPI(**templateVars)
+
+                            # Prompt User for the
+                            if re.search('(Appliance Port-Channel|Appliance Ports)', templateVars["port_type"]):
+                                policy_list = [
+                                    'policies.ethernet_network_control_policies.ethernet_network_control_policy',
+                                    'policies.ethernet_network_group_policies.ethernet_network_group_policy',
+                                ]
+                            elif re.search('(Ethernet Uplink Port-Channel|Ethernet Uplink)', templateVars["port_type"]):
+                                policy_list = [
+                                    'policies.ethernet_network_group_policies.ethernet_network_group_policy',
+                                    'policies.flow_control_policies.flow_control_policy',
+                                    'policies.link_aggregation_policies.link_aggregation_policy',
+                                    'policies.link_control_policies.link_control_policy',
+                                ]
+                            elif re.search('(FCoE Uplink Port-Channel|FCoE Uplink)', templateVars["port_type"]):
+                                policy_list = [
+                                    'policies.link_aggregation_policies.link_aggregation_policy',
+                                    'policies.link_control_policies.link_control_policy',
+                                ]
+                            templateVars["allow_opt_out"] = False
+                            if not templateVars["port_type"] == 'Server Ports':
+                                for policy in policy_list:
+                                    policy_short = policy.split('.')[2]
+                                    templateVars[policy_short],policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
+                                    templateVars.update(policyData)
+
+                            interfaces = []
+                            pc_id = port_list[0]
+                            for i in port_list:
+                                interfaces.append({'port_id':i,'slot_id':1})
+
+                            if templateVars["port_type"] == 'Appliance Port-Channel':
+                                port_channel = {
+                                    'admin_speed':templateVars["admin_speed"],
+                                    'ethernet_network_control_policy':templateVars["ethernet_network_control_policy"],
+                                    'ethernet_network_group_policy':templateVars["ethernet_network_group_policy"],
+                                    'interfaces':interfaces,
+                                    'mode':templateVars["mode"],
+                                    'pc_id':pc_id,
+                                    'priority':templateVars["priority"],
+                                    'slot_id':1
+                                }
+                            elif templateVars["port_type"] == 'Ethernet Uplink Port-Channel':
+                                port_channel = {
+                                    'admin_speed':templateVars["admin_speed"],
+                                    'ethernet_network_group_policy':templateVars["ethernet_network_group_policy"],
+                                    'flow_control_policy':templateVars["flow_control_policy"],
+                                    'interfaces':interfaces,
+                                    'link_aggregation_policy':templateVars["link_aggregation_policy"],
+                                    'link_control_policy':templateVars["link_control_policy"],
+                                    'pc_id':pc_id,
+                                    'slot_id':1
+                                }
+                            elif templateVars["port_type"] == 'FCoE Uplink Port-Channel':
+                                port_channel = {
+                                    'admin_speed':templateVars["admin_speed"],
+                                    'interfaces':interfaces,
+                                    'link_aggregation_policy':templateVars["link_aggregation_policy"],
+                                    'link_control_policy':templateVars["link_control_policy"],
+                                    'pc_id':pc_id,
+                                    'slot_id':1
+                                }
+                            elif templateVars["port_type"] == 'Appliance Ports':
+                                port_role = {
+                                    'admin_speed':templateVars["admin_speed"],
+                                    'ethernet_network_control_policy':templateVars["ethernet_network_control_policy"],
+                                    'ethernet_network_group_policy':templateVars["ethernet_network_group_policy"],
+                                    'fec':templateVars["fec"],
+                                    'mode':templateVars["mode"],
+                                    'port_id':original_port_list,
+                                    'priority':templateVars["priority"],
+                                    'slot_id':1
+                                }
+                            elif templateVars["port_type"] == 'Ethernet Uplink':
+                                port_role = {
+                                    'admin_speed':templateVars["admin_speed"],
+                                    'ethernet_network_group_policy':templateVars["ethernet_network_group_policy"],
+                                    'fec':templateVars["fec"],
+                                    'flow_control_policy':templateVars["flow_control_policy"],
+                                    'link_control_policy':templateVars["link_control_policy"],
+                                    'port_id':original_port_list,
+                                    'slot_id':1
+                                }
+                            elif templateVars["port_type"] == 'FCoE Uplink':
+                                port_role = {
+                                    'admin_speed':templateVars["admin_speed"],
+                                    'fec':templateVars["fec"],
+                                    'link_control_policy':templateVars["link_control_policy"],
+                                    'port_id':original_port_list,
+                                    'slot_id':1
+                                }
+                            elif templateVars["port_type"] == 'Server Ports':
+                                server_ports = {'port_list':original_port_list,'slot_id':1}
+                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                            if not templateVars["port_type"] == 'Server Ports':
+                                print(f'    admin_speed                     = "{templateVars["admin_speed"]}"')
+                            if re.search('Appliance', templateVars["port_type"]):
+                                print(f'    ethernet_network_control_policy = "{templateVars["ethernet_network_control_policy"]}"')
+                            if re.search('(Appliance|Ethernet)', templateVars["port_type"]):
+                                print(f'    ethernet_network_group_policy   = "{templateVars["ethernet_network_group_policy"]}"')
+                            if re.search('Ethernet', templateVars["port_type"]):
+                                print(f'    flow_control_policy             = "{templateVars["flow_control_policy"]}"')
+                            if re.search('(Ethernet|FCoE) Uplink Port-Channel', templateVars["port_type"]):
+                                print(f'    link_aggregation_policy         = "{templateVars["link_aggregation_policy"]}"')
+                            if re.search('(Ethernet|FCoE)', templateVars["port_type"]):
+                                print(f'    link_control_policy             = "{templateVars["link_control_policy"]}"')
+                            if re.search('Port-Channel', templateVars["port_type"]):
+                                print(f'    interfaces = [')
+                                for item in interfaces:
+                                    print('      {')
+                                    for k, v in item.items():
+                                        print(f'        {k} = {v}')
+                                    print('      }')
+                                print(f'    ]')
+                            if re.search('Appliance', templateVars["port_type"]):
+                                print(f'    mode      = "{templateVars["mode"]}"')
+                            if re.search('Port-Channel', templateVars["port_type"]):
+                                print(f'    pc_id     = {pc_id}')
+                            if re.search('Appliance', templateVars["port_type"]):
+                                print(f'    priority  = "{templateVars["priority"]}"')
+                            if re.search('^(Appliance Ports|(Ethernet|FCoE) Uplink|Server Ports)$', templateVars["port_type"]):
+                                print(f'    port_list = {original_port_list}')
+                            print(f'\n-------------------------------------------------------------------------------------------\n')
+                            valid_confirm = False
+                            while valid_confirm == False:
+                                confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
+                                if confirm_port == 'Y' or confirm_port == '':
+                                    if re.search('Port-Channel', templateVars["port_type"]):
+                                        port_channels.append(port_channel)
+                                    elif re.search('^(Appliance Ports|(Ethernet|FCoE) Uplink)$', templateVars["port_type"]):
+                                        port_roles.append(port_role)
+                                    elif templateVars["port_type"] == 'Server Ports':
+                                        port_roles.append(server_ports)
+                                    for i in port_list:
+                                        templateVars["ports_in_use"].append(i)
+
+                                    valid_exit = False
+                                    while valid_exit == False:
+                                        port_exit = input(f'Would You like to Configure another {templateVars["port_type"]}?  Enter "Y" or "N" [N]: ')
+                                        if port_exit == 'Y':
+                                            port_count += 1
+                                            valid_confirm = True
+                                            valid_exit = True
+                                        elif port_exit == 'N' or port_exit == '':
+                                            configure_valid = True
+                                            valid = True
+                                            valid_confirm = True
+                                            valid_exit = True
+                                        else:
+                                            print(f'\n------------------------------------------------------\n')
+                                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                                            print(f'\n------------------------------------------------------\n')
+
+                                elif confirm_port == 'N':
+                                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                                    print(f'  Starting {templateVars["port_type"]} Configuration Over.')
+                                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                                    valid_confirm = True
+                                else:
+                                    print(f'\n------------------------------------------------------\n')
+                                    print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                                    print(f'\n------------------------------------------------------\n')
+
+                    else:
+                        print(f'\n-------------------------------------------------------------------------------------------\n')
+                        print(f'  Error!! The following Ports are already in use: {port_overlap}.')
+                        print(f'\n-------------------------------------------------------------------------------------------\n')
+
+                else:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Error!! Invalid Port Range.  A port Range should be in the format 49-50 for example.')
+                    print(f'  The following port range is invalid: "{port_list}"')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+
+        elif configure_port == '' or configure_port == 'N':
+            valid = True
+        else:
+            print(f'\n------------------------------------------------------\n')
+            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+            print(f'\n------------------------------------------------------\n')
+
+    if re.search('Port-Channel', templateVars["port_type"]):
+        return port_channels,ports_in_use
+    elif re.search('^(Appliance Ports|(Ethernet|FCoE) Uplink|Server Ports)$', templateVars["port_type"]):
+        return port_roles,ports_in_use
+    
+def port_list_fc(jsonData, easy_jsonData, name_prefix, **templateVars):
+    fill_pattern_descr = 'For Cisco UCS 6400 Series fabric interconnect, if the FC uplink speed is 8 Gbps, set the '\
+        'fill pattern as IDLE on the uplink switch. If the fill pattern is not set as IDLE, FC '\
+        'uplinks operating at 8 Gbps might go to an errDisabled state, lose SYNC intermittently, or '\
+        'notice errors or bad packets.  For speeds greater than 8 Gbps we recommend Arbff.  Below'\
+        'is a configuration example on MDS to match this setting:\n\n'\
+        'mds-a(config-if)# switchport fill-pattern IDLE speed 8000\n'\
+        'mds-a(config-if)# show port internal inf interface fc1/1 | grep FILL\n'\
+        '  FC_PORT_CAP_FILL_PATTERN_8G_CHANGE_CAPABLE (1)\n'\
+        'mds-a(config-if)# show run int fc1/16 | incl fill\n\n'\
+        'interface fc1/16\n'\
+        '  switchport fill-pattern IDLE speed 8000\n\n'\
+        'mds-a(config-if)#\n'
+
+    A_port_channels = []
+    B_port_channels = []
+    A_port_role = []
+    B_port_role = []
+    fc_ports_in_use = templateVars["fc_ports_in_use"]
+    port_count = 1
+    templateVars["port_type"] = 'Fibre Channel Port-Channel'
+    valid = False
+    while valid == False:
+        if len(templateVars["fc_converted_ports"]) > 0:
+            configure_port = input(f'Do you want to configure a {templateVars["port_type"]}?  Enter "Y" or "N" [Y]: ')
+        else:
+            configure_port = 'N'
+            valid = True
+        if configure_port == '' or configure_port == 'Y':
+            configure_valid = False
+            while configure_valid == False:
+                if templateVars["port_type"] == 'Fibre Channel Port-Channel':
+                    templateVars["multi_select"] = True
+                    templateVars["var_description"] = '    Please Select a Port for the Port-Channel:\n'
+                else:
+                    templateVars["multi_select"] = False
+                    templateVars["var_description"] = '    Please Select a Port for the Uplink:\n'
+                templateVars["var_type"] = 'Unified Port'
+                port_list = vars_from_list(templateVars["fc_converted_ports"], **templateVars)
+
+                # Prompt User for the Admin Speed of the Port
+                templateVars["multi_select"] = False
+                jsonVars = jsonData['components']['schemas']['fabric.FcUplinkPcRole']['allOf'][1]['properties']
+                templateVars["var_description"] = jsonVars['AdminSpeed']['description']
+                templateVars["jsonVars"] = jsonVars['AdminSpeed']['enum']
+                templateVars["defaultVar"] = jsonVars['AdminSpeed']['default']
+                templateVars["varType"] = 'Admin Speed'
+                templateVars["admin_speed"] = variablesFromAPI(**templateVars)
+
+                # Prompt User for the Fill Pattern of the Port
+                templateVars["var_description"] = jsonVars['FillPattern']['description']
+                templateVars["var_description"] = '%s\n%s' % (templateVars["var_description"], fill_pattern_descr)
+                templateVars["jsonVars"] = sorted(jsonVars['FillPattern']['enum'])
+                templateVars["defaultVar"] = jsonVars['FillPattern']['default']
+                templateVars["varType"] = 'Fill Pattern'
+                templateVars["fill_pattern"] = variablesFromAPI(**templateVars)
+
+                vsans = {}
+                fabrics = ['Fabric_A', 'Fabric_B']
+                for fabric in fabrics:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Please Select the VSAN Policy for {fabric}')
+                    policy_list = [
+                        'policies.vsan_policies.vsan_policy',
+                    ]
+                    templateVars["allow_opt_out"] = False
+                    for policy in policy_list:
+                        vsan_policy,policyData = policy_select_loop(jsonData, easy_jsonData, name_prefix, policy, **templateVars)
+
+                    vsan_list = []
+                    for item in policyData['vsan_policies']:
+                        for key, value in item.items():
+                            if key == vsan_policy:
+                                for i in value[0]['vsans']:
+                                    for k, v in i.items():
+                                        for x in v:
+                                            for y, val in x.items():
+                                                if y == 'vsan_id':
+                                                    vsan_list.append(val)
+
+                    if len(vsan_list) > 1:
+                        vsan_list = ','.join(str(vsan_list))
+                    else:
+                        vsan_list = vsan_list[0]
+                    vsan_list = vlan_list_full(vsan_list)
+
+                    templateVars["multi_select"] = False
+                    if templateVars["port_type"] == 'Fibre Channel Port-Channel':
+                        templateVars["var_description"] = '    Please Select a VSAN for the Port-Channel:\n'
+                    else:
+                        templateVars["var_description"] = '    Please Select a VSAN for the Uplink:\n'
+                    templateVars["var_type"] = 'VSAN'
+                    vsan_x = vars_from_list(vsan_list, **templateVars)
+                    for vs in vsan_x:
+                        vsan = vs
+                    vsans.update({fabric:vsan})
+
+
+                if templateVars["port_type"] == 'Fibre Channel Port-Channel':
+                    interfaces = []
+                    for i in port_list:
+                        interfaces.append({'port_id':i,'slot_id':1})
+
+                    pc_id = port_list[0]
+                    port_channel_a = {
+                        'admin_speed':templateVars["admin_speed"],
+                        'fill_pattern':templateVars["fill_pattern"],
+                        'interfaces':interfaces,
+                        'pc_id':pc_id,
+                        'slot_id':1,
+                        'vsan_id':vsans.get("Fabric_A")
+                    }
+                    port_channel_b = {
+                        'admin_speed':templateVars["admin_speed"],
+                        'fill_pattern':templateVars["fill_pattern"],
+                        'interfaces':interfaces,
+                        'pc_id':pc_id,
+                        'slot_id':1,
+                        'vsan_id':vsans.get("Fabric_B")
+                    }
+                else:
+                    port_list = '%s' % (port_list[0])
+                    fc_port_role_a = {
+                        'admin_speed':templateVars["admin_speed"],
+                        'fill_pattern':templateVars["fill_pattern"],
+                        'port_id':port_list,
+                        'slot_id':1,
+                        'vsan_id':vsans["Fabric_A"]
+                    }
+                    fc_port_role_b = {
+                        'admin_speed':templateVars["admin_speed"],
+                        'fill_pattern':templateVars["fill_pattern"],
+                        'port_id':port_list,
+                        'slot_id':1,
+                        'vsan_id':vsans["Fabric_B"]
+                    }
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'    admin_speed      = "{templateVars["admin_speed"]}"')
+                print(f'    fill_pattern     = "{templateVars["fill_pattern"]}"')
+                if templateVars["port_type"] == 'Fibre Channel Uplink':
+                    print(f'    port_list        = "{port_list}"')
+                print(f'    vsan_id_fabric_a = {vsans["Fabric_A"]}')
+                print(f'    vsan_id_fabric_b = {vsans["Fabric_B"]}')
+                if templateVars["port_type"] == 'Fibre Channel Port-Channel':
+                    print(f'    interfaces = [')
+                    for item in interfaces:
+                        print('      {')
+                        for k, v in item.items():
+                            print(f'        {k}          = {v}')
+                        print('      }')
+                    print(f'    ]')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                valid_confirm = False
+                while valid_confirm == False:
+                    confirm_port = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
+                    if confirm_port == 'Y' or confirm_port == '':
+                        if templateVars["port_type"] == 'Fibre Channel Port-Channel':
+                            A_port_channels.append(port_channel_a)
+                            B_port_channels.append(port_channel_b)
+                        else:
+                            A_port_role.append(fc_port_role_a)
+                            B_port_role.append(fc_port_role_b)
+                        for i in port_list:
+                            fc_ports_in_use.append(i)
+
+                        valid_exit = False
+                        while valid_exit == False:
+                            port_exit = input(f'Would You like to Configure another {templateVars["port_type"]}?  Enter "Y" or "N" [N]: ')
+                            if port_exit == 'Y':
+                                port_count += 1
+                                valid_confirm = True
+                                valid_exit = True
+                            elif port_exit == 'N' or port_exit == '':
+                                configure_valid = True
+                                valid = True
+                                valid_confirm = True
+                                valid_exit = True
+                            else:
+                                print(f'\n------------------------------------------------------\n')
+                                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                                print(f'\n------------------------------------------------------\n')
+
+                    elif confirm_port == 'N':
+                        print(f'\n-------------------------------------------------------------------------------------------\n')
+                        print(f'  Starting {templateVars["port_type"]} Configuration Over.')
+                        print(f'\n-------------------------------------------------------------------------------------------\n')
+                        valid_confirm = True
+                    else:
+                        print(f'\n------------------------------------------------------\n')
+                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                        print(f'\n------------------------------------------------------\n')
+
+        elif configure_port == 'N':
+            valid = True
+        else:
+            print(f'\n------------------------------------------------------\n')
+            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+            print(f'\n------------------------------------------------------\n')
+
+    if templateVars["port_type"] == 'Fibre Channel Port-Channel':
+        return A_port_channels,B_port_channels,fc_ports_in_use
+    else:
+        return A_port_role,B_port_role,fc_ports_in_use
+
 def process_method(wr_method, dest_dir, dest_file, template, **templateVars):
     dest_dir = './Intersight/%s/%s' % (templateVars["org"], dest_dir)
     if not os.path.isdir(dest_dir):
@@ -13335,6 +14968,407 @@ def process_method(wr_method, dest_dir, dest_file, template, **templateVars):
     payload = template.render(templateVars)
     wr_file.write(payload)
     wr_file.close()
+
+def snmp_trap_servers(jsonData, inner_loop_count, snmp_user_list, **templateVars):
+    trap_servers = []
+    valid_traps = False
+    while valid_traps == False:
+        templateVars["multi_select"] = False
+        jsonVars = jsonData['components']['schemas']['snmp.Trap']['allOf'][1]['properties']
+        if len(snmp_user_list) == 0:
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  There are no valid SNMP Users so Trap Destinations can only be set to SNMPv2.')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            snmp_version = 'V2'
+        else:
+            templateVars["var_description"] = jsonVars['Version']['description']
+            templateVars["jsonVars"] = sorted(jsonVars['Version']['enum'])
+            templateVars["defaultVar"] = jsonVars['Version']['default']
+            templateVars["varType"] = 'SNMP Version'
+            snmp_version = variablesFromAPI(**templateVars)
+
+        if snmp_version == 'V2':
+            valid = False
+            while valid == False:
+                community_string = stdiomask.getpass(f'What is the Community String for the Destination? ')
+                if not community_string == '':
+                    valid = validating.snmp_string('SNMP Community String', community_string)
+                else:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Error!! Invalid Value.  Please Re-enter the SNMP Community String.')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+            TF_VAR = 'TF_VAR_snmp_community_string_%s' % (inner_loop_count)
+            os.environ[TF_VAR] = '%s' % (community_string)
+            community_string = inner_loop_count
+
+        if snmp_version == 'V3':
+            templateVars["multi_select"] = False
+            templateVars["var_description"] = '    Please Select the SNMP User to assign to this Destination:\n'
+            templateVars["var_type"] = 'SNMP User'
+            snmp_users = []
+            for item in snmp_user_list:
+                snmp_users.append(item['name'])
+            snmp_user = vars_from_list(snmp_users, **templateVars)
+            snmp_user = snmp_user[0]
+
+        if snmp_version == 'V2':
+            templateVars["var_description"] = jsonVars['Type']['description']
+            templateVars["jsonVars"] = sorted(jsonVars['Type']['enum'])
+            templateVars["defaultVar"] = jsonVars['Type']['default']
+            templateVars["varType"] = 'SNMP Trap Type'
+            trap_type = variablesFromAPI(**templateVars)
+        else:
+            trap_type = 'Trap'
+
+        valid = False
+        while valid == False:
+            destination_address = input(f'What is the SNMP Trap Destination Hostname/Address? ')
+            if not destination_address == '':
+                if re.search(r'^[0-9a-fA-F]+[:]+[0-9a-fA-F]$', destination_address) or \
+                    re.search(r'^(\d{1,3}\.){3}\d{1,3}$', destination_address):
+                    valid = validating.ip_address('SNMP Trap Destination', destination_address)
+                else:
+                    valid = validating.dns_name('SNMP Trap Destination', destination_address)
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please Re-enter the SNMP Trap Destination Hostname/Address.')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+        valid = False
+        while valid == False:
+            port = input(f'Enter the Port to Assign to this Destination.  Valid Range is 1-65535.  [162]: ')
+            if port == '':
+                port = 162
+            if re.search(r'[0-9]{1,4}', str(port)):
+                valid = validating.snmp_port('SNMP Port', port, 1, 65535)
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Invalid Entry!  Please Enter a valid Port in the range of 1-65535.')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+        if snmp_version == 'V3':
+            snmp_destination = {
+                'destination_address':destination_address,
+                'enabled':True,
+                'port':port,
+                'trap_type':trap_type,
+                'user':snmp_user,
+                'version':snmp_version
+            }
+        else:
+            snmp_destination = {
+                'community':community_string,
+                'destination_address':destination_address,
+                'enabled':True,
+                'port':port,
+                'trap_type':trap_type,
+                'version':snmp_version
+            }
+
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+        if snmp_version == 'V2':
+            print(f'   community_string    = "Sensitive"')
+        print(f'   destination_address = "{destination_address}"')
+        print(f'   enable              = True')
+        print(f'   trap_type           = "{trap_type}"')
+        print(f'   snmp_version        = "{snmp_version}"')
+        if snmp_version == 'V3':
+            print(f'   user                = "{snmp_user}"')
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+        valid_confirm = False
+        while valid_confirm == False:
+            confirm_v = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
+            if confirm_v == 'Y' or confirm_v == '':
+                trap_servers.append(snmp_destination)
+                valid_exit = False
+                while valid_exit == False:
+                    loop_exit = input(f'Would You like to Configure another SNMP Trap Destination?  Enter "Y" or "N" [N]: ')
+                    if loop_exit == 'Y':
+                        inner_loop_count += 1
+                        valid_confirm = True
+                        valid_exit = True
+                    elif loop_exit == 'N' or loop_exit == '':
+                        snmp_loop = True
+                        valid_confirm = True
+                        valid_exit = True
+                        valid_traps = True
+                    else:
+                        print(f'\n------------------------------------------------------\n')
+                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                        print(f'\n------------------------------------------------------\n')
+
+            elif confirm_v == 'N':
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Starting Remote Host Configuration Over.')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                valid_confirm = True
+            else:
+                print(f'\n------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n------------------------------------------------------\n')
+
+    return trap_servers,snmp_loop
+
+def snmp_users(jsonData, inner_loop_count, **templateVars):
+    snmp_user_list = []
+    valid_users = False
+    while valid_users == False:
+        templateVars["multi_select"] = False
+        jsonVars = jsonData['components']['schemas']['snmp.User']['allOf'][1]['properties']
+
+        templateVars["Description"] = jsonVars['Name']['description']
+        templateVars["varDefault"] = 'admin'
+        templateVars["varInput"] = 'What is the SNMPv3 Username:'
+        templateVars["varName"] = 'SNMP User'
+        templateVars["varRegex"] = '^([a-zA-Z]+[a-zA-Z0-9\\-\\_\\.\\@]+)$'
+        templateVars["minLength"] = jsonVars['Name']['minLength']
+        templateVars["maxLength"] = jsonVars['Name']['maxLength']
+        snmp_user = varStringLoop(**templateVars)
+
+        templateVars["var_description"] = jsonVars['SecurityLevel']['description']
+        templateVars["jsonVars"] = sorted(jsonVars['SecurityLevel']['enum'])
+        templateVars["defaultVar"] = jsonVars['SecurityLevel']['default']
+        templateVars["varType"] = 'SNMP Security Level'
+        security_level = variablesFromAPI(**templateVars)
+
+        if security_level == 'AuthNoPriv' or security_level == 'AuthPriv':
+            templateVars["var_description"] = jsonVars['AuthType']['description']
+            templateVars["jsonVars"] = sorted(jsonVars['AuthType']['enum'])
+            templateVars["defaultVar"] = 'SHA'
+            templateVars["popList"] = ['NA', 'SHA-224', 'SHA-256', 'SHA-384', 'SHA-512']
+            templateVars["varType"] = 'SNMP Auth Type'
+            auth_type = variablesFromAPI(**templateVars)
+
+        if security_level == 'AuthNoPriv' or security_level == 'AuthPriv':
+            valid = False
+            while valid == False:
+                auth_password = stdiomask.getpass(f'What is the authorization password for {snmp_user}? ')
+                if not auth_password == '':
+                    valid = validating.snmp_string('SNMPv3 Authorization Password', auth_password)
+                else:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Error!! Invalid Value.  Please Re-enter the SNMPv3 Username.')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+            TF_VAR = 'TF_VAR_snmp_auth_password_%s' % (inner_loop_count)
+            os.environ[TF_VAR] = '%s' % (auth_password)
+            auth_password = inner_loop_count
+
+        if security_level == 'AuthPriv':
+            templateVars["var_description"] = jsonVars['PrivacyType']['description']
+            templateVars["jsonVars"] = sorted(jsonVars['PrivacyType']['enum'])
+            templateVars["defaultVar"] = 'AES'
+            templateVars["popList"] = ['NA']
+            templateVars["varType"] = 'SNMP Auth Type'
+            privacy_type = variablesFromAPI(**templateVars)
+
+            valid = False
+            while valid == False:
+                privacy_password = stdiomask.getpass(f'What is the privacy password for {snmp_user}? ')
+                if not privacy_password == '':
+                    valid = validating.snmp_string('SNMPv3 Privacy Password', privacy_password)
+                else:
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+                    print(f'  Error!! Invalid Value.  Please Re-enter the SNMPv3 Username.')
+                    print(f'\n-------------------------------------------------------------------------------------------\n')
+            TF_VAR = 'TF_VAR_snmp_privacy_password_%s' % (inner_loop_count)
+            os.environ[TF_VAR] = '%s' % (privacy_password)
+            privacy_password = inner_loop_count
+
+        if security_level == 'AuthPriv':
+            snmp_user = {
+                'auth_password':inner_loop_count,
+                'auth_type':auth_type,
+                'name':snmp_user,
+                'privacy_password':inner_loop_count,
+                'privacy_type':privacy_type,
+                'security_level':security_level
+            }
+        elif security_level == 'AuthNoPriv':
+            snmp_user = {
+                'auth_password':inner_loop_count,
+                'auth_type':auth_type,
+                'name':snmp_user,
+                'security_level':security_level
+            }
+
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+        print(f'   auth_password    = "Sensitive"')
+        print(f'   auth_type        = "{auth_type}"')
+        if security_level == 'AuthPriv':
+            print(f'   privacy_password = "Sensitive"')
+            print(f'   privacy_type     = "{privacy_type}"')
+        print(f'   security_level   = "{security_level}"')
+        print(f'   snmp_user        = "{snmp_user["name"]}"')
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+        valid_confirm = False
+        while valid_confirm == False:
+            confirm_v = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
+            if confirm_v == 'Y' or confirm_v == '':
+                snmp_user_list.append(snmp_user)
+                valid_exit = False
+                while valid_exit == False:
+                    loop_exit = input(f'Would You like to Configure another SNMP User?  Enter "Y" or "N" [N]: ')
+                    if loop_exit == 'Y':
+                        inner_loop_count += 1
+                        valid_confirm = True
+                        valid_exit = True
+                    elif loop_exit == 'N' or loop_exit == '':
+                        snmp_loop = True
+                        valid_confirm = True
+                        valid_exit = True
+                        valid_users = True
+                    else:
+                        print(f'\n------------------------------------------------------\n')
+                        print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                        print(f'\n------------------------------------------------------\n')
+
+            elif confirm_v == 'N':
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Starting SNMP User Configuration Over.')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                valid_confirm = True
+            else:
+                print(f'\n------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n------------------------------------------------------\n')
+    return snmp_user_list,snmp_loop
+
+def syslog_servers(jsonData, **templateVars):
+    remote_logging = {}
+    syslog_count = 1
+    syslog_loop = False
+    while syslog_loop == False:
+        valid = False
+        while valid == False:
+            hostname = input(f'Enter the Hostname/IP Address of the Remote Server: ')
+            if re.search(r'[a-zA-Z]+', hostname):
+                valid = validating.dns_name('Remote Logging Server', hostname)
+            else:
+                valid = validating.ip_address('Remote Logging Server', hostname)
+
+        jsonVars = jsonData['components']['schemas']['syslog.RemoteClientBase']['allOf'][1]['properties']
+        templateVars["var_description"] = jsonVars['MinSeverity']['description']
+        templateVars["jsonVars"] = sorted(jsonVars['MinSeverity']['enum'])
+        templateVars["defaultVar"] = jsonVars['MinSeverity']['default']
+        templateVars["varType"] = 'Syslog Remote Minimum Severity'
+        min_severity = variablesFromAPI(**templateVars)
+
+        templateVars["var_description"] = jsonVars['Protocol']['description']
+        templateVars["jsonVars"] = sorted(jsonVars['Protocol']['enum'])
+        templateVars["defaultVar"] = jsonVars['Protocol']['default']
+        templateVars["varType"] = 'Syslog Protocol'
+        templateVars["protocol"] = variablesFromAPI(**templateVars)
+
+        valid = False
+        while valid == False:
+            port = input(f'Enter the Port to Assign to this Policy.  Valid Range is 1-65535.  [514]: ')
+            if port == '':
+                port = 514
+            if re.search(r'[0-9]{1,4}', str(port)):
+                valid = validating.number_in_range('Port', port, 1, 65535)
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Invalid Entry!  Please Enter a valid Port in the range of 1-65535.')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+
+        remote_host = {
+            'enable':True,
+            'hostname':hostname,
+            'min_severity':min_severity,
+            'port':port,
+            'protocol':templateVars["protocol"]
+        }
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+        print(f'   hostname     = "{hostname}"')
+        print(f'   min_severity = "{min_severity}"')
+        print(f'   port         = {port}')
+        print(f'   protocol     = "{templateVars["protocol"]}"')
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+        valid_confirm = False
+        while valid_confirm == False:
+            confirm_host = input('Do you want to accept the configuration above?  Enter "Y" or "N" [Y]: ')
+            if confirm_host == 'Y' or confirm_host == '':
+                if syslog_count == 1:
+                    remote_logging.update({'server1':remote_host})
+                elif syslog_count == 2:
+                    remote_logging.update({'server2':remote_host})
+                    syslog_loop = True
+                    valid_confirm = True
+                if syslog_count == 1:
+                    valid_exit = False
+                    while valid_exit == False:
+                        remote_exit = input(f'Would You like to Configure another Remote Host?  Enter "Y" or "N" [Y]: ')
+                        if remote_exit == 'Y' or remote_exit == '':
+                            syslog_count += 1
+                            valid_confirm = True
+                            valid_exit = True
+                        elif remote_exit == 'N':
+                            remote_host = {
+                                'enable':False,
+                                'hostname':'0.0.0.0',
+                                'min_severity':'warning',
+                                'port':514,
+                                'protocol':'udp'
+                            }
+                            remote_logging.update({'server2':remote_host})
+                            syslog_loop = True
+                            valid_confirm = True
+                            valid_exit = True
+                        else:
+                            print(f'\n------------------------------------------------------\n')
+                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                            print(f'\n------------------------------------------------------\n')
+
+            elif confirm_host == 'N':
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Starting Syslog Server Configuration Over.')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                valid_confirm = True
+            else:
+                print(f'\n------------------------------------------------------\n')
+                print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
+                print(f'\n------------------------------------------------------\n')
+
+    return remote_logging
+
+def ucs_domain_serials():
+    print(f'\n-------------------------------------------------------------------------------------------\n')
+    print(f'  Note: If you do not have the Serial Number at this time you can manually add it to the:')
+    print(f'        - ucs_domain_profiles/ucs_domain_profiles.auto.tfvars file later.')
+    print(f'\n-------------------------------------------------------------------------------------------\n')
+    valid = False
+    while valid == False:
+        templateVars = {}
+        fabrics = ['A','B']
+        for x in fabrics:
+            templateVars[f"serial_{x}"] = input(f'What is the Serial Number of Fabric {x}? [press enter to skip]: ')
+            if templateVars[f"serial_{x}"] == '':
+                valid = True
+            elif re.fullmatch(r'^[A-Z]{3}[2-3][\d]([0][1-9]|[1-4][0-9]|[5][1-3])[\dA-Z]{4}$', templateVars[f"serial_{x}"]):
+                valid = True
+            else:
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+                print(f'  Error!! Invalid Serial Number.  "templateVars["serial_{x}"]" is not a valid serial.')
+                print(f'\n-------------------------------------------------------------------------------------------\n')
+    serial_a = templateVars["serial_a"]
+    serial_b = templateVars["serial_b"]
+    return serial_a,serial_b
+
+def validate_vlan_in_policy(vlan_policy_list, vlan_id):
+    valid = False
+    vlan_count = 0
+    for vlan in vlan_policy_list:
+        if int(vlan) == int(vlan_id):
+            vlan_count = 1
+            continue
+    if vlan_count == 1:
+        valid = True
+    else:
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+        print(f'  VLAN {vlan_id} not found in the VLAN Policy List.  Please us a VLAN from the list below:')
+        print(f'  {vlan_policy_list}')
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+    return valid
 
 def variablesFromAPI(**templateVars):
     valid = False

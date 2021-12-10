@@ -6,7 +6,6 @@ import pkg_resources
 import re
 import requests
 import stdiomask
-import sys
 import time
 import validating
 
@@ -19,7 +18,7 @@ print_response_on_fail = True
 log_level = 2
 
 # Global path to main Template directory
-tf_template_path = pkg_resources.resource_filename('lib_terraform', './')
+tf_template_path = pkg_resources.resource_filename('class_terraform', './')
 
 # Exception Classes
 class InsufficientArgs(Exception):
@@ -36,7 +35,7 @@ class LoginFailed(Exception):
 
 # Terraform Cloud For Business - Policies
 # Class must be instantiated with Variables
-class Terraform_Cloud(object):
+class terraform_cloud(object):
     def __init__(self):
         self.templateLoader = jinja2.FileSystemLoader(
             searchpath=(tf_template_path + 'Terraform_Cloud/'))

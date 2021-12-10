@@ -53,6 +53,17 @@
                 "default": "MSTOR-RAID"
             }
         },
+        "fabric.EthNetworkControlPolicy":{
+            "discoveryProtocol":{
+                "description": "Neighbor Discovery Protocol.",
+                "enum":[
+                    "CDP",
+                    "LLDP",
+                    "None"
+                ],
+                "default": "None"
+            }
+        },
         "fabric.PortPolicy":{
             "unifiedPorts":{
                 "description": "The Port Range to convert to Fibre-Channel Mode.",
@@ -100,7 +111,7 @@
         },
         "thermal.Policy":{
             "chassisType": {
-                "description": "The Type of Chassis to Apply this Thermal Policy to.",
+                "description": "The Type of Chassis to Apply this Policy to.",
                 "enum":[
                     "5108",
                     "9508"
@@ -298,6 +309,7 @@
                 "iqn_pools.tf",
                 "locals.tf",
                 "mac_pools.tf",
+                "resource_pools.tf",
                 "uuid_pools.tf",
                 "wwnn_pools.tf",
                 "wwpn_pools.tf",
@@ -352,6 +364,8 @@
                 "Deploy Domain Servers Wizard",
                 "Deploy Standalone Servers Wizard",
                 "Deploy Individual Policies",
+                "Quick Start Deployment - Domain - VMware M2",
+                "Quick Start Deployment - Domain - VMware Raid1",
                 "Skip Policy Deployment"
             ],
             "default":"Deploy Domain Wizard"
