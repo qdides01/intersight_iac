@@ -1,6 +1,5 @@
 import jinja2
 import json
-import lib_ucs
 import os
 import pkg_resources
 import re
@@ -8,6 +7,8 @@ import requests
 import stdiomask
 import time
 import validating
+from easy_functions import variablesFromAPI
+from requests.api import delete, request
 
 # Global options for debugging
 print_payload = False
@@ -40,119 +41,6 @@ class terraform_cloud(object):
         self.templateLoader = jinja2.FileSystemLoader(
             searchpath=(tf_template_path + 'Terraform_Cloud/'))
         self.templateEnv = jinja2.Environment(loader=self.templateLoader)
-
-    def sensitive_var_value(self, jsonData, **templateVars):
-        sensitive_var = 'TF_VAR_%s' % (templateVars['Variable'])
-        # -------------------------------------------------------------------------------------------------------------------------
-        # Check to see if the Variable is already set in the Environment, and if not prompt the user for Input.
-        #--------------------------------------------------------------------------------------------------------------------------
-        if os.environ.get(sensitive_var) is None:
-            print(f"\n----------------------------------------------------------------------------------\n")
-            print(f"  The Script did not find {sensitive_var} as an 'environment' variable.")
-            print(f"  To not be prompted for the value of {templateVars['Variable']} each time")
-            print(f"  add the following to your local environemnt:\n")
-            print(f"   - export {sensitive_var}='{templateVars['Variable']}_value'")
-            print(f"\n----------------------------------------------------------------------------------\n")
-
-        if os.environ.get(sensitive_var) is None:
-            valid = False
-            while valid == False:
-                varValue = input('press enter to continue: ')
-                if varValue == '':
-                    valid = True
-
-            valid = False
-            while valid == False:
-                if templateVars.get('Multi_Line_Input'):
-                    print(f'Enter the value for {templateVars["Variable"]}:')
-                    lines = []
-                    while True:
-                        # line = input('')
-                        line = stdiomask.getpass(prompt='')
-                        if line:
-                            lines.append(line)
-                        else:
-                            break
-                    secure_value = '\\n'.join(lines)
-                else:
-                    secure_value = stdiomask.getpass(prompt=f'Enter the value for {templateVars["Variable"]}: ')
-
-                # Validate Sensitive Passwords
-                if re.search('(apikey|secretkey)', sensitive_var):
-                    valid = True
-                if 'bind' in sensitive_var:
-                    jsonVars = jsonData['components']['schemas']['iam.LdapBaseProperties']['allOf'][1]['properties']
-                    minLength = 1
-                    maxLength = 254
-                    rePattern = jsonVars['Password']['pattern']
-                    varName = 'SNMP Community'
-                    valid = validating.length_and_regex_sensitive(rePattern, varName, secure_value, minLength, maxLength)
-                elif 'community' in sensitive_var:
-                    jsonVars = jsonData['components']['schemas']['snmp.Policy']['allOf'][1]['properties']
-                    minLength = 1
-                    maxLength = jsonVars['TrapCommunity']['maxLength']
-                    rePattern = '^[\\S]+$'
-                    varName = 'SNMP Community'
-                    valid = validating.length_and_regex_sensitive(rePattern, varName, secure_value, minLength, maxLength)
-                elif 'ipmi_key' in sensitive_var:
-                    jsonVars = jsonData['components']['schemas']['ipmioverlan.Policy']['allOf'][1]['properties']
-                    minLength = 2
-                    maxLength = jsonVars['EncryptionKey']['maxLength']
-                    rePattern = jsonVars['EncryptionKey']['pattern']
-                    varName = 'IPMI Encryption Key'
-                    valid = validating.length_and_regex_sensitive(rePattern, varName, secure_value, minLength, maxLength)
-                elif 'iscsi_boot' in sensitive_var:
-                    jsonVars = jsonData['components']['schemas']['vnic.IscsiAuthProfile']['allOf'][1]['properties']
-                    minLength = 12
-                    maxLength = 16
-                    rePattern = jsonVars['Password']['pattern']
-                    varName = 'iSCSI Boot Password'
-                    valid = validating.length_and_regex_sensitive(rePattern, varName, secure_value, minLength, maxLength)
-                elif 'local' in sensitive_var:
-                    jsonVars = jsonData['components']['schemas']['iam.EndPointUserRole']['allOf'][1]['properties']
-                    minLength = jsonVars['Password']['minLength']
-                    maxLength = jsonVars['Password']['maxLength']
-                    rePattern = jsonVars['Password']['pattern']
-                    varName = 'Local User Password'
-                    valid = validating.length_and_regex_sensitive(rePattern, varName, secure_value, minLength, maxLength)
-                elif 'secure_passphrase' in sensitive_var:
-                    jsonVars = jsonData['components']['schemas']['memory.PersistentMemoryLocalSecurity']['allOf'][1]['properties']
-                    minLength = jsonVars['SecurePassphrase']['minLength']
-                    maxLength = jsonVars['SecurePassphrase']['maxLength']
-                    rePattern = jsonVars['SecurePassphrase']['pattern']
-                    varName = 'Persistent Memory Secure Passphrase'
-                    valid = validating.length_and_regex_sensitive(rePattern, varName, secure_value, minLength, maxLength)
-                elif 'snmp' in sensitive_var:
-                    jsonVars = jsonData['components']['schemas']['snmp.Policy']['allOf'][1]['properties']
-                    minLength = 1
-                    maxLength = jsonVars['TrapCommunity']['maxLength']
-                    rePattern = '^[\\S]+$'
-                    if 'auth' in sensitive_var:
-                        varName = 'SNMP Authorization Password'
-                    else:
-                        varName = 'SNMP Privacy Password'
-                    valid = validating.length_and_regex_sensitive(rePattern, varName, secure_value, minLength, maxLength)
-                elif 'vmedia' in sensitive_var:
-                    jsonVars = jsonData['components']['schemas']['vmedia.Mapping']['allOf'][1]['properties']
-                    minLength = 1
-                    maxLength = jsonVars['Password']['maxLength']
-                    rePattern = '^[\\S]+$'
-                    varName = 'vMedia Mapping Password'
-                    valid = validating.length_and_regex_sensitive(rePattern, varName, secure_value, minLength, maxLength)
-
-            # Add the Variable to the Environment
-            os.environ[sensitive_var] = '%s' % (secure_value)
-            var_value = secure_value
-
-        else:
-            # Add the Variable to the Environment
-            if templateVars.get('Multi_Line_Input'):
-                var_value = os.environ.get(sensitive_var)
-                var_value = var_value.replace('\n', '\\n')
-            else:
-                var_value = os.environ.get(sensitive_var)
-
-        return var_value
 
     def terraform_token(self):
         # -------------------------------------------------------------------------------------------------------------------------
@@ -221,7 +109,7 @@ class terraform_cloud(object):
             templateVars["jsonVars"] = tfcOrgs
             templateVars["varType"] = 'Terraform Cloud Organization'
             templateVars["defaultVar"] = ''
-            tfc_organization = lib_ucs.variablesFromAPI(**templateVars)
+            tfc_organization = variablesFromAPI(**templateVars)
             return tfc_organization
         else:
             print(status)
@@ -261,7 +149,7 @@ class terraform_cloud(object):
             templateVars["jsonVars"] = sorted(repo_list)
             templateVars["varType"] = 'VCS Base Repository'
             templateVars["defaultVar"] = ''
-            vcsBaseRepo = lib_ucs.variablesFromAPI(**templateVars)
+            vcsBaseRepo = variablesFromAPI(**templateVars)
 
             return vcsBaseRepo
         else:
@@ -313,7 +201,7 @@ class terraform_cloud(object):
             templateVars["jsonVars"] = vcsProvider
             templateVars["varType"] = 'VCS Provider'
             templateVars["defaultVar"] = ''
-            vcsRepoName = lib_ucs.variablesFromAPI(**templateVars)
+            vcsRepoName = variablesFromAPI(**templateVars)
 
             for i in vcsAttributes:
                 if i["name"] == vcsRepoName:
@@ -413,13 +301,49 @@ class terraform_cloud(object):
 
         if not key_count > 0:
             print(f'\n-----------------------------------------------------------------------------\n')
-            print(f"\n   Unable to Determine the Workspace ID for {templateVars['Workspace_Name']}.")
-            print(f"\n   Exiting...")
+            print(f'\n   Unable to Determine the Workspace ID for "{templateVars["workspaceName"]}".')
+            print(f'\n   Exiting...')
             print(f'\n-----------------------------------------------------------------------------\n')
             exit()
 
         # print(json.dumps(json_data, indent = 4))
         return workspace_id
+
+    def tfcWorkspace_remove(self, **templateVars):
+        #-------------------------------
+        # Configure the Workspace URL
+        #-------------------------------
+        url = 'https://app.terraform.io/api/v2/organizations/%s/workspaces/%s' %  (templateVars['tfc_organization'], templateVars['workspaceName'])
+        tf_token = 'Bearer %s' % (templateVars['terraform_cloud_token'])
+        tf_header = {'Authorization': tf_token,
+                'Content-Type': 'application/vnd.api+json'
+        }
+
+        #----------------------------------------------------------------------------------
+        # Delete the Workspace of the Organization to Search for the Workspace
+        #----------------------------------------------------------------------------------
+        response = delete(url, headers=tf_header)
+        # print(response)
+
+        #--------------------------------------------------------------
+        # Parse the JSON Data to see if the Workspace Exists or Not.
+        #--------------------------------------------------------------
+        del_count = 0
+        workspace_id = ''
+        # print(json.dumps(json_data, indent = 4))
+        if response.status_code == 200:
+            print(f'\n-----------------------------------------------------------------------------\n')
+            print(f'    Successfully Deleted Workspace "{templateVars["workspaceName"]}".')
+            print(f'\n-----------------------------------------------------------------------------\n')
+            del_count =+ 1
+
+        if not del_count > 0:
+            print(f'\n-----------------------------------------------------------------------------\n')
+            print(f'    Unable to Determine the Workspace ID for "{templateVars["workspaceName"]}".')
+            print(f'\n-----------------------------------------------------------------------------\n')
+            # exit()
+
+        # print(json.dumps(json_data, indent = 4))
 
     def tfcVariables(self, **templateVars):
         #-------------------------------

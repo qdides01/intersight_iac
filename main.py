@@ -21,6 +21,7 @@ import requests
 import sys
 import validating
 from easy_functions import policies_parse
+from easy_functions import sensitive_var_value
 from easy_functions import varBoolLoop
 from easy_functions import variablesFromAPI
 from easy_functions import varStringLoop
@@ -137,10 +138,10 @@ def create_terraform_workspaces(jsonData, easy_jsonData, org):
                 templateVars["Variable"] = var.split('.')[0]
                 if 'secret' in var:
                     templateVars["Multi_Line_Input"] = True
-                templateVars["varValue"] = terraform_cloud().sensitive_var_value(jsonData, **templateVars)
+                templateVars["Description"] = var.split('.')[1]
                 templateVars["varId"] = var.split('.')[0]
                 templateVars["varKey"] = var.split('.')[0]
-                templateVars["Description"] = var.split('.')[1]
+                templateVars["varValue"] = sensitive_var_value(jsonData, **templateVars)
                 templateVars["Sensitive"] = True
                 terraform_cloud().tfcVariables(**templateVars)
 
@@ -269,12 +270,16 @@ def intersight_org_check(home, org, args):
         org_2nd_list = api_handle.get_organization_organization_list(**kwargs)
         if org_2nd_list.results:
             org_moid = org_2nd_list.results[0].moid
-            print(org_moid)
-            exit()
+            print(f'\n-------------------------------------------------------------------------------------------\n')
+            print(f'  Organization {org} has the Moid of {org_moid},')
+            print(f'  which was just Created.')
+            print(f'\n-------------------------------------------------------------------------------------------\n')
     elif org_list.results:
         org_moid = org_list.results[0].moid
-        print(org_moid)
-        exit()
+        print(f'\n-------------------------------------------------------------------------------------------\n')
+        print(f'  Organization {org} has the Moid of {org_moid},')
+        print(f'  which already existed.')
+        print(f'\n-------------------------------------------------------------------------------------------\n')
 
     print(f'\n-------------------------------------------------------------------------------------------\n')
     print(f'  Proceedures Complete!!! Closing Environment and Exiting Script.')
@@ -447,7 +452,6 @@ def process_wizard(easy_jsonData, jsonData):
     main_menu = main_menu.lower()
 
     policy_list = []
-    print(f'main_menu is {main_menu}')
     if main_menu == 'deploy_domain_wizard':
         policy_list = [
             # Pools
@@ -731,7 +735,6 @@ def process_wizard(easy_jsonData, jsonData):
         #================================
         # Policies needed for 2nd release
         #================================
-        # certificate_management_policies
         # sd_card_policies
         if policy == 'adapter_configuration_policies':
             policies_p1(name_prefix, org, type).adapter_configuration_policies(jsonData, easy_jsonData)
@@ -739,11 +742,8 @@ def process_wizard(easy_jsonData, jsonData):
             policies_p1(name_prefix, org, type).bios_policies(jsonData, easy_jsonData)
         if policy == 'boot_order_policies':
             policies_p1(name_prefix, org, type).boot_order_policies(jsonData, easy_jsonData)
-        #========================================================
-        # Certificate Management Policies doesn't work
-        #========================================================
-        # elif policy == 'certificate_management_policies':
-        #     policies(name_prefix, org, type).certificate_management_policies()
+        elif policy == 'certificate_management_policies':
+            policies_p1(name_prefix, org, type).certificate_management_policies(jsonData, easy_jsonData)
         elif policy == 'device_connector_policies':
             policies_p1(name_prefix, org, type).device_connector_policies(jsonData, easy_jsonData)
         elif policy == 'ethernet_adapter_policies':
@@ -886,10 +886,10 @@ def process_wizard(easy_jsonData, jsonData):
             #     'fc_ports': [1, 2, 3, 4],
             #     'mtu':9216
             # }
-            kwargs.update({'boot_order_policy':'VMware_M2'})
+            kwargs.update({'boot_order_policy':'VMware_M2_pxe'})
         elif policy == 'quick_start_vmware_raid1':
             quick_start(name_prefix, org, type).vmware_raid1()
-            kwargs.update({'boot_order_policy':'VMware_Raid1'})
+            kwargs.update({'boot_order_policy':'VMware_Raid1_pxe'})
         elif 'quick_start_server_profile' in policy:
             quick_start(domain_prefix, org, type).server_profiles(jsonData, easy_jsonData, **kwargs)
 
