@@ -652,18 +652,15 @@ class policies_p3(object):
                     # SNMP Users
                     ilCount = 1
                     snmp_user_list = []
-                    snmp_loop = False
-                    while snmp_loop == False:
-                        question = input(f'Would you like to configure an SNMPv3 User?  Enter "Y" or "N" [Y]: ')
-                        if question == '' or question == 'Y':
+                    templateVars["Description"] = 'Configure SNMP Users'
+                    templateVars["varInput"] = f'Would you like to configure an SNMPv3 User?'
+                    templateVars["varDefault"] = 'Y'
+                    templateVars["varName"] = 'Enable Trunking'
+                    configure_snmp_users = varBoolLoop(**templateVars)
+                    if configure_snmp_users == True:
+                        snmp_loop = False
+                        while snmp_loop == False:
                             snmp_user_list,snmp_loop = snmp_users(jsonData, ilCount, **templateVars)
-                        elif question == 'N':
-                            snmp_loop = True
-                        else:
-                            print(f'\n------------------------------------------------------\n')
-                            print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
-                            print(f'\n------------------------------------------------------\n')
-                    templateVars["users"] = snmp_user_list
 
                     # SNMP Trap Destinations
                     ilCount = 1
@@ -1547,8 +1544,28 @@ class policies_p3(object):
                 templateVars["udld_recovery_action"] = "reset"
                 templateVars["vlan_port_count_optimization"] = False
 
+                # Pull Information from the API
+                templateVars["multi_select"] = False
+                jsonVars = jsonData['components']['schemas']['fabric.FcNetworkPolicy']['allOf'][1]['properties']
+
+                # Ethernet Switching Mode
+                templateVars["var_description"] = jsonVars['EthernetSwitchingMode']['description']
+                templateVars["jsonVars"] = sorted(jsonVars['EthernetSwitchingMode']['enum'])
+                templateVars["defaultVar"] = jsonVars['EthernetSwitchingMode']['default']
+                templateVars["varType"] = 'Ethernet Switching Mode'
+                templateVars["ethernet_switching_mode"] = variablesFromAPI(**templateVars)
+
+                # Ethernet Switching Mode
+                templateVars["var_description"] = jsonVars['FcSwitchingMode']['description']
+                templateVars["jsonVars"] = sorted(jsonVars['FcSwitchingMode']['enum'])
+                templateVars["defaultVar"] = jsonVars['FcSwitchingMode']['default']
+                templateVars["varType"] = 'FC Switching Mode'
+                templateVars["fc_switching_mode"] = variablesFromAPI(**templateVars)
+
                 print(f'\n-------------------------------------------------------------------------------------------\n')
                 print(f'    description                  = "{templateVars["descr"]}"')
+                print(f'    ethernet_switching_mode      = "{templateVars["ethernet_switching_mode"]}"')
+                print(f'    fc_switching_mode            = "{templateVars["fc_switching_mode"]}"')
                 print(f'    mac_address_table_aging      = "{templateVars["mac_address_table_aging"]}"')
                 print(f'    mac_aging_time               = {templateVars["mac_aging_time"]}')
                 print(f'    name                         = "{templateVars["name"]}"')

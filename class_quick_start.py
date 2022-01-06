@@ -47,8 +47,7 @@ class quick_start(object):
         org = self.org
         templateVars = {}
         templateVars["org"] = org
-        vlan_type = 'policies_vlan'
-        chassis_type = 'ucs_chassis_profiles'
+        chassis_type = 'profiles'
         domain_type = 'ucs_domain_profiles'
 
         configure_loop = False
@@ -60,14 +59,14 @@ class quick_start(object):
             print(f'  - Intersight/{org}/{self.type}/flow_control_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/link_aggregation_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/link_control_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/multicast_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/network_connectivity_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/ntp_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/port_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/system_qos_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/switch_control_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/vsan_policies.auto.tfvars')
-            print(f'  - Intersight/{org}/{vlan_type}/multicast_policies.auto.tfvars')
-            print(f'  - Intersight/{org}/{vlan_type}/vlan_policies.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/vlan_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{chassis_type}/ucs_chassis_profiles.auto.tfvars')
             print(f'  - Intersight/{org}/{domain_type}/ucs_domain_profiles.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
@@ -138,7 +137,7 @@ class quick_start(object):
 
                     templateVars["name"] = domain_name
                     templateVars["descr"] = f'{templateVars["name"]} Multicast Policy'
-                    policies_vxan(name_prefix, org, 'policies_vlans').quick_start_multicast(**templateVars)
+                    policies_vxan(name_prefix, org, 'policies').quick_start_multicast(**templateVars)
 
                     #_______________________________________________________________________
                     #
@@ -149,7 +148,7 @@ class quick_start(object):
                     templateVars["descr"] = f'{templateVars["name"]} VLAN Policy'
                     templateVars["native_vlan"] = ''
                     templateVars["vlan_list"] = VlanList
-                    policies_vxan(name_prefix, org, 'policies_vlans').quick_start_vlan(**templateVars)
+                    policies_vxan(name_prefix, org, 'policies').quick_start_vlan(**templateVars)
 
                     #_______________________________________________________________________
                     #
@@ -248,7 +247,10 @@ class quick_start(object):
                     templateVars["ports_in_use"] = ports_in_use
                     templateVars["fc_converted_ports"] = fc_converted_ports
                     templateVars["port_modes"] = port_modes
-                    templateVars["fc_ports"] = templateVars["port_modes"]["port_list"]
+                    if templateVars["port_modes"].get("port_list"):
+                        templateVars["fc_ports"] = templateVars["port_modes"]["port_list"]
+                    else:
+                        templateVars["fc_ports"] = []
 
                     # If Unified Ports Exist Configure VSAN Policies
                     if len(templateVars["fc_converted_ports"]) > 0:
@@ -383,11 +385,12 @@ class quick_start(object):
                     write_to_template(self, **templateVars)
 
                     # Ethernet Uplink Port-Channel
+                    templateVars["name"] = domain_name
                     templateVars['port_type'] = 'Ethernet Uplink Port-Channel'
                     port_channel_ethernet_uplinks,templateVars['ports_in_use'] = port_list_eth(jsonData, easy_jsonData, name_prefix, **templateVars)
 
                     templateVars["fc_ports_in_use"] = []
-                    templateVars["port_type"] = 'Fibre Channel Port-Channel'
+                    templateVars["port_type"] = 'Fibre-Channel Port-Channel'
                     Fab_A,Fab_B,fc_ports_in_use = port_list_fc(jsonData, easy_jsonData, name_prefix, **templateVars)
                     Fabric_A_fc_port_channels = Fab_A
                     Fabric_B_fc_port_channels = Fab_B
@@ -754,7 +757,7 @@ class quick_start(object):
                             #_______________________________________________________________________
                             name = domain_name
                             templateVars["name"] = name
-                            profiles(name_prefix, org, 'ucs_chassis_profiles').quick_start_chassis(easy_jsonData, **templateVars)
+                            profiles(name_prefix, org, 'profiles').quick_start_chassis(easy_jsonData, **templateVars)
 
                             #_______________________________________________________________________
                             #
@@ -772,9 +775,9 @@ class quick_start(object):
                                 'fabric_a':f'{domain_name}-a',
                                 'fabric_b':f'{domain_name}-b'
                             }
-                            templateVars["snmp_policy"] = org
+                            templateVars["snmp_policy"] = f'{org}_domain'
                             templateVars["switch_control_policy"] = domain_name
-                            templateVars["syslog_policy"] = org
+                            templateVars["syslog_policy"] = f'{org}_domain'
                             templateVars["system_qos_policy"] = domain_name
                             templateVars["vlan_policies"] = {
                                 'fabric_a':domain_name,
@@ -1156,7 +1159,7 @@ class quick_start(object):
                             if len(fc_ports_in_use) > 0:
                                 #_______________________________________________________________________
                                 #
-                                # Configure Fibre Channel Adapter Policy
+                                # Configure Fibre-Channel Adapter Policy
                                 #_______________________________________________________________________
 
                                 templateVars["initial_write"] = True
@@ -1184,7 +1187,7 @@ class quick_start(object):
 
                                 #_______________________________________________________________________
                                 #
-                                # Configure Fibre Channel Network Policy
+                                # Configure Fibre-Channel Network Policy
                                 #_______________________________________________________________________
 
                                 templateVars["initial_write"] = True
@@ -1215,7 +1218,7 @@ class quick_start(object):
 
                                 #_______________________________________________________________________
                                 #
-                                # Configure Fibre Channel QoS Policy
+                                # Configure Fibre-Channel QoS Policy
                                 #_______________________________________________________________________
 
                                 templateVars["initial_write"] = True
@@ -1750,7 +1753,6 @@ class quick_start(object):
             print(f'  The Quick Deployment Module - Pools, will configure pools for a UCS Server Profile')
             print(f'  connected to an IMM Domain.\n')
             print(f'  This wizard will save the output for these pools in the following files:\n')
-            print(f'  - Intersight/{org}/{self.type}/bios_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/imc_access_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/ipmi_over_lan_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/local_user_policies.auto.tfvars')
@@ -1921,24 +1923,29 @@ class quick_start(object):
 
                         elif question == 'N':
                             templateVars["min_severity"] = 'warning'
-                            templateVars['remote_logging'] = [
-                                {
-                                    'server1':{
-                                        'enable':False,
-                                        'hostname':'0.0.0.0',
-                                        'min_severity':'warning',
-                                        'port':514,
-                                        'protocol':'udp'
-                                    },
-                                    'server2':{
-                                        'enable':False,
-                                        'hostname':'0.0.0.0',
-                                        'min_severity':'warning',
-                                        'port':514,
-                                        'protocol':'udp'
-                                    }
+                            templateVars["local_logging"] = {'file':{'min_severity':templateVars["min_severity"]}}
+                            templateVars['remote_logging'] = {}
+                            server1 = {
+                                'server1':{
+                                'enable':False,
+                                'hostname':'0.0.0.0',
+                                'min_severity':'warning',
+                                'port':514,
+                                'protocol':'udp'
                                 }
-                            ]
+                            }
+                            server2 = {
+                                'server2':{
+                                'enable':False,
+                                'hostname':'0.0.0.0',
+                                'min_severity':'warning',
+                                'port':514,
+                                'protocol':'udp'
+                                }
+                            }
+                            templateVars['remote_logging'].update(server1)
+                            templateVars['remote_logging'].update(server2)
+
                             syslog_loop = True
                         else:
                             print(f'\n------------------------------------------------------\n')
@@ -2028,35 +2035,6 @@ class quick_start(object):
                     while valid_confirm == False:
                         confirm_policy = input('Do you want to accept the above configuration?  Enter "Y" or "N" [Y]: ')
                         if confirm_policy == 'Y' or confirm_policy == '':
-
-                            #_______________________________________________________________________
-                            #
-                            # Configure BIOS Policy
-                            #_______________________________________________________________________
-
-                            templateVars["initial_write"] = True
-                            templateVars["policy_type"] = 'BIOS Policy'
-                            templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
-                            templateVars["template_file"] = 'template_open.jinja2'
-                            templateVars["template_type"] = 'bios_policies'
-
-                            # Open the Template file
-                            write_to_template(self, **templateVars)
-                            templateVars["initial_write"] = False
-
-                            # Configure BIOS Policy
-                            name = 'VMware'
-                            templateVars["name"] = name
-                            templateVars["descr"] = f'{name} BIOS Policy'
-                            templateVars["policy_template"] = 'VMware'
-
-                            # Write Policies to Template File
-                            templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
-                            write_to_template(self, **templateVars)
-
-                            # Close the Template file
-                            templateVars["template_file"] = 'template_close.jinja2'
-                            write_to_template(self, **templateVars)
 
                             #_______________________________________________________________________
                             #
@@ -2367,7 +2345,7 @@ class quick_start(object):
     def server_profiles(self, jsonData, easy_jsonData, **kwargs):
         name_prefix = self.name_prefix
         org = self.org
-        server_type = 'ucs_server_profiles'
+        server_type = 'profiles'
         templateVars = {}
         templateVars["org"] = org
         templateVars["fc_ports"] = kwargs["fc_ports"]
@@ -2380,8 +2358,8 @@ class quick_start(object):
             print(f'  The Quick Deployment Module - Domain Policies, will configure pools for a UCS Domain ')
             print(f'  Profile.\n')
             print(f'  This wizard will save the output for these pools in the following files:\n')
-            print(f'  - Intersight/{org}/{server_type}/ucs_server_profile_templates.auto.tfvars')
-            print(f'  - Intersight/{org}/{server_type}/ucs_server_profiles.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/ucs_server_profile_templates.auto.tfvars')
+            print(f'  - Intersight/{org}/{self.type}/ucs_server_profiles.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to run the Quick Deployment Module - Server Profiles Configuration?  \nEnter "Y" or "N" [Y]: ')
             if configure == 'Y' or configure == '':
@@ -2398,8 +2376,8 @@ class quick_start(object):
                     #
                     # Configure UCS Chassis Profile
                     #_______________________________________________________________________
-                    profiles(name_prefix, org, 'ucs_server_profiles').quick_start_server_profiles(**templateVars)
-                    profiles(name_prefix, org, 'ucs_server_profiles').quick_start_server_templates(**templateVars)
+                    profiles(name_prefix, org, self.type).quick_start_server_profiles(**templateVars)
+                    profiles(name_prefix, org, self.type).quick_start_server_templates(**templateVars)
                     policy_loop = True
                     configure_loop = True
 
@@ -3001,6 +2979,45 @@ class quick_start(object):
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to run the Quick Deployment Module - Boot/Storage Configuration?  Enter "Y" or "N" [Y]: ')
             if configure == 'Y' or configure == '':
+                # Trusted Platform Module
+                templateVars["Description"] = 'Flag to Determine if the Servers have a TPM Installed.'
+                templateVars["varInput"] = f'Will these servers have a TPM Module Installed?'
+                templateVars["varDefault"] = 'Y'
+                templateVars["varName"] = 'TPM Installed'
+                tpm_installed = varBoolLoop(**templateVars)
+
+                #_______________________________________________________________________
+                #
+                # Configure BIOS Policy
+                #_______________________________________________________________________
+
+                templateVars["initial_write"] = True
+                templateVars["policy_type"] = 'BIOS Policy'
+                templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                templateVars["template_file"] = 'template_open.jinja2'
+                templateVars["template_type"] = 'bios_policies'
+
+                # Open the Template file
+                write_to_template(self, **templateVars)
+                templateVars["initial_write"] = False
+
+                # Configure BIOS Policy
+                name = 'VMware'
+                templateVars["name"] = name
+                templateVars["descr"] = f'{name} BIOS Policy'
+                if tpm_installed == True:
+                    templateVars["policy_template"] = 'VMware_tpm'
+                else:
+                    templateVars["policy_template"] = 'VMware'
+
+                # Write Policies to Template File
+                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                write_to_template(self, **templateVars)
+
+                # Close the Template file
+                templateVars["template_file"] = 'template_close.jinja2'
+                write_to_template(self, **templateVars)
+
                 #_______________________________________________________________________
                 #
                 # Configure Boot Order Policy
@@ -3026,7 +3043,10 @@ class quick_start(object):
                     templateVars["name"] = name
                     templateVars["descr"] = f'{name} Boot Order Policy'
                     templateVars["boot_mode"] = 'Uefi'
-                    templateVars["enable_secure_boot"] = i
+                    if tpm_installed == True:
+                        templateVars["enable_secure_boot"] = i
+                    else:
+                        templateVars["enable_secure_boot"] = False
                     templateVars["boot_mode"] = 'Uefi'
                     if i == False:
                         templateVars["boot_devices"] = [
@@ -3124,9 +3144,9 @@ class quick_start(object):
                 print(f'  Error!! Invalid Value.  Please enter "Y" or "N".')
                 print(f'\n-------------------------------------------------------------------------------------------\n')
 
-    #==============================================
-    # VMware Raid1 - Boot and Storage Policies
-    #==============================================
+    #================================================
+    # VMware Raid1 - BIOS, Boot and Storage Policies
+    #================================================
     def vmware_raid1(self):
         org = self.org
         templateVars = {}
@@ -3138,11 +3158,51 @@ class quick_start(object):
             print(f'  The Quick Deployment Module - Boot/Storage, will configure policies for a UCS Server ')
             print(f'  Profile connected to an IMM Domain.\n')
             print(f'  This wizard will save the output for these pools in the following files:\n')
+            print(f'  - Intersight/{org}/{self.type}/bios_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/boot_order_policies.auto.tfvars')
             print(f'  - Intersight/{org}/{self.type}/storage_policies.auto.tfvars')
             print(f'\n-------------------------------------------------------------------------------------------\n')
             configure = input(f'Do You Want to run the Quick Deployment Module - Boot/Storage Configuration?  Enter "Y" or "N" [Y]: ')
             if configure == 'Y' or configure == '':
+                # Trusted Platform Module
+                templateVars["Description"] = 'Flag to Determine if the Servers have a TPM Installed.'
+                templateVars["varInput"] = f'Will these servers have a TPM Module Installed?'
+                templateVars["varDefault"] = 'Y'
+                templateVars["varName"] = 'TPM Installed'
+                tpm_installed = varBoolLoop(**templateVars)
+
+                #_______________________________________________________________________
+                #
+                # Configure BIOS Policy
+                #_______________________________________________________________________
+
+                templateVars["initial_write"] = True
+                templateVars["policy_type"] = 'BIOS Policy'
+                templateVars["header"] = '%s Variables' % (templateVars["policy_type"])
+                templateVars["template_file"] = 'template_open.jinja2'
+                templateVars["template_type"] = 'bios_policies'
+
+                # Open the Template file
+                write_to_template(self, **templateVars)
+                templateVars["initial_write"] = False
+
+                # Configure BIOS Policy
+                name = 'VMware'
+                templateVars["name"] = name
+                templateVars["descr"] = f'{name} BIOS Policy'
+                if tpm_installed == True:
+                    templateVars["policy_template"] = 'VMware_tpm'
+                else:
+                    templateVars["policy_template"] = 'VMware'
+
+                # Write Policies to Template File
+                templateVars["template_file"] = '%s.jinja2' % (templateVars["template_type"])
+                write_to_template(self, **templateVars)
+
+                # Close the Template file
+                templateVars["template_file"] = 'template_close.jinja2'
+                write_to_template(self, **templateVars)
+
                 #_______________________________________________________________________
                 #
                 # Configure Boot Order Policy
@@ -3168,7 +3228,10 @@ class quick_start(object):
                     templateVars["name"] = name
                     templateVars["descr"] = f'{name} Boot Order Policy'
                     templateVars["boot_mode"] = 'Uefi'
-                    templateVars["enable_secure_boot"] = i
+                    if tpm_installed == True:
+                        templateVars["enable_secure_boot"] = i
+                    else:
+                        templateVars["enable_secure_boot"] = False
                     templateVars["boot_mode"] = 'Uefi'
                     if i == False:
                         templateVars["boot_devices"] = [
