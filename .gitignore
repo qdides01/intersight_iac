@@ -5,8 +5,7 @@
 **/.terraform.lock.hcl
 
 # Local Python Directories
-**/intersight/*
-**/Testing/*
+**/Testing*/*
 **/QA/*
 **/PROD/*
 __pycache__/
